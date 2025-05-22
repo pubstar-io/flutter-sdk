@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:pubstar_io/src/error_code.dart';
+import 'package:pubstar_io/src/pubstar_io_exception.dart';
 
 import 'pubstar_io_platform_interface.dart';
 
@@ -11,13 +13,19 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version = await methodChannel.invokeMethod<String>(
+      'getPlatformVersion',
+    );
     return version;
   }
 
   @override
-  Future<String?> testMethod() async {
-    final version = await methodChannel.invokeMethod<String>('testMethod');
-    return version;
+  Future<bool?> init() async {
+    try {
+      return await methodChannel.invokeMethod('init');
+    } on PlatformException catch (e) {
+      final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
+      throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
+    }
   }
 }

@@ -5,7 +5,7 @@ class PubstarIo {
     return PubstarIoPlatform.instance.getPlatformVersion();
   }
 
-  Future<String?> testMethod() {
-    return PubstarIoPlatform.instance.testMethod();
+  Future<bool?> init() async {
+    return await PubstarIoPlatform.instance.init();
   }
 }

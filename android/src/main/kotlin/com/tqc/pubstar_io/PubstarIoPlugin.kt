@@ -1,5 +1,7 @@
 package com.tqc.pubstar_io
 
+import android.content.Context
+import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -13,19 +15,27 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
+  private lateinit var mContext: Context
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    mContext = flutterPluginBinding.applicationContext
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "pubstar_io")
     channel.setMethodCallHandler(this)
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else if(call.method == "testMethod") {
-      result.success("test method")
-    } else {
-      result.notImplemented()
+    val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
+
+    when (call.method) {
+        "getPlatformVersion" -> {
+          result.success("Android ${android.os.Build.VERSION.RELEASE}")
+        }
+        "init" -> {
+          pubstarAdManagerWrapper.init(result)
+        }
+        else -> {
+          result.notImplemented()
+        }
     }
   }
 

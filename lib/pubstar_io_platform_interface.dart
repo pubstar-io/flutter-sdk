@@ -27,7 +27,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<String?> testMethod() {
-    throw UnimplementedError('testMethod() has not been implemented.');
+  Future<bool?> init() {
+    throw UnimplementedError('init() has not been implemented.');
   }
 }

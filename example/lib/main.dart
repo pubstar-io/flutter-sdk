@@ -23,6 +23,15 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
+    initPubstar();
+  }
+
+  Future<void> initPubstar() async {
+    try {
+      await PubstarIo().init();
+    } catch (e) {
+      print("testFunc error: $e");
+    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -32,7 +41,8 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _pubstarIoPlugin.testMethod() ?? 'Unknown platform version';
+          await _pubstarIoPlugin.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -51,12 +61,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on : $_platformVersion\n'),
-        ),
+        appBar: AppBar(title: const Text('Plugin example app')),
+        body: Center(child: Text('Running on : $_platformVersion\n')),
       ),
     );
   }
