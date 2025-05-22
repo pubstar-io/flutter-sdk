@@ -14,4 +14,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
+
+  @override
+  Future<String?> testMethod() async {
+    final version = await methodChannel.invokeMethod<String>('testMethod');
+    return version;
+  }
 }

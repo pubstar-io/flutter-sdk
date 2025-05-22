@@ -22,6 +22,8 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: Result) {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    } else if(call.method == "testMethod") {
+      result.success("test method")
     } else {
       result.notImplemented()
     }
