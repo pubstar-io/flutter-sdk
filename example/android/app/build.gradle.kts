@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,10 +7,17 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+val flutterNdkVersion: String? = localProperties.getProperty("flutter.ndkVersion")
+
 android {
     namespace = "com.tqc.pubstar_io_example"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+     ndkVersion = flutterNdkVersion ?: "27"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
