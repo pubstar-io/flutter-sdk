@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:pubstar_io/pubstar_io.dart';
-
-Future<void> initPubstar() async {
-  try {
-    await PubstarIo.instance.init();
-    await PubstarIo.instance.loadAd("1233/99228313582");
-    print("initPubstar success");
-  } catch (e) {
-    print("initPubstar error: $e");
-  }
-}
-
-Future<void> showAd() async {
-  try {
-    await PubstarIo.instance.showAd("1233/99228313582");
-    print("showAd success");
-  } catch (e) {
-    print("showAd error: $e");
-  }
-}
+import 'package:pubstar_io_example/src/controller.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final controller = Controller();
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -33,7 +14,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initPubstar();
+    widget.controller.initPubstar();
   }
 
   @override
@@ -49,7 +30,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  showAd();
+                  widget.controller.showAd();
                 },
                 child: const Text('Show AD'),
               ),
