@@ -21,9 +21,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key}) {
-    // initPubstar();
-  }
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();

@@ -21,6 +21,12 @@ class MockPubstarIoPlatform
     // TODO: implement loadAd
     throw UnimplementedError();
   }
+
+  @override
+  Future<String?> showAd(String adId) {
+    // TODO: implement showAd
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -31,10 +37,10 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    PubstarIo pubstarIoPlugin = PubstarIo();
+    PubstarIo pubstarIoPlugin = PubstarIo.instance;
     MockPubstarIoPlatform fakePlatform = MockPubstarIoPlatform();
     PubstarIoPlatform.instance = fakePlatform;
 
-    expect(await pubstarIoPlugin.getPlatformVersion(), '42');
+    expect(await pubstarIoPlugin.init(), 'true');
   });
 }
