@@ -2,11 +2,17 @@ package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
 import android.content.Context
+import io.pubstar.mobile.ads.interfaces.AdLoaderListener
 import io.pubstar.mobile.ads.interfaces.InitAdListener
+import io.pubstar.mobile.ads.interfaces.PubStarAdController
 import io.pubstar.mobile.ads.model.ErrorCode
 import io.pubstar.mobile.ads.pub.PubStarAdManager
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
+    private val pubStarAdController: PubStarAdController by lazy {
+        PubStarAdManager.getAdController()
+    }
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
@@ -34,5 +40,20 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 }
             })
             .init(mContext)
+    }
+
+    fun loadAd(
+        adId: String,
+        onLoaded: () -> Unit,
+        onError: (ErrorCode) -> Unit
+    ) {
+        pubStarAdController.load(mContext, adId, object : AdLoaderListener {
+            override fun onLoaded() {
+                onLoaded()
+            }
+            override fun onError(code: ErrorCode) {
+                onError(code)
+            }
+        })
     }
 }

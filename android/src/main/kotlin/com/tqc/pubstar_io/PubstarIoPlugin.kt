@@ -36,9 +36,32 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                   result.success(true)
               },
               onError = { errorCode ->
-                  result.error("PubstarIoPlugin", errorCode.name, null)
+                  result.error(errorCode.name, "init", null)
               }
           )
+        }
+        "loadAd" -> {
+            val adId = call.argument<String>("adId")
+
+            if (adId !is String) {
+                result.error("loadAd", "Typeof adId is not a String", null)
+                return
+            }
+
+            if (adId.trim().isEmpty()) {
+                result.error("loadAd", "AdId is empty String", null)
+                return
+            }
+
+            pubstarAdManagerWrapper.loadAd(
+                adId,
+                onLoaded = {
+                    result.success(true)
+                },
+                onError = { errorCode ->
+                    result.error(errorCode.name, "loadAd", null)
+                }
+            )
         }
         else -> {
           result.notImplemented()

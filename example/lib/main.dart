@@ -4,12 +4,32 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 
+Future<void> initPubstar() async {
+  try {
+    await PubstarIo().init();
+    await PubstarIo().loadAd("1233/99228313581");
+  } catch (e) {
+    print("initPubstar error: $e");
+  }
+}
+
+Future<void> loadAdPubstar() async {
+  try {
+    await PubstarIo().loadAd("1233/99228313581");
+    print("loadAdPubstar success");
+  } catch (e) {
+    print("loadAdPubstar error: $e");
+  }
+}
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  MyApp({super.key}) {
+    // initPubstar();
+  }
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -17,21 +37,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _pubstarIoPlugin = PubstarIo();
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+    loadAdPubstar();
     initPubstar();
-  }
-
-  Future<void> initPubstar() async {
-    try {
-      await PubstarIo().init();
-    } catch (e) {
-      print("testFunc error: $e");
-    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -40,9 +52,7 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _pubstarIoPlugin.getPlatformVersion() ??
-          'Unknown platform version';
+      platformVersion = 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
