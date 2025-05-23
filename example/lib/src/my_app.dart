@@ -14,6 +14,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     widget.controller.initPubstar();
   }
 
@@ -30,9 +31,49 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.showAd();
+                  widget.controller.showAd(AdIdExample.bannerId);
                 },
-                child: const Text('Show AD'),
+                child: const Text('Show Banner Ad'),
+              ),
+
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.nativeId);
+                },
+                child: const Text('Show Native Ad'),
+              ),
+
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.interstitialId);
+                },
+                child: const Text('Show Interstitial Ad'),
+              ),
+
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.openId);
+                },
+                child: const Text('Show Open Ad'),
+              ),
+
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.rewardedId);
+                },
+                child: const Text('Show Rewarded Ad'),
+              ),
+
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.videoId);
+                },
+                child: const Text('Show Video Ad'),
               ),
             ],
           ),
