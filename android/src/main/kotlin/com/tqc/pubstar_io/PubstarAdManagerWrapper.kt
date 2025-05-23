@@ -2,11 +2,15 @@ package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.ViewGroup
 import io.pubstar.mobile.ads.interfaces.AdLoaderListener
+import io.pubstar.mobile.ads.interfaces.AdShowedListener
 import io.pubstar.mobile.ads.interfaces.InitAdListener
 import io.pubstar.mobile.ads.interfaces.PubStarAdController
 import io.pubstar.mobile.ads.model.ErrorCode
+import io.pubstar.mobile.ads.model.RewardModel
 import io.pubstar.mobile.ads.pub.PubStarAdManager
+import androidx.annotation.Nullable;
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
     private val pubStarAdController: PubStarAdController by lazy {
@@ -55,5 +59,33 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 onError(code)
             }
         })
+    }
+
+    fun showAd(
+        adId: String,
+        view: ViewGroup? = null,
+        onAdHide: () -> Unit,
+        onAdShowed: () -> Unit,
+        onError: (ErrorCode) -> Unit,
+    ) {
+        pubStarAdController.show(
+            mContext,
+            adId,
+            view,
+            object : AdShowedListener {
+                override fun onAdHide(any: RewardModel?) {
+                    onAdHide()
+                }
+
+                override fun onAdShowed() {
+                    onAdShowed()
+                }
+
+                override fun onError(code: ErrorCode) {
+                    onError(code)
+                }
+
+            }
+        )
     }
 }

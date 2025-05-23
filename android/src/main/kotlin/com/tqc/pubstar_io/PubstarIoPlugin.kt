@@ -1,6 +1,7 @@
 package com.tqc.pubstar_io
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -28,7 +29,7 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
 
     when (call.method) {
         "getPlatformVersion" -> {
-          result.success("Android ${android.os.Build.VERSION.RELEASE}")
+          result.success("Android ${Build.VERSION.RELEASE}")
         }
         "init" -> {
           pubstarAdManagerWrapper.init(
@@ -60,6 +61,34 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 },
                 onError = { errorCode ->
                     result.error(errorCode.name, "loadAd", null)
+                }
+            )
+        }
+        "showAd" -> {
+            val adId = call.argument<String>("adId")
+
+            if (adId !is String) {
+                result.error("loadAd", "Typeof adId is not a String", null)
+                return
+            }
+
+            if (adId.trim().isEmpty()) {
+                result.error("loadAd", "AdId is empty String", null)
+                return
+            }
+
+            pubstarAdManagerWrapper.showAd(
+                adId,
+                view = null,
+                onAdHide = {
+                    result.success("hide")
+                },
+                onAdShowed = {
+                    result.success("showed")
+                },
+                onError = { errorCode ->
+                    Log.d("PubstarIoPlugin", "showAd onMethodCall: $errorCode")
+                    result.error(errorCode.name, "showAd", null)
                 }
             )
         }

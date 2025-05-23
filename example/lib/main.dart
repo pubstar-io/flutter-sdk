@@ -6,19 +6,13 @@ import 'package:pubstar_io/pubstar_io.dart';
 
 Future<void> initPubstar() async {
   try {
-    await PubstarIo().init();
-    await PubstarIo().loadAd("1233/99228313581");
+    await PubstarIo.instance.init();
+    await PubstarIo.instance.loadAd("1233/99228313582");
+    print("initPubstar success");
+
+    await PubstarIo.instance.showAd("1233/99228313582");
   } catch (e) {
     print("initPubstar error: $e");
-  }
-}
-
-Future<void> loadAdPubstar() async {
-  try {
-    await PubstarIo().loadAd("1233/99228313581");
-    print("loadAdPubstar success");
-  } catch (e) {
-    print("loadAdPubstar error: $e");
   }
 }
 
@@ -42,7 +36,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
-    loadAdPubstar();
     initPubstar();
   }
 
