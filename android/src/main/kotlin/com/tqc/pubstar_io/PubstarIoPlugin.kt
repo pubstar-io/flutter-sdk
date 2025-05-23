@@ -31,7 +31,14 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
           result.success("Android ${android.os.Build.VERSION.RELEASE}")
         }
         "init" -> {
-          pubstarAdManagerWrapper.init(result)
+          pubstarAdManagerWrapper.init(
+              onDone = {
+                  result.success(true)
+              },
+              onError = { errorCode ->
+                  result.error("PubstarIoPlugin", errorCode.name, null)
+              }
+          )
         }
         else -> {
           result.notImplemented()

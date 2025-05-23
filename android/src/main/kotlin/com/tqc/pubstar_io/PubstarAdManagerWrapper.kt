@@ -2,11 +2,9 @@ package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import io.pubstar.mobile.ads.interfaces.InitAdListener
 import io.pubstar.mobile.ads.model.ErrorCode
 import io.pubstar.mobile.ads.pub.PubStarAdManager
-import io.flutter.plugin.common.MethodChannel
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
     companion object {
@@ -21,15 +19,18 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         }
     }
 
-    fun init(result: MethodChannel.Result) {
+    fun init(
+        onDone: () -> Unit,
+        onError: (ErrorCode) -> Unit
+    ) {
         PubStarAdManager.getInstance()
             .setInitAdListener(object : InitAdListener {
                 override fun onDone() {
-                    result.success(true)
+                    onDone()
                 }
 
                 override fun onError(code: ErrorCode) {
-                    result.error("PubstarAdManagerWrapper", code.name, null)
+                    onError(code)
                 }
             })
             .init(mContext)
