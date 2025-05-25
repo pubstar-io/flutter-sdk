@@ -2,7 +2,14 @@ package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
+import io.flutter.plugin.common.StandardMessageCodec
+import io.flutter.plugin.platform.PlatformView
+import io.flutter.plugin.platform.PlatformViewFactory
 import io.pubstar.mobile.ads.interfaces.AdLoaderListener
 import io.pubstar.mobile.ads.interfaces.AdShowedListener
 import io.pubstar.mobile.ads.interfaces.InitAdListener
@@ -10,7 +17,34 @@ import io.pubstar.mobile.ads.interfaces.PubStarAdController
 import io.pubstar.mobile.ads.model.ErrorCode
 import io.pubstar.mobile.ads.model.RewardModel
 import io.pubstar.mobile.ads.pub.PubStarAdManager
-import androidx.annotation.Nullable;
+
+internal class NativeView(context: Context, id: Int, creationParams: Map<String?, Any>?) :
+    PlatformView {
+    private val textView: TextView = TextView(context)
+    private val frameLayout = FrameLayout(context)
+
+    override fun getView(): View {
+        return frameLayout
+    }
+
+    override fun dispose() {}
+
+    init {
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        params.gravity = Gravity.CENTER
+        frameLayout.layoutParams = params
+    }
+}
+
+class NativeViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+    override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
+        val creationParams = args as Map<String?, Any>?
+        return NativeView(context, viewId, creationParams)
+    }
+}
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
     private val pubStarAdController: PubStarAdController by lazy {
@@ -88,4 +122,11 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             }
         )
     }
+}
+
+object PubstarAdViewManager {
+    private val viewMap = mutableMapOf<Int, ViewGroup>()
+    fun registerView(viewId: Int, view: ViewGroup) { viewMap[viewId] = view }
+    fun unregisterView(viewId: Int) { viewMap.remove(viewId) }
+    fun getView(viewId: Int): ViewGroup? = viewMap[viewId]
 }

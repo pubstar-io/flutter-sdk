@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io_example/src/controller.dart';
 
 class MyApp extends StatefulWidget {
@@ -27,6 +28,14 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              ColoredBox(
+                color: Colors.grey.shade300,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: PubstarAdView(adId: AdIdExample.bannerId),
+                ),
+              ),
               Text('AD Example'),
               const SizedBox(height: 20),
               ElevatedButton(

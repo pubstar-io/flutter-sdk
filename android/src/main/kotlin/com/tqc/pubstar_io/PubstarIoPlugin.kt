@@ -8,6 +8,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import kotlin.math.log
 
 /** PubstarIoPlugin */
 class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
@@ -22,6 +23,10 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
     mContext = flutterPluginBinding.applicationContext
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "pubstar_io")
     channel.setMethodCallHandler(this)
+
+    flutterPluginBinding
+        .platformViewRegistry
+        .registerViewFactory("pubstar_ad_view", NativeViewFactory())
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
@@ -66,6 +71,7 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
         }
         "showAd" -> {
             val adId = call.argument<String>("adId")
+            val viewId = call.argument<Int>("viewId")
 
             if (adId !is String) {
                 result.error("loadAd", "Typeof adId is not a String", null)
@@ -77,9 +83,12 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 return
             }
 
+            Log.d("PubstarIoPlugin", "onMethodCall: $viewId")
+            val adView = viewId?.let { PubstarAdViewManager.getView(it) }
+
             pubstarAdManagerWrapper.showAd(
                 adId,
-                view = null,
+                adView,
                 onAdHide = {
                     result.success("hide")
                 },
@@ -87,7 +96,7 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                     result.success("showed")
                 },
                 onError = { errorCode ->
-                    Log.d("PubstarIoPlugin", "showAd onMethodCall: $errorCode")
+                    Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
                     result.error(errorCode.name, "showAd", null)
                 }
             )
