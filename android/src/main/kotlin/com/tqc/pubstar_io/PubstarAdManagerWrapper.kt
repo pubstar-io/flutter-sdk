@@ -18,16 +18,22 @@ import io.pubstar.mobile.ads.model.ErrorCode
 import io.pubstar.mobile.ads.model.RewardModel
 import io.pubstar.mobile.ads.pub.PubStarAdManager
 
-internal class NativeView(context: Context, id: Int, creationParams: Map<String?, Any>?) :
-    PlatformView {
-    private val textView: TextView = TextView(context)
-    private val frameLayout = FrameLayout(context)
+object PubstarAdViewRegistry {
+    val views = mutableMapOf<Int, ViewGroup>()
+}
 
-    override fun getView(): View {
+internal class NativeView(context: Context, id: Int) :
+    PlatformView {
+    private val frameLayout = FrameLayout(context)
+    private val mId = id
+
+    override fun getView(): ViewGroup {
         return frameLayout
     }
 
-    override fun dispose() {}
+    override fun dispose() {
+        PubstarAdViewRegistry.views.remove(mId)
+    }
 
     init {
         val params = FrameLayout.LayoutParams(
@@ -41,8 +47,9 @@ internal class NativeView(context: Context, id: Int, creationParams: Map<String?
 
 class NativeViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        val creationParams = args as Map<String?, Any>?
-        return NativeView(context, viewId, creationParams)
+        val adView = NativeView(context, viewId)
+        PubstarAdViewRegistry.views[viewId] = adView.view
+        return adView
     }
 }
 

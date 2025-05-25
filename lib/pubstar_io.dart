@@ -18,8 +18,19 @@ class PubstarIo {
     return await PubstarIoPlatform.instance.loadAd(adId);
   }
 
-  Future<String?> showAd({required String adId, int? viewId}) async {
-    return await PubstarIoPlatform.instance.showAd(adId: adId, viewId: viewId);
+  Future<String?> showAd({required String adId}) async {
+    return await PubstarIoPlatform.instance.showAd(adId: adId);
+  }
+
+  Future<String?> showAdWithViewId({
+    required String adId,
+    required int viewId,
+  }) async {
+    print('showAdWithViewId called with adId: $adId, viewId: $viewId');
+    return await PubstarIoPlatform.instance.showAdWithViewId(
+      adId: adId,
+      viewId: viewId,
+    );
   }
 }
 
@@ -40,7 +51,7 @@ class PubstarAdView extends StatelessWidget {
       creationParamsCodec: const StandardMessageCodec(),
       onPlatformViewCreated: (int viewId) {
         print('PubstarAdView created with viewId: $viewId');
-        // PubstarIo.instance.showAd(adId: adId, viewId: viewId);
+        PubstarIo.instance.showAdWithViewId(adId: adId, viewId: viewId);
       },
     );
   }

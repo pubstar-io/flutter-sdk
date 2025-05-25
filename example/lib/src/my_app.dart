@@ -12,11 +12,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool _isAdSdkReady = false;
+
   @override
   void initState() {
     super.initState();
 
-    widget.controller.initPubstar();
+    widget.controller.initPubstar().then((_) {
+      setState(() {
+        _isAdSdkReady = true;
+      });
+    });
   }
 
   @override
@@ -28,14 +34,14 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ColoredBox(
+              _isAdSdkReady ? ColoredBox(
                 color: Colors.grey.shade300,
                 child: SizedBox(
                   width: double.infinity,
                   height: 100,
                   child: PubstarAdView(adId: AdIdExample.bannerId),
                 ),
-              ),
+              ) : const SizedBox.shrink(),
               Text('AD Example'),
               const SizedBox(height: 20),
               ElevatedButton(

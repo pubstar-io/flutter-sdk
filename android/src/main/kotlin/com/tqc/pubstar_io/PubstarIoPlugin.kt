@@ -71,6 +71,34 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
         }
         "showAd" -> {
             val adId = call.argument<String>("adId")
+
+            if (adId !is String) {
+                result.error("loadAd", "Typeof adId is not a String", null)
+                return
+            }
+
+            if (adId.trim().isEmpty()) {
+                result.error("loadAd", "AdId is empty String", null)
+                return
+            }
+
+            pubstarAdManagerWrapper.showAd(
+                adId,
+                null,
+                onAdHide = {
+                    result.success("hide")
+                },
+                onAdShowed = {
+                    result.success("showed")
+                },
+                onError = { errorCode ->
+                    Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
+                    result.error(errorCode.name, "showAd", null)
+                }
+            )
+        }
+        "showAdWithViewId" -> {
+            val adId = call.argument<String>("adId")
             val viewId = call.argument<Int>("viewId")
 
             if (adId !is String) {
@@ -84,7 +112,13 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
             }
 
             Log.d("PubstarIoPlugin", "onMethodCall: $viewId")
-            val adView = viewId?.let { PubstarAdViewManager.getView(it) }
+            val adView = PubstarAdViewRegistry.views[viewId]
+
+            if (adView == null) {
+                Log.e("PubstarIoPlugin", "showAdWithViewId: AdView not found", null)
+                result.error("NO_VIEW", "AdView not found", null)
+                return
+            }
 
             pubstarAdManagerWrapper.showAd(
                 adId,
