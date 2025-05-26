@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io_example/src/controller.dart';
@@ -13,6 +15,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isAdSdkReady = false;
+  late final StreamSubscription sub;
 
   @override
   void initState() {
@@ -23,6 +26,16 @@ class _MyAppState extends State<MyApp> {
         _isAdSdkReady = true;
       });
     });
+
+    sub = PubstarAdEventStream.stream.listen((event) {
+      print('Received ad event: $event');
+    });
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    super.dispose();
   }
 
   @override
@@ -72,47 +85,39 @@ class _MyAppState extends State<MyApp> {
                     color: Colors.grey.shade300,
                     child: SizedBox(
                       width: double.infinity,
-                      height: 100,
+                      height: 200,
                       child: PubstarAdView(adId: AdIdExample.videoId),
                     ),
                   )
                   : ColoredBox(
                     color: Colors.grey.shade300,
-                    child: SizedBox(width: double.infinity, height: 100),
+                    child: SizedBox(width: double.infinity, height: 200),
                   ),
               const SizedBox(height: 10),
+              // Text('AD Example'),
 
-              Text('AD Example'),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.showAd(AdIdExample.interstitialId);
-                },
-                child: const Text('Show Interstitial Ad'),
-              ),
-
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.showAd(AdIdExample.openId);
-                },
-                child: const Text('Show Open Ad'),
-              ),
-
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.showAd(AdIdExample.rewardedId);
-                },
-                child: const Text('Show Rewarded Ad'),
-              ),
+              // const SizedBox(height: 20),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     widget.controller.showAd(AdIdExample.interstitialId);
+              //   },
+              //   child: const Text('Show Interstitial Ad'),
+              // ),
 
               // const SizedBox(height: 10),
               // ElevatedButton(
               //   onPressed: () {
-              //     widget.controller.showAd(AdIdExample.videoId);
+              //     widget.controller.showAd(AdIdExample.openId);
               //   },
-              //   child: const Text('Show Video Ad'),
+              //   child: const Text('Show Open Ad'),
+              // ),
+
+              // const SizedBox(height: 10),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     widget.controller.showAd(AdIdExample.rewardedId);
+              //   },
+              //   child: const Text('Show Rewarded Ad'),
               // ),
             ],
           ),

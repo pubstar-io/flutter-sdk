@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
@@ -163,16 +161,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 override fun onError(code: ErrorCode) {
                     onError(code)
                 }
-
             }
-
         )
     }
-}
-
-object PubstarAdViewManager {
-    private val viewMap = mutableMapOf<Int, ViewGroup>()
-    fun registerView(viewId: Int, view: ViewGroup) { viewMap[viewId] = view }
-    fun unregisterView(viewId: Int) { viewMap.remove(viewId) }
-    fun getView(viewId: Int): ViewGroup? = viewMap[viewId]
 }

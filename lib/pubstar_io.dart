@@ -10,37 +10,42 @@ class PubstarIo {
 
   static PubstarIo get instance => _instance;
 
-  Future<bool?> init() async {
-    return await PubstarIoPlatform.instance.init();
+  Future<void> init() async {
+    await PubstarIoPlatform.instance.init();
   }
 
-  Future<bool?> loadAd(String adId) async {
-    return await PubstarIoPlatform.instance.loadAd(adId);
+  Future<void> loadAd(String adId) async {
+    await PubstarIoPlatform.instance.loadAd(adId);
   }
 
-  Future<String?> showAd({required String adId}) async {
-    return await PubstarIoPlatform.instance.showAd(adId: adId);
+  Future<void> showAd({required String adId}) async {
+    await PubstarIoPlatform.instance.showAd(adId: adId);
   }
 
-  Future<String?> showAdWithViewId({
+  Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
   }) async {
-    return await PubstarIoPlatform.instance.showAdWithViewId(
+    await PubstarIoPlatform.instance.showAdWithViewId(
       adId: adId,
       viewId: viewId,
     );
   }
 
-  Future<String?> loadAndShowAd({
+  Future<void> loadAndShowAd({
     required String adId,
     required int viewId,
   }) async {
-    return await PubstarIoPlatform.instance.loadAndShowAd(
-      adId: adId,
-      viewId: viewId,
-    );
+    await PubstarIoPlatform.instance.loadAndShowAd(adId: adId, viewId: viewId);
   }
+}
+
+class PubstarAdEventStream {
+  static final _eventChannel = const EventChannel('pubstar_io_event');
+
+  static Stream<Map<dynamic, dynamic>> get stream => _eventChannel
+      .receiveBroadcastStream()
+      .map((event) => event as Map<dynamic, dynamic>);
 }
 
 class PubstarAdView extends StatelessWidget {
@@ -59,7 +64,6 @@ class PubstarAdView extends StatelessWidget {
       creationParams: creationParams,
       creationParamsCodec: const StandardMessageCodec(),
       onPlatformViewCreated: (int viewId) {
-        print('PubstarAdView created with viewId: $viewId');
         PubstarIo.instance.showAdWithViewId(adId: adId, viewId: viewId);
       },
     );

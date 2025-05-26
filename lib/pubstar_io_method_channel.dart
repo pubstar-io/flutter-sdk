@@ -12,15 +12,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   final methodChannel = const MethodChannel('pubstar_io');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>(
-      'getPlatformVersion',
-    );
-    return version;
-  }
-
-  @override
-  Future<bool?> init() async {
+  Future<void> init() async {
     try {
       return await methodChannel.invokeMethod('init');
     } on PlatformException catch (e) {
@@ -30,7 +22,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<bool?> loadAd(String adId) async {
+  Future<void> loadAd(String adId) async {
     try {
       return await methodChannel.invokeMethod('loadAd', {'adId': adId});
     } on PlatformException catch (e) {
@@ -40,52 +32,43 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<String?> showAd({required String adId}) async {
+  Future<void> showAd({required String adId}) async {
     try {
-      var result = await methodChannel.invokeMethod('showAd', {'adId': adId});
-      print("showAd success: $result");
-      return result;
+      await methodChannel.invokeMethod('showAd', {'adId': adId});
     } on PlatformException catch (e) {
       final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
-      print("MethodChannelPubstarIo showAd error: $errorCode -${e.message}");
       throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
     }
   }
 
   @override
-  Future<String?> showAdWithViewId({
+  Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
   }) async {
     try {
-      var result = await methodChannel.invokeMethod('showAdWithViewId', {
+      await methodChannel.invokeMethod('showAdWithViewId', {
         'adId': adId,
         "viewId": viewId,
       });
-      print("showAdWithViewId success: $result");
-      return result;
     } on PlatformException catch (e) {
       final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
-      print("MethodChannelPubstarIo showAd error: $errorCode -${e.message}");
       throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
     }
   }
 
   @override
-  Future<String?> loadAndShowAd({
+  Future<void> loadAndShowAd({
     required String adId,
     required int viewId,
   }) async {
     try {
-      var result = await methodChannel.invokeMethod('loadAndShowAd', {
+      await methodChannel.invokeMethod('loadAndShowAd', {
         'adId': adId,
         "viewId": viewId,
       });
-      print("loadAndShowAd success: $result");
-      return result;
     } on PlatformException catch (e) {
       final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
-      print("MethodChannelPubstarIo showAd error: $errorCode -${e.message}");
       throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
     }
   }

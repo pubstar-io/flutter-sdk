@@ -5,11 +5,11 @@ import android.os.Build
 import android.util.Log
 import android.view.ViewGroup
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import kotlin.math.log
 
 /** PubstarIoPlugin */
 class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
@@ -19,18 +19,39 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var mContext: Context
+    private lateinit var eventChannel: EventChannel
+    private var eventSink: EventChannel.EventSink? = null
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     mContext = flutterPluginBinding.applicationContext
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "pubstar_io")
     channel.setMethodCallHandler(this)
 
-    flutterPluginBinding
+
+      eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, "pubstar_io_event")
+      eventChannel.setStreamHandler(object : EventChannel.StreamHandler {
+          override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+              eventSink = events
+          }
+          override fun onCancel(arguments: Any?) {
+              eventSink = null
+          }
+      })
+
+
+      flutterPluginBinding
         .platformViewRegistry
         .registerViewFactory("pubstar_ad_view", NativeViewFactory())
   }
 
-  override fun onMethodCall(call: MethodCall, result: Result) {
+    private fun sendAdEvent(event: String, data: Map<String, Any>? = null) {
+        val map = mutableMapOf<String, Any>("event" to event)
+        if (data != null) map.putAll(data)
+        eventSink?.success(map)
+    }
+
+
+    override fun onMethodCall(call: MethodCall, result: Result) {
     val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
 
     when (call.method) {
@@ -87,13 +108,14 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 adId,
                 null,
                 onAdHide = {
-                    result.success("hide")
+                    sendAdEvent("showAd_hide", mapOf("adId" to adId))
                 },
                 onAdShowed = {
-                    result.success("showed")
+                    sendAdEvent("showAd_showed", mapOf("adId" to adId))
                 },
                 onError = { errorCode ->
                     Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
+                    sendAdEvent("showAd_error", mapOf("adId" to adId, "error" to errorCode.name))
                     result.error(errorCode.name, "showAd", null)
                 }
             )
@@ -124,13 +146,14 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 adId,
                 adView,
                 onAdHide = {
-                    result.success("hide")
+                    sendAdEvent("showAdWithViewId_hide", mapOf("adId" to adId))
                 },
                 onAdShowed = {
-                    result.success("showed")
+                    sendAdEvent("showAdWithViewId_showed", mapOf("adId" to adId))
                 },
                 onError = { errorCode ->
-                    Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
+                    Log.e("PubstarIoPlugin", "showAdWithViewId error onMethodCall: $errorCode")
+                    sendAdEvent("showAdWithViewId_error", mapOf("adId" to adId, "error" to errorCode.name))
                     result.error(errorCode.name, "showAd", null)
                 }
             )

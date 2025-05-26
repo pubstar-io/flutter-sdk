@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/pubstar_io_platform_interface.dart';
 import 'package:pubstar_io/pubstar_io_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -49,13 +48,5 @@ void main() {
 
   test('$MethodChannelPubstarIo is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelPubstarIo>());
-  });
-
-  test('getPlatformVersion', () async {
-    PubstarIo pubstarIoPlugin = PubstarIo.instance;
-    MockPubstarIoPlatform fakePlatform = MockPubstarIoPlatform();
-    PubstarIoPlatform.instance = fakePlatform;
-
-    expect(await pubstarIoPlugin.init(), 'true');
   });
 }

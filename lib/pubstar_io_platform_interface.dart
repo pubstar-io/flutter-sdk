@@ -23,30 +23,23 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
-
-  Future<bool?> init() {
+  Future<void> init() {
     throw UnimplementedError('init() has not been implemented.');
   }
 
-  Future<bool?> loadAd(String adId) {
+  Future<void> loadAd(String adId) {
     throw UnimplementedError('loadAd() has not been implemented.');
   }
 
-  Future<String?> showAd({required String adId}) {
+  Future<void> showAd({required String adId}) {
     throw UnimplementedError('showAd() has not been implemented.');
   }
 
-  Future<String?> showAdWithViewId({
-    required String adId,
-    required int viewId,
-  }) {
+  Future<void> showAdWithViewId({required String adId, required int viewId}) {
     throw UnimplementedError('showAdWithViewId() has not been implemented.');
   }
 
-  Future<String?> loadAndShowAd({required String adId, required int viewId}) {
+  Future<void> loadAndShowAd({required String adId, required int viewId}) {
     throw UnimplementedError('loadAndShowAd() has not been implemented.');
   }
 }
