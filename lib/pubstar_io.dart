@@ -26,8 +26,17 @@ class PubstarIo {
     required String adId,
     required int viewId,
   }) async {
-    print('showAdWithViewId called with adId: $adId, viewId: $viewId');
     return await PubstarIoPlatform.instance.showAdWithViewId(
+      adId: adId,
+      viewId: viewId,
+    );
+  }
+
+  Future<String?> loadAndShowAd({
+    required String adId,
+    required int viewId,
+  }) async {
+    return await PubstarIoPlatform.instance.loadAndShowAd(
       adId: adId,
       viewId: viewId,
     );

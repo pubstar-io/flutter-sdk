@@ -3,6 +3,7 @@ package com.tqc.pubstar_io
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.view.ViewGroup
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -111,7 +112,6 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 return
             }
 
-            Log.d("PubstarIoPlugin", "onMethodCall: $viewId")
             val adView = PubstarAdViewRegistry.views[viewId]
 
             if (adView == null) {
@@ -121,6 +121,48 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
             }
 
             pubstarAdManagerWrapper.showAd(
+                adId,
+                adView,
+                onAdHide = {
+                    result.success("hide")
+                },
+                onAdShowed = {
+                    result.success("showed")
+                },
+                onError = { errorCode ->
+                    Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
+                    result.error(errorCode.name, "showAd", null)
+                }
+            )
+        }
+        "loadAndShowAd" -> {
+            val adId = call.argument<String>("adId")
+            val viewId = call.argument<Int?>("viewId")
+
+            if (adId !is String) {
+                result.error("loadAd", "Typeof adId is not a String", null)
+                return
+            }
+
+            if (adId.trim().isEmpty()) {
+                result.error("loadAd", "AdId is empty String", null)
+                return
+            }
+
+            var adView: ViewGroup? = null
+            if (viewId != null) {
+                val view = PubstarAdViewRegistry.views[viewId]
+
+                if (view == null) {
+                    Log.e("PubstarIoPlugin", "showAdWithViewId: AdView not found", null)
+                    result.error("NO_VIEW", "AdView not found", null)
+                    return
+                }
+
+                adView = view
+            }
+
+            pubstarAdManagerWrapper.loadAndShowAd(
                 adId,
                 adView,
                 onAdHide = {

@@ -2,6 +2,7 @@ package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -127,6 +128,44 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 }
 
             }
+        )
+    }
+
+    fun loadAndShowAd(
+        adId: String,
+        view: ViewGroup? = null,
+        onAdHide: () -> Unit,
+        onAdShowed: () -> Unit,
+        onError: (ErrorCode) -> Unit,
+    ) {
+        pubStarAdController.loadAndShow(
+            mContext,
+            adId,
+            view,
+            object : AdLoaderListener {
+                override fun onError(code: ErrorCode) {
+                    onError(code)
+                }
+
+                override fun onLoaded() {
+                    Log.d("loadAndShowAd", "onLoaded ")
+                }
+            },
+            object : AdShowedListener {
+                override fun onAdHide(any: RewardModel?) {
+                    onAdHide()
+                }
+
+                override fun onAdShowed() {
+                    onAdShowed()
+                }
+
+                override fun onError(code: ErrorCode) {
+                    onError(code)
+                }
+
+            }
+
         )
     }
 }

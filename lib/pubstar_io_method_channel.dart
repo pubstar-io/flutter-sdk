@@ -70,4 +70,23 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
       throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
     }
   }
+
+  @override
+  Future<String?> loadAndShowAd({
+    required String adId,
+    required int viewId,
+  }) async {
+    try {
+      var result = await methodChannel.invokeMethod('loadAndShowAd', {
+        'adId': adId,
+        "viewId": viewId,
+      });
+      print("loadAndShowAd success: $result");
+      return result;
+    } on PlatformException catch (e) {
+      final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
+      print("MethodChannelPubstarIo showAd error: $errorCode -${e.message}");
+      throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
+    }
+  }
 }
