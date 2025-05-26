@@ -3,12 +3,7 @@ package com.tqc.pubstar_io
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import io.flutter.plugin.common.StandardMessageCodec
-import io.flutter.plugin.platform.PlatformView
-import io.flutter.plugin.platform.PlatformViewFactory
 import io.pubstar.mobile.ads.interfaces.AdLoaderListener
 import io.pubstar.mobile.ads.interfaces.AdShowedListener
 import io.pubstar.mobile.ads.interfaces.InitAdListener
@@ -16,41 +11,6 @@ import io.pubstar.mobile.ads.interfaces.PubStarAdController
 import io.pubstar.mobile.ads.model.ErrorCode
 import io.pubstar.mobile.ads.model.RewardModel
 import io.pubstar.mobile.ads.pub.PubStarAdManager
-
-object PubstarAdViewRegistry {
-    val views = mutableMapOf<Int, ViewGroup>()
-}
-
-internal class NativeView(context: Context, id: Int) :
-    PlatformView {
-    private val frameLayout = FrameLayout(context)
-    private val mId = id
-
-    override fun getView(): ViewGroup {
-        return frameLayout
-    }
-
-    override fun dispose() {
-        PubstarAdViewRegistry.views.remove(mId)
-    }
-
-    init {
-        val params = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT
-        )
-        params.gravity = Gravity.CENTER
-        frameLayout.layoutParams = params
-    }
-}
-
-class NativeViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
-    override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        val adView = NativeView(context, viewId)
-        PubstarAdViewRegistry.views[viewId] = adView.view
-        return adView
-    }
-}
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
     private val pubStarAdController: PubStarAdController by lazy {
