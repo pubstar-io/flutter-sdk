@@ -94,31 +94,31 @@ class _MyAppState extends State<MyApp> {
                     child: SizedBox(width: double.infinity, height: 200),
                   ),
               const SizedBox(height: 10),
-              // Text('AD Example'),
+              Text('AD Example'),
 
-              // const SizedBox(height: 20),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     widget.controller.showAd(AdIdExample.interstitialId);
-              //   },
-              //   child: const Text('Show Interstitial Ad'),
-              // ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.interstitialId);
+                },
+                child: const Text('Show Interstitial Ad'),
+              ),
 
-              // const SizedBox(height: 10),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     widget.controller.showAd(AdIdExample.openId);
-              //   },
-              //   child: const Text('Show Open Ad'),
-              // ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.openId);
+                },
+                child: const Text('Show Open Ad'),
+              ),
 
-              // const SizedBox(height: 10),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     widget.controller.showAd(AdIdExample.rewardedId);
-              //   },
-              //   child: const Text('Show Rewarded Ad'),
-              // ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.showAd(AdIdExample.rewardedId);
+                },
+                child: const Text('Show Rewarded Ad'),
+              ),
             ],
           ),
         ),

@@ -13,7 +13,6 @@ enum ErrorCode {
 
 class ErrorCodeUtil {
   static ErrorCode errorCodeFromNative(String nativeValue) {
-    print("ErrorCodeUtil: errorCodeFromNative called with value: $nativeValue");
     switch (nativeValue) {
       case "LOADED_ERROR":
         return ErrorCode.loadedError;
