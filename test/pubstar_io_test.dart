@@ -7,9 +7,6 @@ class MockPubstarIoPlatform
     with MockPlatformInterfaceMixin
     implements PubstarIoPlatform {
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
-
-  @override
   Future<bool?> init() {
     // TODO: implement init
     throw UnimplementedError();
