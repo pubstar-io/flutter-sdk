@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pubstar_io/src/method_channel_name.dart';
 
 import 'pubstar_io_platform_interface.dart';
 
@@ -41,7 +42,9 @@ class PubstarIo {
 }
 
 class PubstarAdEventStream {
-  static final _eventChannel = const EventChannel('pubstar_io_event');
+  static final _eventChannel = const EventChannel(
+    MethodChannelName.eventChannelName,
+  );
 
   static Stream<Map<dynamic, dynamic>> get stream => _eventChannel
       .receiveBroadcastStream()
@@ -54,7 +57,7 @@ class PubstarAdView extends StatelessWidget {
   final String adId;
 
   Widget build(BuildContext context) {
-    const String viewType = 'pubstar_ad_view';
+    const String viewType = MethodChannelName.viewType;
 
     final Map<String, dynamic> creationParams = <String, dynamic>{};
 
