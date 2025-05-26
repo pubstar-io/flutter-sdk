@@ -11,28 +11,18 @@ class AdIdExample {
 
 class Controller {
   Future<void> initPubstar() async {
-    try {
-      await PubstarIo.instance.init();
+    await PubstarIo.instance.init();
 
-      await loadAd(AdIdExample.bannerId);
-      await loadAd(AdIdExample.nativeId);
-      await loadAd(AdIdExample.interstitialId);
-      await loadAd(AdIdExample.openId);
-      await loadAd(AdIdExample.rewardedId);
-      await loadAd(AdIdExample.videoId);
-      print("initPubstar success");
-    } catch (e) {
-      print("initPubstar error: $e");
-    }
+    await loadAd(AdIdExample.bannerId);
+    await loadAd(AdIdExample.nativeId);
+    await loadAd(AdIdExample.interstitialId);
+    await loadAd(AdIdExample.openId);
+    await loadAd(AdIdExample.rewardedId);
+    await loadAd(AdIdExample.videoId);
   }
 
   Future<void> loadAd(String adId) async {
-    try {
-      await PubstarIo.instance.loadAd(adId);
-      print("loadAd success");
-    } catch (e) {
-      print("loadAd error: $e");
-    }
+    await PubstarIo.instance.loadAd(adId);
   }
 
   Future<void> showAd(String adId) async {
