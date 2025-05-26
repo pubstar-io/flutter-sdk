@@ -47,7 +47,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
       return result;
     } on PlatformException catch (e) {
       final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
-      print("showAd error: $errorCode -${e.message}");
+      print("MethodChannelPubstarIo showAd error: $errorCode -${e.message}");
       throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
     }
   }
@@ -66,7 +66,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
       return result;
     } on PlatformException catch (e) {
       final errorCode = ErrorCodeUtil.errorCodeFromNative(e.message ?? '');
-      print("showAd error: $errorCode -${e.message}");
+      print("MethodChannelPubstarIo showAd error: $errorCode -${e.message}");
       throw PubstarIoException(errorCode, e.details?.toString() ?? e.message);
     }
   }
