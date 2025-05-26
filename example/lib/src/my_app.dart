@@ -34,32 +34,56 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _isAdSdkReady ? ColoredBox(
-                color: Colors.grey.shade300,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: PubstarAdView(adId: AdIdExample.bannerId),
-                ),
-              ) : const SizedBox.shrink(),
+              Text('Banner AD'),
+              _isAdSdkReady
+                  ? ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: PubstarAdView(adId: AdIdExample.bannerId),
+                    ),
+                  )
+                  : ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(width: double.infinity, height: 100),
+                  ),
+              const SizedBox(height: 10),
+
+              Text('Native AD'),
+              _isAdSdkReady
+                  ? ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: PubstarAdView(adId: AdIdExample.nativeId),
+                    ),
+                  )
+                  : ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(width: double.infinity, height: 100),
+                  ),
+              const SizedBox(height: 10),
+
+              Text('Video AD'),
+              _isAdSdkReady
+                  ? ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: PubstarAdView(adId: AdIdExample.videoId),
+                    ),
+                  )
+                  : ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(width: double.infinity, height: 100),
+                  ),
+              const SizedBox(height: 10),
+
               Text('AD Example'),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.showAd(AdIdExample.bannerId);
-                },
-                child: const Text('Show Banner Ad'),
-              ),
-
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.showAd(AdIdExample.nativeId);
-                },
-                child: const Text('Show Native Ad'),
-              ),
-
-              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   widget.controller.showAd(AdIdExample.interstitialId);
@@ -83,13 +107,13 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('Show Rewarded Ad'),
               ),
 
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.showAd(AdIdExample.videoId);
-                },
-                child: const Text('Show Video Ad'),
-              ),
+              // const SizedBox(height: 10),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     widget.controller.showAd(AdIdExample.videoId);
+              //   },
+              //   child: const Text('Show Video Ad'),
+              // ),
             ],
           ),
         ),
