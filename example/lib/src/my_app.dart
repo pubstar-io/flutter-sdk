@@ -38,6 +38,13 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
+  Widget buildPlaceholder() {
+    return ColoredBox(
+      color: Colors.grey.shade300,
+      child: SizedBox(width: double.infinity, height: 100),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,13 +61,13 @@ class _MyAppState extends State<MyApp> {
               //       child: SizedBox(
               //         width: double.infinity,
               //         height: 100,
-              //         child: PubstarAdView(adId: AdIdExample.bannerId),
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.bannerId,
+              //           mode: PubstarAdViewMode.loadAndShow,
+              //         ),
               //       ),
               //     )
-              //     : ColoredBox(
-              //       color: Colors.grey.shade300,
-              //       child: SizedBox(width: double.infinity, height: 100),
-              //     ),
+              //     : buildPlaceholder(),
               // const SizedBox(height: 10),
 
               // Text('Native AD'),
@@ -70,13 +77,13 @@ class _MyAppState extends State<MyApp> {
               //       child: SizedBox(
               //         width: double.infinity,
               //         height: 100,
-              //         child: PubstarAdView(adId: AdIdExample.nativeId),
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.nativeId,
+              //           mode: PubstarAdViewMode.loadAndShow,
+              //         ),
               //       ),
               //     )
-              //     : ColoredBox(
-              //       color: Colors.grey.shade300,
-              //       child: SizedBox(width: double.infinity, height: 100),
-              //     ),
+              //     : buildPlaceholder(),
               // const SizedBox(height: 10),
 
               // Text('Video AD'),
@@ -86,13 +93,13 @@ class _MyAppState extends State<MyApp> {
               //       child: SizedBox(
               //         width: double.infinity,
               //         height: 200,
-              //         child: PubstarAdView(adId: AdIdExample.videoId),
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.videoId,
+              //           mode: PubstarAdViewMode.loadAndShow,
+              //         ),
               //       ),
               //     )
-              //     : ColoredBox(
-              //       color: Colors.grey.shade300,
-              //       child: SizedBox(width: double.infinity, height: 200),
-              //     ),
+              //     : buildPlaceholder(),
               // const SizedBox(height: 10),
               Text('AD Example'),
 

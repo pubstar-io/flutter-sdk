@@ -9,9 +9,7 @@ import 'pubstar_io_platform_interface.dart';
 /// An implementation of [PubstarIoPlatform] that uses method channels.
 class MethodChannelPubstarIo extends PubstarIoPlatform {
   @visibleForTesting
-  final methodChannel = const MethodChannel(
-    Constance.methodChannelName,
-  );
+  final methodChannel = const MethodChannel(Constance.methodChannelName);
 
   @override
   Future<void> init() async {
@@ -75,6 +73,25 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   Future<void> loadAndShowAd(adId) async {
     try {
       await methodChannel.invokeMethod('loadAndShowAd', {'adId': adId});
+    } on PlatformException catch (e) {
+      throw PubstarIoException(
+        errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
+        message: e.message,
+        details: e.details,
+      );
+    }
+  }
+
+  @override
+  Future<void> loadAndShowAdWithViewId({
+    required String adId,
+    required int viewId,
+  }) async {
+    try {
+      await methodChannel.invokeMethod('loadAndShowAdWithViewId', {
+        'adId': adId,
+        'viewId': viewId,
+      });
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
