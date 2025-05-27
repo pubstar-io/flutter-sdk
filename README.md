@@ -43,7 +43,7 @@ Then run:
 
 ### Android
 
-# 1. Configure Maven Repositories
+### 1. Configure Maven Repositories
 Open your project-level build.gradle or settings.gradle and add:
 ```bash
 repositories {
@@ -52,7 +52,7 @@ repositories {
 }
 ```
 
-# 2. Add Pubstar Key to AndroidManifest.
+### 2. Add Pubstar Key to AndroidManifest.
 Open `android/app/src/main/AndroidManifest.xml` and add inside `<application>`:
 
 ```bash
@@ -69,6 +69,10 @@ No additional setup required (plugin will handle integration automatically).
 ## Usage
 
 ### Initialize the SDK
+Initializes the Pubstar IO Ads SDK.
+
+Must be called **once** before loading or showing any ad.
+
 ```
 import 'package:pubstar_io/pubstar_io.dart';
 
@@ -80,35 +84,55 @@ void main() async {
 ```
 
 ### Load & Show an Ad
+
+Loads an ad with the given `ad_id`.
+
 ```
 await PubstarIo.instance.loadAd('your_ad_id');
 await PubstarIo.instance.showAd(adId: 'your_ad_id');
 ```
 
 ### Show Ad in a Native View (Recommended)
+
+A Flutter widget for displaying a native ad view using Pubstar IO plugin.
+
+#### Usage notes:
+- You must call `PubstarIo.instance.init()` before using this widget.
+- The `ad_id` parameter must be a valid ad unit ID from your ad provider.
+- Place this widget inside your widget tree where you want the ad to appear.
+- Handles lifecycle and automatically calls `showAdWithViewId`.
+
 ```
+/// Only show ad when the view is loaded.
+///
+/// You must call `PubstarIo.instance.loadAd` before using this.
 PubstarAdView(adId: 'your_ad_id');
+
+/// Load ad first, then show when ready.
+PubstarAdView(adId: 'your_ad_id', mode: PubstarAdViewMode.loadAndShow)
 ```
 
 ### Listen to Ad Events
+Listen all possible ad events emitted by the Pubstar IO Ads plugin.
+
 ```
 import 'package:pubstar_io/pubstar_io.dart';
 
 PubstarAdEventStream.stream.listen((event) {
   switch (event) {
-    case AdLoaded():
+    case AdLoaded(): // Event emitted when an ad is successfully loaded and ready to be shown.
       print('Ad loaded: ${event.adId}');
       break;
-    case AdShowed():
+    case AdShowed(): // Event emitted when an ad is successfully shown.
       print('Ad shown: ${event.adId}');
       break;
-    case AdHide():
+    case AdHide(): // Event emitted when an ad is hidden, dismissed, or closed.
       print('Ad closed: ${event.adId}');
       break;
-    case AdError():
+    case AdError(): // Event emitted when there is an error loading or showing an ad.
       print('Ad error: ${event.adId}, ${event.error}');
       break;
-    case UnknownEvent():
+    case UnknownEvent(): // Event emitted when an unknown or unhandled event type is received from native.
       print('Unknown event received');
       break;
   }
@@ -117,14 +141,14 @@ PubstarAdEventStream.stream.listen((event) {
 
 ## API Reference
 Check the main exported classes:
-    - PubstarIo (singleton for core ad operations)
+- PubstarIo (singleton for core ad operations)
 
-    - PubstarAdView (Flutter widget for ad views)
+- PubstarAdView (Flutter widget for ad views)
 
-    - PubstarAdEventStream (ad event listener)
+- PubstarAdEventStream (ad event listener)
 
-    - ErrorCode (enum for error handling)
+- ErrorCode (enum for error handling)
 
 ## Support
-    - Email: developer@tqcsolution.com
-    - Raise an issue on GitHub for bugs or feature requests.
+- Email: developer@tqcsolution.com
+- Raise an issue on GitHub for bugs or feature requests.

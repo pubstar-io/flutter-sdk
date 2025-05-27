@@ -27,6 +27,7 @@ class PubstarAdView extends StatelessWidget {
   /// Example usage:
   /// ```dart
   /// PubstarAdView(adId: 'your_ad_id')
+  /// PubstarAdView(adId: 'your_ad_id', mode: PubstarAdViewMode.loadAndShow)
   /// ```
   ///
   /// __Usage notes:__
