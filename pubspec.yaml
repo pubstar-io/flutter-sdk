@@ -1,7 +1,8 @@
 name: pubstar_io
 description: "PubStar Flutter Mobile AD SDK"
 version: 1.1.8
-homepage:
+homepage: https://github.com/pubstar-io/flutter-sdk
+repository: https://github.com/pubstar-io/flutter-sdk
 
 environment:
   sdk: ^3.7.2
