@@ -28,9 +28,8 @@ class Controller {
   Future<void> showAd(String adId) async {
     try {
       await PubstarIo.instance.showAd(adId: adId);
-      print("showAd success");
     } catch (e) {
-      print("Controller showAd error: $e");
+      print("Controller showAd error: ${e.toString()}");
     }
   }
 }

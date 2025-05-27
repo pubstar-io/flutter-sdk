@@ -92,9 +92,11 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
     fun loadAndShowAd(
         adId: String,
         view: ViewGroup? = null,
+        onAdLoaderError: (ErrorCode) -> Unit,
+        onAdLoaded: () -> Unit,
         onAdHide: () -> Unit,
         onAdShowed: () -> Unit,
-        onError: (ErrorCode) -> Unit,
+        onAdShowedError: (ErrorCode) -> Unit,
     ) {
         pubStarAdController.loadAndShow(
             mContext,
@@ -102,11 +104,11 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             view,
             object : AdLoaderListener {
                 override fun onError(code: ErrorCode) {
-                    onError(code)
+                    onAdLoaderError(code)
                 }
 
                 override fun onLoaded() {
-                    Log.d("loadAndShowAd", "onLoaded ")
+                    onAdLoaded()
                 }
             },
             object : AdShowedListener {
@@ -119,7 +121,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 }
 
                 override fun onError(code: ErrorCode) {
-                    onError(code)
+                    onAdShowedError(code)
                 }
             }
         )

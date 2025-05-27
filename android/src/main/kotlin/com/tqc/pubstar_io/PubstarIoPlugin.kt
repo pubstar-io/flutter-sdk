@@ -27,7 +27,6 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "pubstar_io")
     channel.setMethodCallHandler(this)
 
-
       eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, "pubstar_io_event")
       eventChannel.setStreamHandler(object : EventChannel.StreamHandler {
           override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
@@ -160,7 +159,6 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
         }
         "loadAndShowAd" -> {
             val adId = call.argument<String>("adId")
-            val viewId = call.argument<Int?>("viewId")
 
             if (adId !is String) {
                 result.error("loadAd", "Typeof adId is not a String", null)
@@ -172,30 +170,26 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 return
             }
 
-            var adView: ViewGroup? = null
-            if (viewId != null) {
-                val view = PubstarAdViewRegistry.views[viewId]
-
-                if (view == null) {
-                    Log.e("PubstarIoPlugin", "showAdWithViewId: AdView not found", null)
-                    result.error("NO_VIEW", "AdView not found", null)
-                    return
-                }
-
-                adView = view
-            }
-
             pubstarAdManagerWrapper.loadAndShowAd(
                 adId,
-                adView,
+                null,
+                onAdLoaderError = { error ->
+                    Log.e("PubstarIoPlugin", "onAdLoaderError error: $error")
+                    sendAdEvent("loadAndShowAd_onAdLoaderError", mapOf("adId" to adId, "error" to error.name))
+                    result.error(error.name, "onAdLoaderError", null)
+                },
+                onAdLoaded = {
+                    sendAdEvent("loadAndShowAd_onAdLoaded", mapOf("adId" to adId))
+                },
                 onAdHide = {
-                    result.success("hide")
+                    sendAdEvent("loadAndShowAd_onAdHide", mapOf("adId" to adId))
                 },
                 onAdShowed = {
-                    result.success("showed")
+                    sendAdEvent("loadAndShowAd_onAdShowed", mapOf("adId" to adId))
                 },
-                onError = { errorCode ->
-                    Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
+                onAdShowedError = { errorCode ->
+                    Log.e("PubstarIoPlugin", "onAdShowedError error: $errorCode")
+                    sendAdEvent("loadAndShowAd_onAdShowedError", mapOf("adId" to adId, "error" to errorCode.name))
                     result.error(errorCode.name, "showAd", null)
                 }
             )
