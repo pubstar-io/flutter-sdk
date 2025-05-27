@@ -43,7 +43,7 @@ Then run:
 
 ### Android
 
-### 1. Configure Maven Repositories
+#### 1. Configure Maven Repositories
 Open your project-level build.gradle or settings.gradle and add:
 ```bash
 repositories {
@@ -52,7 +52,7 @@ repositories {
 }
 ```
 
-### 2. Add Pubstar Key to AndroidManifest.
+#### 2. Add Pubstar Key to AndroidManifest.
 Open `android/app/src/main/AndroidManifest.xml` and add inside `<application>`:
 
 ```bash
