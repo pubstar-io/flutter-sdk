@@ -79,10 +79,7 @@ class _MyAppState extends State<MyApp> {
                     child: SizedBox(
                       width: double.infinity,
                       height: 100,
-                      child: PubstarAdView(
-                        adId: AdIdExample.nativeId,
-                        mode: PubstarAdViewMode.loadAndShow,
-                      ),
+                      child: PubstarAdView(adId: AdIdExample.nativeId),
                     ),
                   )
                   : buildPlaceholder(),
@@ -95,10 +92,7 @@ class _MyAppState extends State<MyApp> {
                     child: SizedBox(
                       width: double.infinity,
                       height: 200,
-                      child: PubstarAdView(
-                        adId: AdIdExample.videoId,
-                        mode: PubstarAdViewMode.loadAndShow,
-                      ),
+                      child: PubstarAdView(adId: AdIdExample.videoId),
                     ),
                   )
                   : buildPlaceholder(),
@@ -117,7 +111,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.loadAndShowAd(AdIdExample.openId);
+                  widget.controller.showAd(AdIdExample.openId);
                 },
                 child: const Text('Show Open Ad'),
               ),
@@ -125,7 +119,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.loadAndShowAd(AdIdExample.rewardedId);
+                  widget.controller.showAd(AdIdExample.rewardedId);
                 },
                 child: const Text('Show Rewarded Ad'),
               ),
