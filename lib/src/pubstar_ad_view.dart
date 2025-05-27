@@ -47,11 +47,12 @@ class PubstarAdView extends StatelessWidget {
   final String adId;
 
   /// The mode for displaying the ad in this view.
-  /// 
+  ///
   /// - [PubstarAdViewMode.onlyShow]: Only show the ad when the view is loaded.
   /// - [PubstarAdViewMode.loadAndShow]: Load the ad first, then show it when ready.
   final PubstarAdViewMode mode;
 
+  @override
   Widget build(BuildContext context) {
     const String viewType = Constance.viewType;
 

@@ -1,4 +1,4 @@
-library pubstar_io;
+library;
 
 export 'src/pubstar_io_core.dart';
 export 'src/pubstar_ad_view.dart';
