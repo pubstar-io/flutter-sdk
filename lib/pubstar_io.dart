@@ -37,7 +37,17 @@ class PubstarIo {
     required String adId,
     required int viewId,
   }) async {
-    await PubstarIoPlatform.instance.loadAndShowAd(adId: adId, viewId: viewId);
+    await PubstarIoPlatform.instance.loadAndShowAd(adId);
+  }
+
+  Future<void> loadAndShowAdViewId({
+    required String adId,
+    required int viewId,
+  }) async {
+    await PubstarIoPlatform.instance.loadAndShowAdViewId(
+      adId: adId,
+      viewId: viewId,
+    );
   }
 }
 

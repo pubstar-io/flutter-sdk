@@ -157,20 +157,15 @@ void main() {
       'loadAndShowAd method should expect adId and viewId arguments',
       () async {
         const testAdId = 'ad_example_id';
-        const viewId = 31;
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'loadAndShowAd');
-              expect(methodCall.arguments, {
-                'adId': testAdId,
-                'viewId': viewId,
-              });
+              expect(methodCall.arguments, {'adId': testAdId});
               return null;
             });
 
         expect(
-          () async =>
-              await platform.loadAndShowAd(adId: testAdId, viewId: viewId),
+          () async => await platform.loadAndShowAd(testAdId),
           returnsNormally,
         );
       },
@@ -190,8 +185,7 @@ void main() {
             });
 
         expect(
-          () async =>
-              await platform.loadAndShowAd(adId: testAdId, viewId: viewId),
+          () async => await platform.loadAndShowAd(testAdId),
           throwsA(isA<PubstarIoException>()),
         );
       },

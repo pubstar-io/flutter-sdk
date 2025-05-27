@@ -34,8 +34,17 @@ class MockPubstarIoPlatform
   }
 
   @override
-  Future<String?> loadAndShowAd({required String adId, required int viewId}) {
+  Future<void> loadAndShowAd(String adId) {
     // TODO: implement loadAndShowAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> loadAndShowAdViewId({
+    required String adId,
+    required int viewId,
+  }) {
+    // TODO: implement loadAndShowAdViewId
     throw UnimplementedError();
   }
 }

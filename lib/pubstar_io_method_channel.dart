@@ -72,15 +72,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<void> loadAndShowAd({
-    required String adId,
-    required int viewId,
-  }) async {
+  Future<void> loadAndShowAd(adId) async {
     try {
-      await methodChannel.invokeMethod('loadAndShowAd', {
-        'adId': adId,
-        "viewId": viewId,
-      });
+      await methodChannel.invokeMethod('loadAndShowAd', {'adId': adId});
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
