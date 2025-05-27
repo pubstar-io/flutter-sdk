@@ -90,24 +90,6 @@ class PubstarIo {
   ///
   /// Example:
   /// ```dart
-  /// await PubstarIo.instance.loadAndShowAdViewId(adId: 'your_ad_id', viewId: 123);
-  /// ```
-  Future<void> loadAndShowAdViewId({
-    required String adId,
-    required int viewId,
-  }) async {
-    await PubstarIoPlatform.instance.loadAndShowAdViewId(
-      adId: adId,
-      viewId: viewId,
-    );
-  }
-
-  /// Loads and shows an ad using [adId] and [viewId].
-  ///
-  /// Typically used with [ViewGroup] widget.
-  ///
-  /// Example:
-  /// ```dart
   /// await PubstarIo.instance.loadAndShowAdWithViewId(adId: 'your_ad_id', viewId: 123);
   /// ```
   Future<void> loadAndShowAdWithViewId({

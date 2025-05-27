@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:pubstar_io/src/pubstar_io_exception.dart';
 
@@ -7,7 +8,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MethodChannelPubstarIo platform;
-  const MethodChannel channel = MethodChannel('pubstar_io');
+  const MethodChannel channel = MethodChannel(Constance.methodChannelName);
 
   setUp(() {
     platform = MethodChannelPubstarIo();
@@ -113,7 +114,7 @@ void main() {
       'showAdWithViewId method should expect adId and viewId arguments',
       () async {
         const testAdId = 'ad_example_id';
-        const viewId = 77;
+        const viewId = 83;
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'showAdWithViewId');
@@ -136,7 +137,7 @@ void main() {
       'showAdWithViewId method should throw PubstarIoException when PlatformException',
       () async {
         const testAdId = 'ad_example_id';
-        const viewId = 77;
+        const viewId = 83;
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               throw PlatformException(
@@ -175,7 +176,6 @@ void main() {
       'loadAndShowAd method should throw PubstarIoException when PlatformException',
       () async {
         const testAdId = 'ad_example_id';
-        const viewId = 77;
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               throw PlatformException(
@@ -186,6 +186,54 @@ void main() {
 
         expect(
           () async => await platform.loadAndShowAd(testAdId),
+          throwsA(isA<PubstarIoException>()),
+        );
+      },
+    );
+
+    test(
+      'loadAndShowAdWithViewId method should expect adId and viewId arguments',
+      () async {
+        const testAdId = 'ad_example_id';
+        const viewId = 83;
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+              expect(methodCall.method, 'loadAndShowAdWithViewId');
+              expect(methodCall.arguments, {
+                'adId': testAdId,
+                'viewId': viewId,
+              });
+              return null;
+            });
+
+        expect(
+          () async => await platform.loadAndShowAdWithViewId(
+            adId: testAdId,
+            viewId: viewId,
+          ),
+          returnsNormally,
+        );
+      },
+    );
+
+    test(
+      'loadAndShowAdWithViewId method should throw PubstarIoException when PlatformException',
+      () async {
+        const testAdId = 'ad_example_id';
+        const viewId = 83;
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+              throw PlatformException(
+                code: 'SHOW_ERROR',
+                message: 'Show error',
+              );
+            });
+
+        expect(
+          () async => await platform.loadAndShowAdWithViewId(
+            adId: testAdId,
+            viewId: viewId,
+          ),
           throwsA(isA<PubstarIoException>()),
         );
       },
