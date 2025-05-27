@@ -1,6 +1,6 @@
 name: pubstar_io
-description: "A new Flutter plugin project."
-version: 0.0.1
+description: "PubStar Flutter Mobile AD SDK"
+version: 1.1.8
 homepage:
 
 environment:
