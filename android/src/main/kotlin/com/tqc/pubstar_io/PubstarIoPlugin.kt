@@ -194,6 +194,53 @@ class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
                 }
             )
         }
+        "loadAndShowAdWithViewId" -> {
+            val adId = call.argument<String>("adId")
+            val viewId = call.argument<Int>("viewId")
+
+            if (adId !is String) {
+                result.error("loadAd", "Typeof adId is not a String", null)
+                return
+            }
+
+            if (adId.trim().isEmpty()) {
+                result.error("loadAd", "AdId is empty String", null)
+                return
+            }
+
+            val adView = PubstarAdViewRegistry.views[viewId]
+
+            if (adView == null) {
+                Log.e("PubstarIoPlugin", "loadAndShowAdWithViewId: AdView not found", null)
+                result.error("NO_VIEW", "AdView not found", null)
+                return
+            }
+
+
+            pubstarAdManagerWrapper.loadAndShowAd(
+                adId,
+                adView,
+                onAdLoaderError = { error ->
+                    Log.e("PubstarIoPlugin", "onAdLoaderError error: $error")
+                    sendAdEvent("loadAndShowAdWithViewId_onAdLoaderError", mapOf("adId" to adId, "error" to error.name))
+                    result.error(error.name, "onAdLoaderError", null)
+                },
+                onAdLoaded = {
+                    sendAdEvent("loadAndShowAdWithViewId_onAdLoaded", mapOf("adId" to adId))
+                },
+                onAdHide = {
+                    sendAdEvent("loadAndShowAdWithViewId_onAdHide", mapOf("adId" to adId))
+                },
+                onAdShowed = {
+                    sendAdEvent("loadAndShowAdWithViewId_onAdShowed", mapOf("adId" to adId))
+                },
+                onAdShowedError = { errorCode ->
+                    Log.e("PubstarIoPlugin", "onAdShowedError error: $errorCode")
+                    sendAdEvent("loadAndShowAdWithViewId_onAdShowedError", mapOf("adId" to adId, "error" to errorCode.name))
+                    result.error(errorCode.name, "showAd", null)
+                }
+            )
+        }
         else -> {
           result.notImplemented()
         }
