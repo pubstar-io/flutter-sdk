@@ -1,11 +1,44 @@
 import 'package:flutter/services.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 
+/// Defines all possible ad events emitted by the Pubstar IO Ads plugin.
+///
+/// The [PubstarAdEvent] sealed class (and its subclasses) represent
+/// structured ad event types received from the native layer via [PubstarAdEventStream].
+///
+/// Usage example:
+/// ```dart
+/// PubstarAdEventStream.stream.listen((event) {
+///   switch (event) {
+///     case AdLoaded():
+///       // Handle ad loaded
+///       break;
+///     case AdShowed():
+///       // Handle ad shown
+///       break;
+///     case AdHide():
+///       // Handle ad hidden/closed
+///       break;
+///     case AdError():
+///       // Handle ad error
+///       break;
+///     case UnknownEvent():
+///       // Handle unknown/custom event
+///       break;
+///   }
+/// });
+/// ```
 sealed class PubstarAdEvent {
   final String event;
 
+  /// Constructs a [PubstarAdEvent] with the given [event] type.
   PubstarAdEvent({required this.event});
 
+  /// Factory constructor to parse a [Map] (typically from EventChannel)
+  /// into the appropriate [PubstarAdEvent] subclass.
+  ///
+  /// Supports events: `LOADED`, `SHOWED`, `HIDE`, `ERROR`.
+  /// If event type is unknown, returns [UnknownEvent].
   factory PubstarAdEvent.fromMap(Map map) {
     switch (map['event']) {
       case 'LOADED':
@@ -31,6 +64,9 @@ sealed class PubstarAdEvent {
   }
 }
 
+/// Event emitted when an ad is successfully shown.
+///
+/// Contains the ad unit ID ([adId]) associated with the event.
 class AdShowed extends PubstarAdEvent {
   final String adId;
   AdShowed({required super.event, required this.adId});
@@ -41,6 +77,10 @@ class AdShowed extends PubstarAdEvent {
   }
 }
 
+
+/// Event emitted when an ad is hidden, dismissed, or closed.
+///
+/// Contains the ad unit ID ([adId]) associated with the event.
 class AdHide extends PubstarAdEvent {
   final String adId;
   AdHide({required super.event, required this.adId});
@@ -51,6 +91,10 @@ class AdHide extends PubstarAdEvent {
   }
 }
 
+
+/// Event emitted when an ad is successfully loaded and ready to be shown.
+///
+/// Contains the ad unit ID ([adId]) associated with the event.
 class AdLoaded extends PubstarAdEvent {
   final String adId;
   AdLoaded({required super.event, required this.adId});
@@ -61,6 +105,10 @@ class AdLoaded extends PubstarAdEvent {
   }
 }
 
+
+/// Event emitted when there is an error loading or showing an ad.
+///
+/// Contains the ad unit ID ([adId]) and an error message ([error]).
 class AdError extends PubstarAdEvent {
   final String adId;
   final String error;
@@ -73,6 +121,10 @@ class AdError extends PubstarAdEvent {
   }
 }
 
+
+/// Event emitted when an unknown or unhandled event type is received from native.
+///
+/// Contains the raw [map] of event data.
 class UnknownEvent extends PubstarAdEvent {
   final Map map;
 
@@ -84,6 +136,32 @@ class UnknownEvent extends PubstarAdEvent {
   }
 }
 
+/// Stream for receiving ad events from native code via EventChannel.
+///
+/// Listens to the underlying EventChannel and parses each event as a [PubstarAdEvent].
+///
+/// Example usage:
+/// ```dart
+/// PubstarAdEventStream.stream.listen((event) {
+///   switch (event) {
+///     case AdLoaded():
+///       // Handle ad loaded
+///       break;
+///     case AdShowed():
+///       // Handle ad shown
+///       break;
+///     case AdHide():
+///       // Handle ad hidden/closed
+///       break;
+///     case AdError():
+///       // Handle ad error
+///       break;
+///     case UnknownEvent():
+///       // Handle unknown/custom event
+///       break;
+///   }
+/// });
+/// ```
 class PubstarAdEventStream {
   static final _eventChannel = const EventChannel(Constance.eventChannelName);
 
