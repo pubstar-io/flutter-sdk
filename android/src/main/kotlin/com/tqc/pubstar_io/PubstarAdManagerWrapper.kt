@@ -104,28 +104,23 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             view,
             object : AdLoaderListener {
                 override fun onError(code: ErrorCode) {
-                    Log.d("TAG", "onError: $code")
                     onAdLoaderError(code)
                 }
 
                 override fun onLoaded() {
-                    Log.d("TAG", "onLoaded: ")
                     onAdLoaded()
                 }
             },
             object : AdShowedListener {
                 override fun onAdHide(any: RewardModel?) {
-                    Log.d("TAG", "onAdHide: ")
                     onAdHide()
                 }
 
                 override fun onAdShowed() {
-                    Log.d("TAG", "onAdShowed: ")
                     onAdShowed()
                 }
 
                 override fun onError(code: ErrorCode) {
-                    Log.d("TAG", "onError: $code")
                     onAdShowedError(code)
                 }
             }
