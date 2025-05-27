@@ -77,7 +77,7 @@ Must be called **once** before loading or showing any ad.
 import 'package:pubstar_io/pubstar_io.dart';
 
 void main() async {
-  await PubstarIo.instance.init();  <---
+  await PubstarIo.instance.init();  <--- init Pubstar
 
   runApp(MyApp());
 }
