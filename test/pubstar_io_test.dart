@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pubstar_io/pubstar_io_platform_interface.dart';
-import 'package:pubstar_io/pubstar_io_method_channel.dart';
+import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
+import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class MockPubstarIoPlatform

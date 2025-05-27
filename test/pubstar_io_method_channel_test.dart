@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pubstar_io/pubstar_io_method_channel.dart';
+import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:pubstar_io/src/pubstar_io_exception.dart';
 
 void main() {
