@@ -10,7 +10,7 @@ import 'pubstar_io_platform_interface.dart';
 class MethodChannelPubstarIo extends PubstarIoPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel(
-    MethodChannelName.methodChannelName,
+    Constance.methodChannelName,
   );
 
   @override

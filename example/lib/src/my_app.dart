@@ -47,53 +47,53 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Banner AD'),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: PubstarAdView(adId: AdIdExample.bannerId),
-                    ),
-                  )
-                  : ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(width: double.infinity, height: 100),
-                  ),
-              const SizedBox(height: 10),
+              // Text('Banner AD'),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 100,
+              //         child: PubstarAdView(adId: AdIdExample.bannerId),
+              //       ),
+              //     )
+              //     : ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(width: double.infinity, height: 100),
+              //     ),
+              // const SizedBox(height: 10),
 
-              Text('Native AD'),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: PubstarAdView(adId: AdIdExample.nativeId),
-                    ),
-                  )
-                  : ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(width: double.infinity, height: 100),
-                  ),
-              const SizedBox(height: 10),
+              // Text('Native AD'),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 100,
+              //         child: PubstarAdView(adId: AdIdExample.nativeId),
+              //       ),
+              //     )
+              //     : ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(width: double.infinity, height: 100),
+              //     ),
+              // const SizedBox(height: 10),
 
-              Text('Video AD'),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 200,
-                      child: PubstarAdView(adId: AdIdExample.videoId),
-                    ),
-                  )
-                  : ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(width: double.infinity, height: 200),
-                  ),
-              const SizedBox(height: 10),
+              // Text('Video AD'),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 200,
+              //         child: PubstarAdView(adId: AdIdExample.videoId),
+              //       ),
+              //     )
+              //     : ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(width: double.infinity, height: 200),
+              //     ),
+              // const SizedBox(height: 10),
               Text('AD Example'),
 
               const SizedBox(height: 20),
