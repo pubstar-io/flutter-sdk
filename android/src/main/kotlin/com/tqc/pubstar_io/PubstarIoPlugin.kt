@@ -1,14 +1,20 @@
 package com.tqc.pubstar_io
 
 import android.content.Context
-import android.os.Build
-import android.util.Log
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.pubstar.mobile.ads.base.BannerAdRequest
+import io.pubstar.mobile.ads.base.NativeAdRequest
+import io.pubstar.mobile.ads.model.ErrorCode
+
 
 enum class PubstarAdEvent {
     LOADED,
@@ -17,243 +23,293 @@ enum class PubstarAdEvent {
     ERROR
 }
 
-/** PubstarIoPlugin */
-class PubstarIoPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
-  private lateinit var mContext: Context
+class PubstarIoPlugin : FlutterPlugin, MethodCallHandler {
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    private lateinit var channel: MethodChannel
+    private lateinit var mContext: Context
     private lateinit var eventChannel: EventChannel
-    private var eventSink: EventChannel.EventSink? = null
 
-  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    mContext = flutterPluginBinding.applicationContext
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "pubstar_io")
-    channel.setMethodCallHandler(this)
+    private val methodChanelName = "pubstar_io"
+    private val eventChanelName = "pubstar_io_event"
+    private val nativeViewId = "pubstar_ad_view"
 
-      eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, "pubstar_io_event")
-      eventChannel.setStreamHandler(object : EventChannel.StreamHandler {
-          override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-              eventSink = events
-          }
-          override fun onCancel(arguments: Any?) {
-              eventSink = null
-          }
-      })
-
-
-      flutterPluginBinding
-        .platformViewRegistry
-        .registerViewFactory("pubstar_ad_view", NativeViewFactory())
-  }
-
-    private fun sendAdEvent(event: PubstarAdEvent, data: Map<String, Any>? = null) {
-        val map = mutableMapOf<String, Any>("event" to event.name)
-        if (data != null) map.putAll(data)
-        eventSink?.success(map)
+    private fun registerMethodChanel(messenger: BinaryMessenger) {
+        channel = MethodChannel(messenger, methodChanelName)
+        channel.setMethodCallHandler(this)
     }
 
+    private fun registerEventChanel(messenger: BinaryMessenger) {
+        eventChannel = EventChannel(messenger, eventChanelName)
+        eventChannel.setStreamHandler(PubstarEventStreamHandler.shared)
+    }
+
+    private fun registerNativeView(flutterPluginBinding: FlutterPluginBinding) {
+        flutterPluginBinding
+            .platformViewRegistry
+            .registerViewFactory(nativeViewId, NativeViewFactory())
+
+    }
+
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPluginBinding) {
+        mContext = flutterPluginBinding.applicationContext
+
+        registerMethodChanel(flutterPluginBinding.binaryMessenger)
+
+        registerEventChanel(flutterPluginBinding.binaryMessenger)
+
+        registerNativeView(flutterPluginBinding)
+    }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-    val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
+        val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
 
-    when (call.method) {
-        "getPlatformVersion" -> {
-          result.success("Android ${Build.VERSION.RELEASE}")
+        fun onErrorCallback(adId: String, message: String = "Pubstar is error"): (ErrorCode) -> Unit {
+            return { errorCode ->
+                PubstarEventStreamHandler.shared
+                    .sendAdEvent(
+                        PubstarAdEvent.ERROR,
+                        adId,
+                        mapOf("error" to errorCode.name)
+                    )
+
+                result.error(
+                    errorCode.name,
+                    message,
+                    mapOf(
+                        "errorCode" to errorCode.name,
+                        "errorRawValue" to errorCode.code.toString()
+                    )
+                )
+            }
         }
-        "init" -> {
-          pubstarAdManagerWrapper.init(
-              onDone = {
-                  result.success(true)
-              },
-              onError = { errorCode ->
-                  result.error(errorCode.name, "init", null)
-              }
-          )
+
+        fun onAdHideCallback(adId: String): () -> Unit {
+            return {
+                PubstarEventStreamHandler.shared
+                    .sendAdEvent(
+                        PubstarAdEvent.HIDE,
+                        adId
+                    )
+            }
         }
-        "loadAd" -> {
-            val adId = call.argument<String>("adId")
 
-            if (adId !is String) {
-                result.error("loadAd", "Typeof adId is not a String", null)
-                return
+        fun onAdShowedCallback(adId: String): () -> Unit {
+            return {
+                PubstarEventStreamHandler.shared
+                    .sendAdEvent(
+                        PubstarAdEvent.SHOWED,
+                        adId
+                    )
             }
-
-            if (adId.trim().isEmpty()) {
-                result.error("loadAd", "AdId is empty String", null)
-                return
-            }
-
-            pubstarAdManagerWrapper.loadAd(
-                adId,
-                onLoaded = {
-                    result.success(true)
-                },
-                onError = { errorCode ->
-                    result.error(errorCode.name, "loadAd", null)
-                }
-            )
         }
-        "showAd" -> {
-            val adId = call.argument<String>("adId")
 
-            if (adId !is String) {
-                result.error("loadAd", "Typeof adId is not a String", null)
-                return
+        fun onAdLoadedCallback(adId: String): () -> Unit {
+            return {
+                PubstarEventStreamHandler.shared
+                    .sendAdEvent(
+                        PubstarAdEvent.LOADED,
+                        adId,
+                    )
             }
-
-            if (adId.trim().isEmpty()) {
-                result.error("loadAd", "AdId is empty String", null)
-                return
-            }
-
-            pubstarAdManagerWrapper.showAd(
-                adId,
-                null,
-                onAdHide = {
-                    sendAdEvent(PubstarAdEvent.HIDE, mapOf("adId" to adId))
-                },
-                onAdShowed = {
-                    sendAdEvent(PubstarAdEvent.SHOWED, mapOf("adId" to adId))
-                },
-                onError = { errorCode ->
-                    Log.e("PubstarIoPlugin", "showAd error onMethodCall: $errorCode")
-                    sendAdEvent(PubstarAdEvent.ERROR, mapOf("adId" to adId, "error" to errorCode.name))
-                    result.error(errorCode.name, "showAd", null)
-                }
-            )
         }
-        "showAdWithViewId" -> {
-            val adId = call.argument<String>("adId")
-            val viewId = call.argument<Int>("viewId")
 
-            if (adId !is String) {
-                result.error("loadAd", "Typeof adId is not a String", null)
-                return
+        when (call.method) {
+            "init" -> {
+                pubstarAdManagerWrapper.init(
+                    onDone = {
+                        result.success(true)
+                    },
+                    onError = onErrorCallback("","Pubstar initialization failed.")
+                )
             }
 
-            if (adId.trim().isEmpty()) {
-                result.error("loadAd", "AdId is empty String", null)
-                return
+            "loadAd" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+
+                pubstarAdManagerWrapper.loadAd(
+                    adId,
+                    onLoaded = {
+                        result.success(true)
+                    },
+                    onError = onErrorCallback(adId,"loadAd is failed.")
+                )
             }
 
-            val adView = PubstarAdViewRegistry.views[viewId]
+            "showAd" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
 
-            if (adView == null) {
-                Log.e("PubstarIoPlugin", "showAdWithViewId: AdView not found", null)
-                result.error("NO_VIEW", "AdView not found", null)
-                return
+                pubstarAdManagerWrapper.showAd(
+                    adId,
+                    null,
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onError = onErrorCallback(adId,"showAd is failed.")
+                )
             }
 
-            pubstarAdManagerWrapper.showAd(
-                adId,
-                adView,
-                onAdHide = {
-                    sendAdEvent(PubstarAdEvent.HIDE, mapOf("adId" to adId))
-                },
-                onAdShowed = {
-                    sendAdEvent(PubstarAdEvent.SHOWED, mapOf("adId" to adId))
-                },
-                onError = { errorCode ->
-                    Log.e("PubstarIoPlugin", "showAdWithViewId error onMethodCall: $errorCode")
-                    sendAdEvent(PubstarAdEvent.ERROR, mapOf("adId" to adId, "error" to errorCode.name))
-                    result.error(errorCode.name, "showAd", null)
-                }
-            )
-        }
-        "loadAndShowAd" -> {
-            val adId = call.argument<String>("adId")
+            "showAdWithViewId" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
 
-            if (adId !is String) {
-                result.error("loadAd", "Typeof adId is not a String", null)
-                return
+                pubstarAdManagerWrapper.showAd(
+                    adId,
+                    adView,
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onError = onErrorCallback(adId,"onShowed is failed.")
+                )
             }
 
-            if (adId.trim().isEmpty()) {
-                result.error("loadAd", "AdId is empty String", null)
-                return
+            "loadAndShowAd" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+
+                pubstarAdManagerWrapper.loadAndShowAd(
+                    adId,
+                    null,
+                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
+                    onAdLoaded = onAdLoadedCallback(adId),
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                )
             }
 
-            pubstarAdManagerWrapper.loadAndShowAd(
-                adId,
-                null,
-                onAdLoaderError = { error ->
-                    Log.e("PubstarIoPlugin", "onAdLoaderError error: $error")
-                    sendAdEvent(PubstarAdEvent.ERROR, mapOf("adId" to adId, "error" to error.name))
-                    result.error(error.name, "onAdLoaderError", null)
-                },
-                onAdLoaded = {
-                    sendAdEvent(PubstarAdEvent.LOADED, mapOf("adId" to adId))
-                },
-                onAdHide = {
-                    sendAdEvent(PubstarAdEvent.HIDE, mapOf("adId" to adId))
-                },
-                onAdShowed = {
-                    sendAdEvent(PubstarAdEvent.SHOWED, mapOf("adId" to adId))
-                },
-                onAdShowedError = { errorCode ->
-                    Log.e("PubstarIoPlugin", "onAdShowedError error: $errorCode")
-                    sendAdEvent(PubstarAdEvent.ERROR, mapOf("adId" to adId, "error" to errorCode.name))
-                    result.error(errorCode.name, "showAd", null)
-                }
-            )
-        }
-        "loadAndShowAdWithViewId" -> {
-            val adId = call.argument<String>("adId")
-            val viewId = call.argument<Int>("viewId")
+            "loadAndShowAdWithViewId" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
 
-            if (adId !is String) {
-                result.error("loadAd", "Typeof adId is not a String", null)
-                return
+                pubstarAdManagerWrapper.loadAndShowAd(
+                    adId,
+                    adView,
+                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
+                    onAdLoaded = onAdLoadedCallback(adId),
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                )
             }
 
-            if (adId.trim().isEmpty()) {
-                result.error("loadAd", "AdId is empty String", null)
-                return
+            "loadAndShowBannerAd" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
+                val tag = Validate.tag(call.argument<String>("tag"), result) ?: return
+                val size = extractBannerSize(tag)
+                val isAllowLoadNext = Validate.isAllowLoadNext(call.argument<Boolean>("isAllowLoadNext"))
+
+                pubstarAdManagerWrapper.loadAndShowBannerAd(
+                    adId,
+                    adView,
+                    size,
+                    isAllowLoadNext,
+                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
+                    onAdLoaded = onAdLoadedCallback(adId),
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                )
             }
 
-            val adView = PubstarAdViewRegistry.views[viewId]
+            "loadAndShowNativeAd" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
+                val typeSize = Validate.typeSize(call.argument<String>("typeSize"), result) ?: return
+                val size = extractNativeSize(typeSize)
+                val isAllowLoadNext = Validate.isAllowLoadNext(call.argument<Boolean>("isAllowLoadNext"))
 
-            if (adView == null) {
-                Log.e("PubstarIoPlugin", "loadAndShowAdWithViewId: AdView not found", null)
-                result.error("NO_VIEW", "AdView not found", null)
-                return
+                pubstarAdManagerWrapper.loadAndShowNativeAd(
+                    adId,
+                    adView,
+                    size,
+                    isAllowLoadNext,
+                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
+                    onAdLoaded = onAdLoadedCallback(adId),
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                )
             }
 
+            "loadAndShowVideoAd" -> {
+                val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
+                val media = Validate.media(call.argument<String>("media"), result) ?: return
 
-            pubstarAdManagerWrapper.loadAndShowAd(
-                adId,
-                adView,
-                onAdLoaderError = { error ->
-                    Log.e("PubstarIoPlugin", "onAdLoaderError error: $error")
-                    sendAdEvent(PubstarAdEvent.ERROR, mapOf("adId" to adId, "error" to error.name))
-                    result.error(error.name, "onAdLoaderError", null)
-                },
-                onAdLoaded = {
-                    sendAdEvent(PubstarAdEvent.LOADED, mapOf("adId" to adId))
-                },
-                onAdHide = {
-                    sendAdEvent(PubstarAdEvent.HIDE, mapOf("adId" to adId))
-                },
-                onAdShowed = {
-                    sendAdEvent(PubstarAdEvent.SHOWED, mapOf("adId" to adId))
-                },
-                onAdShowedError = { errorCode ->
-                    Log.e("PubstarIoPlugin", "onAdShowedError error: $errorCode")
-                    sendAdEvent(PubstarAdEvent.ERROR, mapOf("adId" to adId, "error" to errorCode.name))
-                    result.error(errorCode.name, "showAd", null)
-                }
-            )
-        }
-        else -> {
-          result.notImplemented()
+                val mediaPlayer = MediaPlayer()
+                mediaPlayer.setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MOVIE)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                mediaPlayer.setDataSource(media)
+
+                pubstarAdManagerWrapper.loadAndShowVideoAd(
+                    adId = adId,
+                    view = adView,
+                    media = mediaPlayer,
+                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
+                    onAdLoaded = onAdLoadedCallback(adId),
+                    onAdHide = onAdHideCallback(adId),
+                    onAdShowed = onAdShowedCallback(adId),
+                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                )
+            }
+
+            else -> {
+                result.notImplemented()
+            }
         }
     }
-  }
 
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
+    override fun onDetachedFromEngine(binding: FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
+
+    private fun extractNativeSize(size: String): NativeAdRequest.Type {
+        return when (size) {
+            "small" -> {
+                NativeAdRequest.Type.Small
+            }
+
+            "medium" -> {
+                NativeAdRequest.Type.Medium
+            }
+
+            "big" -> {
+                NativeAdRequest.Type.Big
+            }
+
+            else -> {
+                NativeAdRequest.Type.Small
+            }
+        }
+    }
+
+    private fun extractBannerSize(tag: String): BannerAdRequest.AdTag {
+        return when (tag) {
+            "small" -> {
+                BannerAdRequest.AdTag.Small
+            }
+
+            "medium" -> {
+                BannerAdRequest.AdTag.Medium
+            }
+
+            "big" -> {
+                BannerAdRequest.AdTag.Big
+            }
+
+            "collapsible" -> {
+                BannerAdRequest.AdTag.Collapsible
+            }
+
+            else -> {
+                BannerAdRequest.AdTag.Small
+            }
+        }
+    }
 }
+

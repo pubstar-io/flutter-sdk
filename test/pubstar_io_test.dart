@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pubstar_io/src/pubstar_ad_view.dart';
 import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
 import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -45,6 +46,38 @@ class MockPubstarIoPlatform
     required int viewId,
   }) {
     // TODO: implement loadAndShowAdWithViewId
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> loadAndShowVideoAd({
+    required String adId,
+    required int viewId,
+    required String media,
+  }) {
+    // TODO: implement loadAndShowVideoAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> loadAndShowBannerAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize tag,
+    required bool isAllowLoadNext,
+  }) {
+    // TODO: implement loadAndShowBannerAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> loadAndShowNativeAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize typeSize,
+    required bool isAllowLoadNext,
+  }) {
+    // TODO: implement loadAndShowNativeAd
     throw UnimplementedError();
   }
 }

@@ -1,9 +1,8 @@
-# pubstar_io
+# Pubstar
 
-[![pub.dev](https://img.shields.io/pub/v/pubstar_io.svg)](https://pub.dev/packages/pubstar_io)
+[![pub.dev](https://img.shields.io/pub/v/pubstar.svg)](https://pub.dev/packages/pubstar_io)
 
-A Flutter plugin to display ads on Android and iOS devices using the [Pubstar Ads API](https://pubstar.io/).  
-Supports embedding native ad views, loading/showing ads by ad ID, and listening to ad events for full control.
+PubStar Flutter Mobile AD SDK is a comprehensive software development kit designed to empower developers with robust tools and functionalities for integrating advertisements seamlessly into Flutter mobile applications. Whether you're a seasoned developer or a newcomer to the world of app monetization, our SDK offers a user-friendly solution to maximize revenue streams while ensuring a non-intrusive and engaging user experience.
 
 ---
 
@@ -11,7 +10,7 @@ Supports embedding native ad views, loading/showing ads by ad ID, and listening 
 
 - ✅ **Display native ads** on Android & iOS with Pubstar API.
 - ✅ Full-featured API: load, show, and handle ad events.
-- ✅ Easy-to-use Flutter widget: `PubstarAdView`.
+- ✅ Easy-to-use Flutter widget: `PubstarAdView` and `PubstarVideoAdView`.
 - ✅ Structured ad event stream for type-safe event handling.
 
 ---
@@ -32,12 +31,14 @@ Add the dependency in your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  pubstar_io: ^1.1.8
+  pubstar: ^1.1.8
 ```
 
 Then run:
 
-`flutter pub get`
+```bash
+flutter pub get
+```
 
 ## Configuration
 
@@ -45,7 +46,7 @@ Then run:
 
 #### 1. Configure Maven Repositories
 Open your project-level build.gradle or settings.gradle and add:
-```bash
+```gradle
 repositories {
   mavenCentral()
   maven { url = uri("https://artifactory.appodeal.com/appodeal") }  <--- add this
@@ -53,17 +54,45 @@ repositories {
 ```
 
 #### 2. Add Pubstar Key to AndroidManifest.
-Open `android/app/src/main/AndroidManifest.xml` and add inside `<application>`:
+Open `AndroidManifest.xml` and add inside `<application>`:
 
 ```bash
 <meta-data
   android:name="io.pubstar.key"
   android:value="pub-app-id-XXXX" />
 ```
-Replace pub-app-id-XXXX with your actual Pubstar App ID.
+Replace pub-app-id-XXXX with your actual [Pubstar App ID](https://pubstar.io/).  
 
 ### iOS
-No additional setup required (plugin will handle integration automatically).
+
+#### 1. Configure Pod.
+1. Navigate to your iOS project directory.
+
+2. Install the dependencies using pod install.
+
+```bash
+pod install
+```
+
+3. Open your project in Xcode with the .xcworkspace file.
+
+#### 2. Update your Info.plist
+
+Update your app's Info.plist file to add two keys:
+
+A GADApplicationIdentifier key with a string value of your AdMob app ID [found in the AdMob UI](https://support.google.com/admob/answer/7356431).
+
+```xml
+<key>GADApplicationIdentifier</key>
+<string>Your AdMob app ID</string>
+<key>NSUserTrackingUsageDescription</key>
+<string>We use your data to show personalized ads and improve your experience.</string>
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+```
 
 
 ## Usage
@@ -73,7 +102,7 @@ Initializes the Pubstar IO Ads SDK.
 
 Must be called **once** before loading or showing any ad.
 
-```
+```dart
 import 'package:pubstar_io/pubstar_io.dart';
 
 void main() async {
@@ -87,9 +116,10 @@ void main() async {
 
 Loads an ad with the given `ad_id`.
 
-```
+```dart
 await PubstarIo.instance.loadAd('your_ad_id');
 await PubstarIo.instance.showAd(adId: 'your_ad_id');
+await PubstarIo.instance.loadAndShow(adId: 'your_ad_id');
 ```
 
 ### Show Ad in a Native View (Recommended)
@@ -101,42 +131,57 @@ A Flutter widget for displaying a native ad view using Pubstar IO plugin.
 - The `ad_id` parameter must be a valid ad unit ID from your ad provider.
 - Place this widget inside your widget tree where you want the ad to appear.
 - Handles lifecycle and automatically calls `showAdWithViewId`.
+- The `type` parameter allows you to specify the ad type (Banner or Video).
+- The `size` parameter allows you to specify the ad size (Small, Medium, Large, Collapsible).
+- The `isAllowLoadNext` parameter allows load to cache after dismiss.
+- The `media` parameter is specify the Video URL.
 
-```
+```dart
 /// Only show ad when the view is loaded.
 ///
-/// You must call `PubstarIo.instance.loadAd` before using this.
+/// You must call PubstarIo.instance.loadAd before using this.
 PubstarAdView(adId: 'your_ad_id');
 
 /// Load ad first, then show when ready.
-PubstarAdView(adId: 'your_ad_id', mode: PubstarAdViewMode.loadAndShow)
+PubstarAdView(
+  adId: 'your_ad_id', 
+  mode: PubstarAdViewMode.loadAndShow,
+  type: PubstarAdType.native,
+  size: PubstarAdSize.small,
+  isAllowLoadNext: true,
+)
+
+/// Load and show a video ad.
+PubstarVideoAdView(
+  adId: AdIdExample.videoId,
+  media:
+      'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+)
 ```
 
 ### Listen to Ad Events
 Listen all possible ad events emitted by the Pubstar IO Ads plugin.
 
-```
-import 'package:pubstar_io/pubstar_io.dart';
+```dart
+class _MyAppState extends State<MyApp> {
+  StreamSubscription? _subscription;
 
-PubstarAdEventStream.stream.listen((event) {
-  switch (event) {
-    case AdLoaded(): // Event emitted when an ad is successfully loaded and ready to be shown.
-      print('Ad loaded: ${event.adId}');
-      break;
-    case AdShowed(): // Event emitted when an ad is successfully shown.
-      print('Ad shown: ${event.adId}');
-      break;
-    case AdHide(): // Event emitted when an ad is hidden, dismissed, or closed.
-      print('Ad closed: ${event.adId}');
-      break;
-    case AdError(): // Event emitted when there is an error loading or showing an ad.
-      print('Ad error: ${event.adId}, ${event.error}');
-      break;
-    case UnknownEvent(): // Event emitted when an unknown or unhandled event type is received from native.
-      print('Unknown event received');
-      break;
+  @override
+  void initState() {
+    super.initState();
+
+    _subscription = PubstarEventService().listen((data) {
+      print('Event from native: $data');
+    });
   }
-});
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+
+    super.dispose();
+  }
+}
 ```
 
 ## API Reference
@@ -145,10 +190,17 @@ Check the main exported classes:
 
 - PubstarAdView (Flutter widget for ad views)
 
-- PubstarAdEventStream (ad event listener)
+- PubstarAdVideo (Flutter widget for ad videos)
 
-- ErrorCode (enum for error handling)
+- PubstarEventService (ad event listener)
 
 ## Support
-- Email: developer@tqcsolution.com
-- Raise an issue on GitHub for bugs or feature requests.
+Email: developer@tqcsolution.com
+
+Raise an issue on GitHub for bugs or feature requests.
+
+## License
+
+Pubstar is released under the [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/).
+
+License agreement is available at [LICENSE](LICENSE).

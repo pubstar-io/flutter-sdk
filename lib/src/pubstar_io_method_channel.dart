@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:pubstar_io/src/error_code.dart';
+import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_exception.dart';
 
@@ -18,8 +18,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
-        message: e.message,
-        details: e.details,
+        message: e.message.toString(),
+        details: e.details.toString(),
       );
     }
   }
@@ -31,8 +31,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
-        message: e.message,
-        details: e.details,
+        message: e.message.toString(),
+        details: e.details.toString(),
       );
     }
   }
@@ -44,8 +44,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
-        message: e.message,
-        details: e.details,
+        message: e.message.toString(),
+        details: e.details.toString(),
       );
     }
   }
@@ -63,8 +63,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
-        message: e.message,
-        details: e.details,
+        message: e.message.toString(),
+        details: e.details.toString(),
       );
     }
   }
@@ -76,8 +76,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
-        message: e.message,
-        details: e.details,
+        message: e.message.toString(),
+        details: e.details.toString(),
       );
     }
   }
@@ -95,8 +95,75 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
-        message: e.message,
-        details: e.details,
+        message: e.message.toString(),
+        details: e.details.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> loadAndShowBannerAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize tag,
+    required bool isAllowLoadNext,
+  }) async {
+    try {
+      await methodChannel.invokeMethod('loadAndShowBannerAd', {
+        'adId': adId,
+        'viewId': viewId,
+        'tag': tag.name,
+        'isAllowLoadNext': isAllowLoadNext,
+      });
+    } on PlatformException catch (e) {
+      throw PubstarIoException(
+        errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
+        message: e.message.toString(),
+        details: e.details.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> loadAndShowNativeAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize typeSize,
+    required bool isAllowLoadNext,
+  }) async {
+    try {
+      await methodChannel.invokeMethod('loadAndShowNativeAd', {
+        'adId': adId,
+        'viewId': viewId,
+        'typeSize': typeSize.name,
+        'isAllowLoadNext': isAllowLoadNext,
+      });
+    } on PlatformException catch (e) {
+      throw PubstarIoException(
+        errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
+        message: e.message.toString(),
+        details: e.details.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<void> loadAndShowVideoAd({
+    required String adId,
+    required int viewId,
+    required String media,
+  }) async {
+    try {
+      await methodChannel.invokeMethod('loadAndShowVideoAd', {
+        'adId': adId,
+        'viewId': viewId,
+        'media': media,
+      });
+    } on PlatformException catch (e) {
+      throw PubstarIoException(
+        errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
+        message: e.message.toString(),
+        details: e.details.toString(),
       );
     }
   }

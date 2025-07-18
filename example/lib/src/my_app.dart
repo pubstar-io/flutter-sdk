@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io_example/src/controller.dart';
+import 'dart:developer';
 
 class MyApp extends StatefulWidget {
   MyApp({super.key});
@@ -15,7 +16,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isAdSdkReady = false;
-  late final StreamSubscription sub;
+  StreamSubscription? _subscription;
 
   @override
   void initState() {
@@ -27,14 +28,15 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    sub = PubstarAdEventStream.stream.listen((event) {
-      print('Received ad event: $event');
+    _subscription = PubstarEventService().listen((data) {
+      log('📩 Event from native: $data');
     });
   }
 
   @override
   void dispose() {
-    sub.cancel();
+    _subscription?.cancel();
+
     super.dispose();
   }
 
@@ -50,13 +52,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Plugin Pubstar IO example')),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('AD need view Example'),
               const SizedBox(height: 20),
               Text('Banner AD'),
+              const SizedBox(height: 10),
               _isAdSdkReady
                   ? ColoredBox(
                     color: Colors.grey.shade300,
@@ -66,33 +69,47 @@ class _MyAppState extends State<MyApp> {
                       child: PubstarAdView(
                         adId: AdIdExample.bannerId,
                         mode: PubstarAdViewMode.loadAndShow,
+                        type: PubstarAdType.banner,
+                        size: PubstarAdSize.small,
+                        isAllowLoadNext: true,
                       ),
                     ),
                   )
                   : buildPlaceholder(),
-              const SizedBox(height: 10),
 
               Text('Native AD'),
+              const SizedBox(height: 10),
               _isAdSdkReady
                   ? ColoredBox(
                     color: Colors.grey.shade300,
                     child: SizedBox(
                       width: double.infinity,
                       height: 100,
-                      child: PubstarAdView(adId: AdIdExample.nativeId),
+                      child: PubstarAdView(
+                        adId: AdIdExample.nativeId,
+                        mode: PubstarAdViewMode.loadAndShow,
+                        type: PubstarAdType.native,
+                        size: PubstarAdSize.small,
+                        isAllowLoadNext: true,
+                      ),
                     ),
                   )
                   : buildPlaceholder(),
               const SizedBox(height: 10),
 
               Text('Video AD'),
+              const SizedBox(height: 10),
               _isAdSdkReady
                   ? ColoredBox(
                     color: Colors.grey.shade300,
                     child: SizedBox(
                       width: double.infinity,
                       height: 200,
-                      child: PubstarAdView(adId: AdIdExample.videoId),
+                      child: PubstarVideoAdView(
+                        adId: AdIdExample.videoId,
+                        media:
+                            'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+                      ),
                     ),
                   )
                   : buildPlaceholder(),
@@ -111,7 +128,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.showAd(AdIdExample.openId);
+                  widget.controller.loadAndShowAd(AdIdExample.openId);
                 },
                 child: const Text('Show Open Ad'),
               ),
@@ -119,10 +136,11 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.showAd(AdIdExample.rewardedId);
+                  widget.controller.loadAndShowAd(AdIdExample.rewardedId);
                 },
                 child: const Text('Show Rewarded Ad'),
               ),
+              SizedBox(height: 50),
             ],
           ),
         ),

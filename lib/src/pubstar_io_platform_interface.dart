@@ -1,4 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:pubstar_io/pubstar_io.dart';
 
 import 'pubstar_io_method_channel.dart';
 
@@ -50,5 +51,31 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     throw UnimplementedError(
       'loadAndShowAdWithViewId() has not been implemented.',
     );
+  }
+
+  Future<void> loadAndShowBannerAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize tag,
+    required bool isAllowLoadNext,
+  }) {
+    throw UnimplementedError('loadAndShowBannerAd() has not been implemented.');
+  }
+
+  Future<void> loadAndShowNativeAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize typeSize,
+    required bool isAllowLoadNext,
+  }) {
+    throw UnimplementedError('loadAndShowNativeAd() has not been implemented.');
+  }
+
+  Future<void> loadAndShowVideoAd({
+    required String adId,
+    required int viewId,
+    required String media,
+  }) {
+    throw UnimplementedError('loadAndShowVideoAd() has not been implemented.');
   }
 }

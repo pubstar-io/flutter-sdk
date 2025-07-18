@@ -2,8 +2,11 @@ package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
+import android.media.MediaPlayer
 import android.view.ViewGroup
+import io.pubstar.mobile.ads.base.BannerAdRequest
+import io.pubstar.mobile.ads.base.IMARequest
+import io.pubstar.mobile.ads.base.NativeAdRequest
 import io.pubstar.mobile.ads.interfaces.AdLoaderListener
 import io.pubstar.mobile.ads.interfaces.AdShowedListener
 import io.pubstar.mobile.ads.interfaces.InitAdListener
@@ -55,6 +58,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             override fun onLoaded() {
                 onLoaded()
             }
+
             override fun onError(code: ErrorCode) {
                 onError(code)
             }
@@ -124,6 +128,153 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                     onAdShowedError(code)
                 }
             }
+        )
+    }
+
+    fun loadAndShowNativeAd(
+        adId: String,
+        view: ViewGroup? = null,
+        size: NativeAdRequest.Type,
+        isAllowLoadNext: Boolean = true,
+        onAdLoaderError: (ErrorCode) -> Unit,
+        onAdLoaded: () -> Unit,
+        onAdHide: () -> Unit,
+        onAdShowed: () -> Unit,
+        onAdShowedError: (ErrorCode) -> Unit,
+    ) {
+        val request = NativeAdRequest.Builder(mContext)
+            .isAllowLoadNext(isAllowLoadNext)
+            .withView(view)
+            .sizeType(size)
+            .adLoaderListener(
+                adLoaderListener = object : AdLoaderListener {
+                    override fun onError(code: ErrorCode) {
+                        onAdLoaderError(code)
+                    }
+
+                    override fun onLoaded() {
+                        onAdLoaded()
+                    }
+                }
+            )
+            .adShowedListener(
+                adShowedListener = object : AdShowedListener {
+                    override fun onAdHide(any: RewardModel?) {
+                        onAdHide()
+                    }
+
+                    override fun onAdShowed() {
+                        onAdShowed()
+                    }
+
+                    override fun onError(code: ErrorCode) {
+                        onAdShowedError(code)
+                    }
+                }
+            )
+            .build()
+
+
+        pubStarAdController.loadAndShow(
+            adId,
+            request
+        )
+    }
+
+    fun loadAndShowBannerAd(
+        adId: String,
+        view: ViewGroup? = null,
+        size: BannerAdRequest.AdTag,
+        isAllowLoadNext: Boolean = true,
+        onAdLoaderError: (ErrorCode) -> Unit,
+        onAdLoaded: () -> Unit,
+        onAdHide: () -> Unit,
+        onAdShowed: () -> Unit,
+        onAdShowedError: (ErrorCode) -> Unit,
+    ) {
+        val request = BannerAdRequest.Builder(mContext)
+            .isAllowLoadNext(isAllowLoadNext)
+            .withView(view)
+            .tag(size)
+            .adLoaderListener(
+                adLoaderListener = object : AdLoaderListener {
+                    override fun onError(code: ErrorCode) {
+                        onAdLoaderError(code)
+                    }
+
+                    override fun onLoaded() {
+                        onAdLoaded()
+                    }
+                }
+            )
+            .adShowedListener(
+                adShowedListener = object : AdShowedListener {
+                    override fun onAdHide(any: RewardModel?) {
+                        onAdHide()
+                    }
+
+                    override fun onAdShowed() {
+                        onAdShowed()
+                    }
+
+                    override fun onError(code: ErrorCode) {
+                        onAdShowedError(code)
+                    }
+                }
+            )
+            .build()
+
+        pubStarAdController.loadAndShow(
+            adId,
+            request
+        )
+    }
+
+    fun loadAndShowVideoAd(
+        adId: String,
+        view: ViewGroup? = null,
+        media: MediaPlayer,
+        onAdLoaderError: (ErrorCode) -> Unit,
+        onAdLoaded: () -> Unit,
+        onAdHide: () -> Unit,
+        onAdShowed: () -> Unit,
+        onAdShowedError: (ErrorCode) -> Unit,
+    ) {
+        val request = IMARequest.Builder(mContext)
+            .isAllowCache(true)
+            .withView(view)
+            .withMedia(media)
+            .adLoaderListener(
+                adLoaderListener = object : AdLoaderListener {
+                    override fun onError(code: ErrorCode) {
+                        onAdLoaderError(code)
+                    }
+
+                    override fun onLoaded() {
+                        onAdLoaded()
+                    }
+                }
+            )
+            .adShowedListener(
+                adShowedListener = object : AdShowedListener {
+                    override fun onAdHide(any: RewardModel?) {
+                        onAdHide()
+                    }
+
+                    override fun onAdShowed() {
+                        onAdShowed()
+                    }
+
+                    override fun onError(code: ErrorCode) {
+                        onAdShowedError(code)
+                    }
+                }
+            )
+            .build()
+
+        pubStarAdController.loadAndShow(
+            adId,
+            request
         )
     }
 }

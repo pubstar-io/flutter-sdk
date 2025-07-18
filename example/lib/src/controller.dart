@@ -14,11 +14,11 @@ class Controller {
     await PubstarIo.instance.init();
 
     // await loadAd(AdIdExample.bannerId);
-    await loadAd(AdIdExample.nativeId);
-    await loadAd(AdIdExample.interstitialId);
-    await loadAd(AdIdExample.openId);
-    await loadAd(AdIdExample.rewardedId);
-    await loadAd(AdIdExample.videoId);
+    // await loadAd(AdIdExample.nativeId);
+    // await loadAd(AdIdExample.interstitialId);
+    // await loadAd(AdIdExample.openId);
+    // await loadAd(AdIdExample.rewardedId);
+    // await loadAd(AdIdExample.videoId);
   }
 
   Future<void> loadAd(String adId) async {

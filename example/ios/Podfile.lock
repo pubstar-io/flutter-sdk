@@ -1,0 +1,59 @@
+PODS:
+  - Flutter (1.0.0)
+  - Google-Mobile-Ads-SDK (11.10.0):
+    - GoogleUserMessagingPlatform (>= 1.1)
+  - GoogleAds-IMA-iOS-SDK (3.26.1)
+  - GoogleUserMessagingPlatform (3.0.0)
+  - InMobiSDK (10.8.3)
+  - integration_test (0.0.1):
+    - Flutter
+  - Pubstar (1.1.8):
+    - Google-Mobile-Ads-SDK (~> 11.10.0)
+    - GoogleAds-IMA-iOS-SDK (~> 3.26.1)
+    - InMobiSDK (~> 10.8.3)
+  - pubstar_io (0.0.1):
+    - Flutter
+    - Pubstar
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - Pubstar (from `https://github.com/pubstar-io/PubStar-iOS-SDK`, branch `main`)
+  - pubstar_io (from `.symlinks/plugins/pubstar_io/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Google-Mobile-Ads-SDK
+    - GoogleAds-IMA-iOS-SDK
+    - GoogleUserMessagingPlatform
+    - InMobiSDK
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+  Pubstar:
+    :branch: main
+    :git: https://github.com/pubstar-io/PubStar-iOS-SDK
+  pubstar_io:
+    :path: ".symlinks/plugins/pubstar_io/ios"
+
+CHECKOUT OPTIONS:
+  Pubstar:
+    :commit: c5e51710a5396045247a536b55fe75ac9ecdd6ce
+    :git: https://github.com/pubstar-io/PubStar-iOS-SDK
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Google-Mobile-Ads-SDK: 13e6e98edfd78ad8d8a791edb927658cc260a56f
+  GoogleAds-IMA-iOS-SDK: 10b8f194e7cd2714d4de9a0587c46c8aaf06c620
+  GoogleUserMessagingPlatform: f8d0cdad3ca835406755d0a69aa634f00e76d576
+  InMobiSDK: 174c7910f27fb860e4f2204d621ef724efefc819
+  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
+  Pubstar: 4eedd72eafc1662dbcffd9dd5e53e8e1634f07dd
+  pubstar_io: f68eb183b042242266154b49881f88532e3c6d03
+
+PODFILE CHECKSUM: 31c81f88e8fde10ec578f2b20349fd592531c19e
+
+COCOAPODS: 1.16.2

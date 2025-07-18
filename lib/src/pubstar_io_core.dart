@@ -1,3 +1,4 @@
+import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
 
 /// The main singleton entry-point for Pubstar IO Ads SDK.
@@ -99,6 +100,46 @@ class PubstarIo {
     await PubstarIoPlatform.instance.loadAndShowAdWithViewId(
       adId: adId,
       viewId: viewId,
+    );
+  }
+
+  Future<void> loadAndShowBannerAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize size,
+    required bool isAllowLoadNext,
+  }) async {
+    await PubstarIoPlatform.instance.loadAndShowBannerAd(
+      adId: adId,
+      viewId: viewId,
+      tag: size,
+      isAllowLoadNext: isAllowLoadNext,
+    );
+  }
+
+  Future<void> loadAndShowNativeAd({
+    required String adId,
+    required int viewId,
+    required PubstarAdSize size,
+    required bool isAllowLoadNext,
+  }) async {
+    await PubstarIoPlatform.instance.loadAndShowNativeAd(
+      adId: adId,
+      viewId: viewId,
+      typeSize: size,
+      isAllowLoadNext: isAllowLoadNext,
+    );
+  }
+
+  Future<void> loadAndShowVideoAd({
+    required String adId,
+    required int viewId,
+    required String media,
+  }) async {
+    await PubstarIoPlatform.instance.loadAndShowVideoAd(
+      adId: adId,
+      viewId: viewId,
+      media: media,
     );
   }
 }

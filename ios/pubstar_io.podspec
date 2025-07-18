@@ -4,14 +4,14 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'pubstar_io'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.version          = '1.1.8'
+  s.summary          = 'PubStar Mobile AD SDK'
   s.description      = <<-DESC
-A new Flutter plugin project.
+PubStar Mobile AD SDK
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://pubstar.io/'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Pubstar' => 'support@pubstar.io' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
@@ -26,4 +26,13 @@ A new Flutter plugin project.
   # plugin's privacy impact, and then uncomment this line. For more information,
   # see https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
   # s.resource_bundles = {'pubstar_io_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
+
+  # Setup frameworks load frameworks from local
+  # s.vendored_frameworks = 'Frameworks/Pubstar.xcframework'
+  # s.pod_target_xcconfig = {
+  #   'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/../../Frameworks'
+  # }
+
+  s.dependency 'Pubstar'
+
 end

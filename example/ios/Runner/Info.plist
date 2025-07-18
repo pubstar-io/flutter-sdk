@@ -45,5 +45,17 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+<!--    Ads configs   -->
+<!--    <key>AppLovinSdkKey</key>-->
+<!--    <string>HXMtrz86wLeuv6e_K5MCVtHyQMiTXAkX3950aUUeZo4ydfOgK9ol2Qg22mPM4fbvRlmuzFmvRuLk4zArLOsR_L</string>-->
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-3940256099942544~1458002511</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>We use your data to show personalized ads and improve your experience.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
