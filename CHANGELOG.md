@@ -1,4 +1,4 @@
-## [1.1.8] - 2025-05-25
+## [1.1.8+1] - 2025-05-25
 
 ### Added
 - **First public release of `pubstar_io` Flutter plugin.**
