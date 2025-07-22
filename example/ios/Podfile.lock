@@ -11,7 +11,7 @@ PODS:
     - Google-Mobile-Ads-SDK (~> 11.10.0)
     - GoogleAds-IMA-iOS-SDK (~> 3.26.1)
     - InMobiSDK (~> 10.8.3)
-  - pubstar_io (0.0.1):
+  - pubstar_io (1.1.8):
     - Flutter
     - Pubstar
 
@@ -52,7 +52,7 @@ SPEC CHECKSUMS:
   InMobiSDK: 174c7910f27fb860e4f2204d621ef724efefc819
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   Pubstar: 4eedd72eafc1662dbcffd9dd5e53e8e1634f07dd
-  pubstar_io: f68eb183b042242266154b49881f88532e3c6d03
+  pubstar_io: 2107c5c06788389ea4f363675eba194694140b39
 
 PODFILE CHECKSUM: 31c81f88e8fde10ec578f2b20349fd592531c19e
 
