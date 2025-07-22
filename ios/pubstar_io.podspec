@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.version          = '1.1.8'
   s.summary          = 'PubStar Mobile AD SDK'
   s.description      = <<-DESC
-PubStar Mobile AD SDK
+PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
                        DESC
   s.homepage         = 'https://pubstar.io/'
   s.license          = { :file => '../LICENSE' }

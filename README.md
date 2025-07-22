@@ -31,7 +31,7 @@ Add the dependency in your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  pubstar: ^1.1.8
+  pubstar_io: ^1.1.8
 ```
 
 Then run:
