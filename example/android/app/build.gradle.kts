@@ -17,7 +17,6 @@ val flutterNdkVersion: String? = localProperties.getProperty("flutter.ndkVersion
 android {
     namespace = "com.tqc.pubstar_io_example"
     compileSdk = flutter.compileSdkVersion
-     ndkVersion = flutterNdkVersion ?: "27"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
