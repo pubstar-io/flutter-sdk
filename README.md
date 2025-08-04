@@ -25,7 +25,7 @@ PubStar Flutter Mobile AD SDK is a comprehensive software development kit design
 
 ## Requirements
 
-- iOS >= 12.0
+- iOS >= 13.0
 - Min Dart SDK >= 3.7
 
 ## Getting Started
