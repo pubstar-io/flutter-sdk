@@ -23,6 +23,10 @@ PubStar Flutter Mobile AD SDK is a comprehensive software development kit design
 
 ---
 
+## Requirements
+
+- iOS >= 12.0
+
 ## Getting Started
 
 ### 1. Installation
@@ -41,27 +45,6 @@ flutter pub get
 ```
 
 ## Configuration
-
-### Android
-
-#### 1. Configure Maven Repositories
-Open your project-level build.gradle or settings.gradle and add:
-```gradle
-repositories {
-  mavenCentral()
-  maven { url = uri("https://artifactory.appodeal.com/appodeal") }  <--- add this
-}
-```
-
-#### 2. Add Pubstar Key to AndroidManifest.
-Open `AndroidManifest.xml` and add inside `<application>`:
-
-```bash
-<meta-data
-  android:name="io.pubstar.key"
-  android:value="pub-app-id-XXXX" />
-```
-Replace pub-app-id-XXXX with your actual [Pubstar App ID](https://pubstar.io/).  
 
 ### iOS
 
@@ -94,6 +77,26 @@ A GADApplicationIdentifier key with a string value of your AdMob app ID [found i
 </dict>
 ```
 
+### Android
+
+#### 1. Configure Maven Repositories
+Open your project-level build.gradle or settings.gradle and add:
+```gradle
+repositories {
+  mavenCentral()
+  maven { url = uri("https://artifactory.appodeal.com/appodeal") }  <--- add this
+}
+```
+
+#### 2. Add Pubstar Key to AndroidManifest.
+Open `AndroidManifest.xml` and add inside `<application>`:
+
+```bash
+<meta-data
+  android:name="io.pubstar.key"
+  android:value="pub-app-id-XXXX" />
+```
+Replace pub-app-id-XXXX with your actual [Pubstar App ID](https://pubstar.io/).  
 
 ## Usage
 
@@ -118,8 +121,8 @@ Loads an ad with the given `ad_id`.
 
 ```dart
 await PubstarIo.instance.loadAd('your_ad_id');
-await PubstarIo.instance.showAd(adId: 'your_ad_id');
-await PubstarIo.instance.loadAndShow(adId: 'your_ad_id');
+await PubstarIo.instance.showAd('your_ad_id');
+await PubstarIo.instance.loadAndShowAd('your_ad_id');
 ```
 
 ### Show Ad in a Native View (Recommended)
@@ -193,6 +196,18 @@ Check the main exported classes:
 - PubstarAdVideo (Flutter widget for ad videos)
 
 - PubstarEventService (ad event listener)
+
+## ID Test AD
+
+```python
+App ID : pub-app-id-1233
+Banner Id : 1233/99228313580
+Native ID : 1233/99228313581
+Interstitial ID : 1233/99228313582
+Open ID : 1233/99228313583
+Rewarded ID : 1233/99228313584
+Video ID : 1233/99228313585
+```
 
 ## Support
 Email: developer@tqcsolution.com
