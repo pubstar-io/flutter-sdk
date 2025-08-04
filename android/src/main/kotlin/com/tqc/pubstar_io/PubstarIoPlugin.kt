@@ -3,8 +3,11 @@ package com.tqc.pubstar_io
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
@@ -23,13 +26,14 @@ enum class PubstarAdEvent {
     ERROR
 }
 
-class PubstarIoPlugin : FlutterPlugin, MethodCallHandler {
+class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
     private lateinit var mContext: Context
+    private lateinit var applicationContext: Context
     private lateinit var eventChannel: EventChannel
 
     private val methodChanelName = "pubstar_io"
@@ -50,11 +54,11 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler {
         flutterPluginBinding
             .platformViewRegistry
             .registerViewFactory(nativeViewId, NativeViewFactory())
-
     }
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPluginBinding) {
         mContext = flutterPluginBinding.applicationContext
+        applicationContext = flutterPluginBinding.applicationContext
 
         registerMethodChanel(flutterPluginBinding.binaryMessenger)
 
@@ -310,6 +314,22 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler {
                 BannerAdRequest.AdTag.Small
             }
         }
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        mContext = binding.activity
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        mContext = applicationContext
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        mContext = binding.activity
+    }
+
+    override fun onDetachedFromActivity() {
+        mContext = applicationContext
     }
 }
 
