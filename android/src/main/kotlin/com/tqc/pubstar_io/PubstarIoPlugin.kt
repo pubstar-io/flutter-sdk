@@ -43,7 +43,6 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private fun emitCallback(
         event: PubstarAdEvent,
-        adId: String? = null,
         cbId: String? = null,
         payload: Map<String, Any?> = emptyMap(),
     ) {
@@ -81,14 +80,12 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
 
         fun onErrorCallback(
-            adId: String,
             callbackId: String,
             message: String = "Pubstar is error"
         ): (ErrorCode) -> Unit {
             return { errorCode ->
                 emitCallback(
                     event = PubstarAdEvent.ERROR,
-                    adId = adId,
                     cbId = callbackId,
                     mapOf(
                         "code" to errorCode.code,
@@ -99,31 +96,28 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         }
 
-        fun onAdHideCallback(adId: String, callbackId: String): () -> Unit {
+        fun onAdHideCallback(callbackId: String): () -> Unit {
             return {
                 emitCallback(
                     event = PubstarAdEvent.HIDE,
-                    adId = adId,
                     cbId = callbackId
                 )
             }
         }
 
-        fun onAdShowedCallback(adId: String, callbackId: String): () -> Unit {
+        fun onAdShowedCallback(callbackId: String): () -> Unit {
             return {
                 emitCallback(
                     event = PubstarAdEvent.SHOWED,
-                    adId = adId,
                     cbId = callbackId
                 )
             }
         }
 
-        fun onAdLoadedCallback(adId: String, callbackId: String): () -> Unit {
+        fun onAdLoadedCallback(callbackId: String): () -> Unit {
             return {
                 emitCallback(
                     event = PubstarAdEvent.LOADED,
-                    adId = adId,
                     cbId = callbackId
                 )
             }
@@ -163,9 +157,8 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
                 pubstarAdManagerWrapper.loadAd(
                     adId,
-                    onLoaded = onAdLoadedCallback(adId, callbackId),
+                    onLoaded = onAdLoadedCallback(callbackId),
                     onError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "loadAd is failed."
                     )
@@ -179,10 +172,9 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 pubstarAdManagerWrapper.showAd(
                     adId,
                     null,
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "showAd is failed."
                     )
@@ -197,10 +189,9 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 pubstarAdManagerWrapper.showAd(
                     adId,
                     adView,
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "onShowed is failed."
                     )
@@ -215,11 +206,10 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     adId,
                     null,
                     onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdLoaded = onAdLoadedCallback(callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onAdShowedError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "onShowed is failed."
                     )
@@ -235,11 +225,10 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     adId,
                     adView,
                     onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdLoaded = onAdLoadedCallback(callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onAdShowedError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "onShowed is failed."
                     )
@@ -260,15 +249,13 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     size,
                     isAllowLoadNext,
                     onAdLoaderError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "onAdLoader is failed."
                     ),
-                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdLoaded = onAdLoadedCallback(callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onAdShowedError = onErrorCallback(
-                        adId = adId,
                         callbackId= callbackId,
                         message = "onShowed is failed."
                     )
@@ -289,15 +276,13 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     size,
                     isAllowLoadNext,
                     onAdLoaderError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "onAdLoader is failed."
                     ),
-                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdLoaded = onAdLoadedCallback(callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onAdShowedError = onErrorCallback(
-                        adId = adId,
                         callbackId= callbackId,
                         message = "onShowed is failed."
                     )
@@ -324,15 +309,13 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     view = adView,
                     media = mediaPlayer,
                     onAdLoaderError = onErrorCallback(
-                        adId = adId,
                         callbackId = callbackId,
                         message = "onAdLoader is failed."
                     ),
-                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
-                    onAdHide = onAdHideCallback(adId, callbackId),
-                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdLoaded = onAdLoadedCallback(callbackId),
+                    onAdHide = onAdHideCallback(callbackId),
+                    onAdShowed = onAdShowedCallback(callbackId),
                     onAdShowedError = onErrorCallback(
-                        adId = adId,
                         callbackId= callbackId,
                         message = "onShowed is failed."
                     )
