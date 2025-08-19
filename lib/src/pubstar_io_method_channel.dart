@@ -17,16 +17,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     try {
       CallbackHandler.bind(methodChannel);
 
-      await CallbackHandler.withCallbackListener(
-        InitListener(
-          onInit: () => print("FLUTTER - sdk: init"),
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, error: $error - code: ${error.code} - name: ${error.name} - message: ${error.message}",
-              ),
-        ),
-        (cbId) => methodChannel.invokeMethod('init', {"callbackId": cbId}),
-      );
+      await methodChannel.invokeMethod('init');
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),

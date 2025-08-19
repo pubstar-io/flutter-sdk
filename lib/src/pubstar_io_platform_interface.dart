@@ -24,10 +24,6 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  static void bindingCallback() {
-    throw UnimplementedError('init() has not been implemented.');
-  }
-
   Future<void> init() {
     throw UnimplementedError('init() has not been implemented.');
   }

@@ -5,7 +5,6 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -25,7 +24,6 @@ enum class PubstarAdEvent {
     SHOWED,
     HIDE,
     ERROR,
-    INIT
 }
 
 class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -49,7 +47,6 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         cbId: String? = null,
         payload: Map<String, Any?> = emptyMap(),
     ) {
-        Log.d("FLUTTER - Native", "emit call with event: $event - adId: $adId - callbackId: $cbId")
         val args = HashMap<String, Any?>()
         args["event"] = event.name
         if (!cbId.isNullOrEmpty()) args["cbId"] = cbId
@@ -132,23 +129,31 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         }
 
-        fun onInitCallback(callbackId: String): () -> Unit {
+        fun onInitDoneCallback(): () -> Unit {
             return {
-                emitCallback(event = PubstarAdEvent.INIT, cbId = callbackId)
+                result.success(true)
+            }
+        }
+
+        fun onInitErrorCallback(): (ErrorCode) -> Unit {
+            return { errorCode ->
+                result.error(
+                    errorCode.code.toString(),
+                    "Pubstar init error",
+                    mapOf(
+                        "code" to errorCode.code,
+                        "name" to errorCode.name,
+                        "message" to "Pubstar init failed"
+                    )
+                )
             }
         }
 
         when (call.method) {
             "init" -> {
-                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
-
                 pubstarAdManagerWrapper.init(
-                    onDone = onInitCallback(callbackId),
-                    onError = onErrorCallback(
-                        adId = "",
-                        callbackId = callbackId,
-                        message = "Pubstar init failed"
-                    )
+                    onDone = onInitDoneCallback(),
+                    onError = onInitErrorCallback()
                 )
             }
 
