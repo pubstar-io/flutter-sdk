@@ -22,7 +22,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           onInit: () => print("FLUTTER - sdk: init"),
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, error: $error - code: ${error.code} - name: ${error.name} - message: ${error.message}",
               ),
         ),
         (cbId) => methodChannel.invokeMethod('init', {"callbackId": cbId}),
@@ -44,7 +44,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           onLoaded: () => print("FLUTTER - sdk: onLoaded"),
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
         ),
         (cbId) => methodChannel.invokeMethod('loadAd', {'callbackId': adId}),
@@ -67,7 +67,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           onHide: () => print("FLUTTER - sdk: onHide"),
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
         ),
         (cbId) => methodChannel.invokeMethod('showAd', {
@@ -96,7 +96,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           onHide: () => print("FLUTTER - sdk: onHide"),
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
         ),
         (cbId) => methodChannel.invokeMethod('showAdWithViewId', {
@@ -121,7 +121,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         LoadAndShowListener(
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
           onHide: () => print("FLUTTER - sdk: onHide"),
           onLoaded: () => print("FLUTTER - sdk: onLoaded"),
@@ -151,7 +151,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         LoadAndShowListener(
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
           onHide: () => print("FLUTTER - sdk: onHide"),
           onLoaded: () => print("FLUTTER - sdk: onLoaded"),
@@ -184,7 +184,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         LoadAndShowListener(
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
           onHide: () => print("FLUTTER - sdk: onHide"),
           onLoaded: () => print("FLUTTER - sdk: onLoaded"),
@@ -219,7 +219,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         LoadAndShowListener(
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
           onHide: () => print("FLUTTER - sdk: onHide"),
           onLoaded: () => print("FLUTTER - sdk: onLoaded"),
@@ -253,7 +253,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         LoadAndShowListener(
           onError:
               (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.rawCode}",
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
           onHide: () => print("FLUTTER - sdk: onHide"),
           onLoaded: () => print("FLUTTER - sdk: onLoaded"),

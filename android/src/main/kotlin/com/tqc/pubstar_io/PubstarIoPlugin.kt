@@ -94,17 +94,9 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     adId = adId,
                     cbId = callbackId,
                     mapOf(
-                        "errorCode" to errorCode.name,
-                        "errorRawValue" to errorCode.code.toString()
-                    )
-                )
-
-                result.error(
-                    errorCode.name,
-                    message,
-                    mapOf(
-                        "errorCode" to errorCode.name,
-                        "errorRawValue" to errorCode.code.toString()
+                        "code" to errorCode.code,
+                        "name" to errorCode.name,
+                        "message" to message
                     )
                 )
             }
@@ -151,14 +143,16 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "init" -> {
                 val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
-                pubstarAdManagerWrapper.init(
-                    onDone = onInitCallback(callbackId),
-                    onError = onErrorCallback(
-                        adId = "",
-                        callbackId = callbackId,
-                        message = "Pubstar init failed"
-                    )
-                )
+                onInitCallback(callbackId)()
+
+//                pubstarAdManagerWrapper.init(
+//                    onDone = onInitCallback(callbackId),
+//                    onError = onErrorCallback(
+//                        adId = "",
+//                        callbackId = callbackId,
+//                        message = "Pubstar init failed"
+//                    )
+//                )
             }
 
             "loadAd" -> {

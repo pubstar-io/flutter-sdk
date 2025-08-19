@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 enum PubstarAdEvent { loaded, showed, hide, error, done }
 
 class PubstarError {
-  final String code;
-  final int? rawCode;
-  const PubstarError({required this.code, this.rawCode});
+  final int? code;
+  final String? name;
+  final String? message;
+  const PubstarError({this.code, this.name, this.message});
 }
 
 typedef OnLoaded = void Function();
@@ -17,36 +18,35 @@ typedef OnError = void Function(PubstarError error);
 typedef OnDone = void Function();
 typedef OnInit = void Function();
 
-sealed class PubstarListener {}
+sealed class PubstarListener {
+  final OnError? onError;
+  const PubstarListener({this.onError});
+}
 
 class InitListener extends PubstarListener {
   final OnInit? onInit;
-  final OnError? onError;
-  InitListener({this.onInit, this.onError});
+  InitListener({this.onInit, super.onError});
 }
 
 class LoadListener extends PubstarListener {
   final OnLoaded? onLoaded;
-  final OnError? onError;
-  LoadListener({this.onLoaded, this.onError});
+  LoadListener({this.onLoaded, super.onError});
 }
 
 class ShowListener extends PubstarListener {
   final OnHide? onHide;
   final OnShowed? onShowed;
-  final OnError? onError;
-  ShowListener({this.onHide, this.onShowed, this.onError});
+  ShowListener({this.onHide, this.onShowed, super.onError});
 }
 
 class LoadAndShowListener extends PubstarListener {
   final OnLoaded? onLoaded;
-  final OnError? onError;
   final OnHide? onHide;
   final OnShowed? onShowed;
 
   LoadAndShowListener({
     this.onLoaded,
-    this.onError,
+    super.onError,
     this.onHide,
     this.onShowed,
   });
@@ -72,12 +72,14 @@ class CallbackHandler {
     final String event = (map['event'] as String?) ?? '';
     final String? cbId = map['cbId'] as String?;
 
-    print("FLUTTER: Callback received - event: $event - cbId: $cbId");
+    print("FLUTTER - sdk: Callback received - event: $event - cbId: $cbId");
 
     if (cbId == null) return;
 
     final listener = _listeners[cbId];
     if (listener == null) return;
+
+    print("FLUTTER - sdk: type listener is ${listener.runtimeType}");
 
     if (listener is InitListener) {
       _handleInitListener(listener, event, map);
@@ -97,7 +99,11 @@ class CallbackHandler {
         break;
       case 'ERROR':
         listener.onError?.call(
-          PubstarError(code: (map['error'] as String?) ?? 'UNKNOWN'),
+          PubstarError(
+            code: (map['code'] as int).toInt(),
+            name: map['name'] as String,
+            message: map['message'] as String,
+          ),
         );
         break;
     }
@@ -121,8 +127,9 @@ class CallbackHandler {
       case 'ERROR':
         listener.onError?.call(
           PubstarError(
-            code: (map['error'] as String?) ?? 'UNKNOWN',
-            rawCode: (map['code'] as num?)?.toInt(),
+            code: (map['code'] as int).toInt(),
+            name: map['name'] as String,
+            message: map['message'] as String,
           ),
         );
         break;
