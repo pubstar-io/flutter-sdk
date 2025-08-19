@@ -11,7 +11,6 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
-import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -37,11 +36,9 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel: MethodChannel
     private lateinit var mContext: Context
     private lateinit var applicationContext: Context
-    private lateinit var eventChannel: EventChannel
 
     private val methodChanelName = "pubstar_io"
     private val methodChannelCallbackName = "pubstar_io#callback"
-    private val eventChanelName = "pubstar_io_event"
     private val nativeViewId = "pubstar_ad_view"
 
     private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
@@ -68,11 +65,6 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.setMethodCallHandler(this)
     }
 
-    private fun registerEventChanel(messenger: BinaryMessenger) {
-        eventChannel = EventChannel(messenger, eventChanelName)
-        eventChannel.setStreamHandler(PubstarEventStreamHandler.shared)
-    }
-
     private fun registerNativeView(flutterPluginBinding: FlutterPluginBinding) {
         flutterPluginBinding
             .platformViewRegistry
@@ -84,8 +76,6 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         applicationContext = flutterPluginBinding.applicationContext
 
         registerMethodChanel(flutterPluginBinding.binaryMessenger)
-
-        registerEventChanel(flutterPluginBinding.binaryMessenger)
 
         registerNativeView(flutterPluginBinding)
     }
