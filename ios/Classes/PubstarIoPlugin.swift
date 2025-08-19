@@ -241,13 +241,32 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             }
         }
         
+        func onInitDoneCallback() -> () -> Void {
+            return {
+                result(true)
+            }
+        }
+        
+        func onInitErrorCallback() -> (ErrorCode) -> Void {
+            return { errorCode in
+                result(
+                    FlutterError(
+                        code: "\(errorCode)",
+                        message: "Pubstar initialization failed.",
+                        details: [
+                            "errorCode": "\(errorCode)",
+                            "errorRawValue": "\(errorCode.rawValue)"
+                        ]
+                    )
+                )
+            }
+        }
+        
         switch call.method {
         case "init":
             PubstarAdManagerWrapper.initPubstar(
-                onDone: {
-                    result(true)
-                },
-                onError: onErrorCallback(adId: "", message: "Pubstar initialization failed.")
+                onDone: onInitDoneCallback(),
+                onError: onInitErrorCallback()
             )
         case "loadAd":
             guard let adId = call.extractAdId(result: result) else {
