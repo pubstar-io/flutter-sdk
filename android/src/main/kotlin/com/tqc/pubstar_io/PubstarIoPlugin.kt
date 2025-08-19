@@ -3,6 +3,8 @@ package com.tqc.pubstar_io
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
@@ -23,7 +25,8 @@ enum class PubstarAdEvent {
     LOADED,
     SHOWED,
     HIDE,
-    ERROR
+    ERROR,
+    INIT
 }
 
 class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -37,8 +40,28 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var eventChannel: EventChannel
 
     private val methodChanelName = "pubstar_io"
+    private val methodChannelCallbackName = "pubstar_io#callback"
     private val eventChanelName = "pubstar_io_event"
     private val nativeViewId = "pubstar_ad_view"
+
+    private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
+
+    private fun emitCallback(
+        event: PubstarAdEvent,
+        adId: String? = null,
+        cbId: String? = null,
+        payload: Map<String, Any?> = emptyMap(),
+    ) {
+        Log.d("FLUTTER - Native", "emit call with event: $event - adId: $adId - callbackId: $cbId")
+        val args = HashMap<String, Any?>()
+        args["event"] = event.name
+        if (!cbId.isNullOrEmpty()) args["cbId"] = cbId
+        args.putAll(payload)
+
+        mainHandler.post {
+            channel.invokeMethod(methodChannelCallbackName, args)
+        }
+    }
 
     private fun registerMethodChanel(messenger: BinaryMessenger) {
         channel = MethodChannel(messenger, methodChanelName)
@@ -70,14 +93,21 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onMethodCall(call: MethodCall, result: Result) {
         val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
 
-        fun onErrorCallback(adId: String, message: String = "Pubstar is error"): (ErrorCode) -> Unit {
+        fun onErrorCallback(
+            adId: String,
+            callbackId: String,
+            message: String = "Pubstar is error"
+        ): (ErrorCode) -> Unit {
             return { errorCode ->
-                PubstarEventStreamHandler.shared
-                    .sendAdEvent(
-                        PubstarAdEvent.ERROR,
-                        adId,
-                        mapOf("error" to errorCode.name)
+                emitCallback(
+                    event = PubstarAdEvent.ERROR,
+                    adId = adId,
+                    cbId = callbackId,
+                    mapOf(
+                        "errorCode" to errorCode.name,
+                        "errorRawValue" to errorCode.code.toString()
                     )
+                )
 
                 result.error(
                     errorCode.name,
@@ -90,109 +120,149 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         }
 
-        fun onAdHideCallback(adId: String): () -> Unit {
+        fun onAdHideCallback(adId: String, callbackId: String): () -> Unit {
             return {
-                PubstarEventStreamHandler.shared
-                    .sendAdEvent(
-                        PubstarAdEvent.HIDE,
-                        adId
-                    )
+                emitCallback(
+                    event = PubstarAdEvent.HIDE,
+                    adId = adId,
+                    cbId = callbackId
+                )
             }
         }
 
-        fun onAdShowedCallback(adId: String): () -> Unit {
+        fun onAdShowedCallback(adId: String, callbackId: String): () -> Unit {
             return {
-                PubstarEventStreamHandler.shared
-                    .sendAdEvent(
-                        PubstarAdEvent.SHOWED,
-                        adId
-                    )
+                emitCallback(
+                    event = PubstarAdEvent.SHOWED,
+                    adId = adId,
+                    cbId = callbackId
+                )
             }
         }
 
-        fun onAdLoadedCallback(adId: String): () -> Unit {
+        fun onAdLoadedCallback(adId: String, callbackId: String): () -> Unit {
             return {
-                PubstarEventStreamHandler.shared
-                    .sendAdEvent(
-                        PubstarAdEvent.LOADED,
-                        adId,
-                    )
+                emitCallback(
+                    event = PubstarAdEvent.LOADED,
+                    adId = adId,
+                    cbId = callbackId
+                )
+            }
+        }
+
+        fun onInitCallback(callbackId: String): () -> Unit {
+            return {
+                emitCallback(event = PubstarAdEvent.INIT, cbId = callbackId)
+                result.success(true)
             }
         }
 
         when (call.method) {
             "init" -> {
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
+
                 pubstarAdManagerWrapper.init(
-                    onDone = {
-                        result.success(true)
-                    },
-                    onError = onErrorCallback("","Pubstar initialization failed.")
+                    onDone = onInitCallback(callbackId),
+                    onError = onErrorCallback(
+                        adId = "",
+                        callbackId = callbackId,
+                        message = "Pubstar init failed"
+                    )
                 )
             }
 
             "loadAd" -> {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAd(
                     adId,
                     onLoaded = {
+                        onAdLoadedCallback(
+                            adId = adId,
+                            callbackId = callbackId
+                        )
                         result.success(true)
                     },
-                    onError = onErrorCallback(adId,"loadAd is failed.")
+                    onError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "loadAd is failed."
+                    )
                 )
             }
 
             "showAd" -> {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.showAd(
                     adId,
                     null,
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onError = onErrorCallback(adId,"showAd is failed.")
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "showAd is failed."
+                    )
                 )
             }
 
             "showAdWithViewId" -> {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.showAd(
                     adId,
                     adView,
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onError = onErrorCallback(adId,"onShowed is failed.")
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "onShowed is failed."
+                    )
                 )
             }
 
             "loadAndShowAd" -> {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowAd(
                     adId,
                     null,
                     onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId),
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdShowedError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "onShowed is failed."
+                    )
                 )
             }
 
             "loadAndShowAdWithViewId" -> {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowAd(
                     adId,
                     adView,
                     onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId),
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdShowedError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "onShowed is failed."
+                    )
                 )
             }
 
@@ -202,17 +272,26 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val tag = Validate.tag(call.argument<String>("tag"), result) ?: return
                 val size = extractBannerSize(tag)
                 val isAllowLoadNext = Validate.isAllowLoadNext(call.argument<Boolean>("isAllowLoadNext"))
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowBannerAd(
                     adId,
                     adView,
                     size,
                     isAllowLoadNext,
-                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId),
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                    onAdLoaderError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "onAdLoader is failed."
+                    ),
+                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdShowedError = onErrorCallback(
+                        adId = adId,
+                        callbackId= callbackId,
+                        message = "onShowed is failed."
+                    )
                 )
             }
 
@@ -222,17 +301,26 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val typeSize = Validate.typeSize(call.argument<String>("typeSize"), result) ?: return
                 val size = extractNativeSize(typeSize)
                 val isAllowLoadNext = Validate.isAllowLoadNext(call.argument<Boolean>("isAllowLoadNext"))
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowNativeAd(
                     adId,
                     adView,
                     size,
                     isAllowLoadNext,
-                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId),
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                    onAdLoaderError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "onAdLoader is failed."
+                    ),
+                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdShowedError = onErrorCallback(
+                        adId = adId,
+                        callbackId= callbackId,
+                        message = "onShowed is failed."
+                    )
                 )
             }
 
@@ -240,6 +328,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
                 val media = Validate.media(call.argument<String>("media"), result) ?: return
+                val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 val mediaPlayer = MediaPlayer()
                 mediaPlayer.setAudioAttributes(
@@ -254,11 +343,19 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     adId = adId,
                     view = adView,
                     media = mediaPlayer,
-                    onAdLoaderError = onErrorCallback(adId,"onAdLoader is failed."),
-                    onAdLoaded = onAdLoadedCallback(adId),
-                    onAdHide = onAdHideCallback(adId),
-                    onAdShowed = onAdShowedCallback(adId),
-                    onAdShowedError = onErrorCallback(adId, "onShowed is failed.")
+                    onAdLoaderError = onErrorCallback(
+                        adId = adId,
+                        callbackId = callbackId,
+                        message = "onAdLoader is failed."
+                    ),
+                    onAdLoaded = onAdLoadedCallback(adId, callbackId),
+                    onAdHide = onAdHideCallback(adId, callbackId),
+                    onAdShowed = onAdShowedCallback(adId, callbackId),
+                    onAdShowedError = onErrorCallback(
+                        adId = adId,
+                        callbackId= callbackId,
+                        message = "onShowed is failed."
+                    )
                 )
             }
 

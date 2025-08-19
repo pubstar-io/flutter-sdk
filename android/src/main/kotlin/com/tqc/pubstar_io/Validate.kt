@@ -26,6 +26,28 @@ object Validate {
         return adId
     }
 
+    fun callbackId(callbackId: Any?, result: Result): String? {
+        if (callbackId !is String) {
+            result.error(
+                "INVALID_ARGUMENT",
+                "Typeof adId is not a String",
+                null
+            )
+            return null
+        }
+
+        if (callbackId.trim().isEmpty()) {
+            result.error(
+                "INVALID_ARGUMENT",
+                "AdId is empty String",
+                null
+            )
+            return null
+        }
+
+        return callbackId
+    }
+
     fun adView(viewId: Any?, result: Result): ViewGroup? {
         val adView = PubstarAdViewRegistry.views[viewId]
 
