@@ -10,41 +10,6 @@ enum PubstarAdEvent: Int {
     case ERROR
 }
 
-class PubstarEventStreamHandler: NSObject, FlutterStreamHandler {
-    static let shared = PubstarEventStreamHandler()
-
-    private var eventSink: FlutterEventSink?
-
-    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        self.eventSink = events
-        return nil
-    }
-
-    func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        self.eventSink = nil
-        return nil
-    }
-
-    private func sendEvent(_ event: Any) {
-        eventSink?(event)
-    }
-    
-    func sendAdEvent(event: PubstarAdEvent, adId: String, data: [String: Any]? = nil) {
-        var eventData: [String: Any] = [
-            "event": "\(event)",
-            "adId": adId
-        ]
-
-        if let data = data {
-            for (key, value) in data {
-                eventData[key] = value
-            }
-        }
-        
-        self.sendEvent(eventData)
-    }
-}
-
 extension FlutterMethodCall {
     func extractAdId(result: @escaping FlutterResult) -> String? {
         guard let args = self.arguments as? [String: Any],
@@ -205,19 +170,12 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
         instance.channel = channel
     }
     
-    private static func registerEventChanel(registrar: FlutterPluginRegistrar) {
-        let eventChannel = FlutterEventChannel(name: eventChanelName, binaryMessenger: registrar.messenger())
-        eventChannel.setStreamHandler(PubstarEventStreamHandler.shared)
-    }
-    
     private static func registerNativeView(registrar: FlutterPluginRegistrar) {
         registrar.register(NativeViewFactory(), withId: nativeViewId)
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         registerMethodChanel(registrar: registrar)
-
-        registerEventChanel(registrar: registrar)
 
         registerNativeView(registrar: registrar)
     }
@@ -244,14 +202,18 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
         }
         
         func onAdHideCallback(callbackId: String) -> (RewardModel?) -> Void {
-            return { _ in
-                channel.invokeMethod(
-                    self.methodChannelCallback,
-                    arguments: [
-                        "cbId": callbackId,
-                        "event": "\(PubstarAdEvent.HIDE)"
-                    ]
-                )
+            return { reward in
+                var arguments: [String: Any] = [
+                    "cbId": callbackId,
+                    "event": "\(PubstarAdEvent.HIDE)"
+                ]
+
+                if let reward = reward {
+                    arguments["type"] = reward.type
+                    arguments["amount"] = reward.amount
+                }
+
+                channel.invokeMethod(self.methodChannelCallback, arguments: arguments)
             }
         }
         

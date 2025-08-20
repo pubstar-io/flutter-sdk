@@ -58,7 +58,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
       await CallbackHandler.withCallbackListener(
         ShowListener(
           onShowed: () => print("FLUTTER - sdk: onShowed showAd"),
-          onHide: () => print("FLUTTER - sdk: onHide showAd"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide showAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
           onError:
               (error) => print(
                 "FLUTTER - sdk: onError showAd, code: ${error.code} - name: ${error.name} - message: ${error.message}",
@@ -87,7 +90,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
       await CallbackHandler.withCallbackListener(
         ShowListener(
           onShowed: () => print("FLUTTER - sdk: onShowed showAdWithViewId"),
-          onHide: () => print("FLUTTER - sdk: onHide showAdWithViewId"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide showAdWithViewId - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
           onError:
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
@@ -117,7 +123,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide loadAndShowAd"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide loadAndShowAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
           onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowAd"),
           onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowAd"),
         ),
@@ -147,7 +156,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide loadAndShowAdWithViewId"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
           onLoaded:
               () => print("FLUTTER - sdk: onLoaded loadAndShowAdWithViewId"),
           onShowed:
@@ -181,7 +193,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide loadAndShowBannerAd"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide loadAndShowBannerAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
           onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowBannerAd"),
           onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowBannerAd"),
         ),
@@ -214,7 +229,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide loadAndShowNativeAd"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide loadAndShowNativeAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
           onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowNativeAd"),
           onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowNativeAd"),
         ),
@@ -247,7 +265,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide loadAndShowVideoAd"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide loadAndShowVideoAd  - type: ${reward?.type} - amount: ${reward?.amount}",
+              ),
           onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowVideoAd"),
           onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowVideoAd"),
         ),

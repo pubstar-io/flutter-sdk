@@ -10,11 +10,28 @@ class PubstarError {
   const PubstarError({this.code, this.name, this.message});
 }
 
+class PubstarReward {
+  final String? type;
+  final int? amount;
+  const PubstarReward({this.type, this.amount});
+
+  static PubstarReward? fromMap(Map<String, dynamic> map) {
+    if (map.containsKey('type') && map.containsKey('amount')) {
+      return PubstarReward(
+        type: map['type'] as String,
+        amount: (map['amount'] as int).toInt(),
+      );
+    }
+
+    return null;
+  }
+}
+
 typedef OnLoaded = void Function();
 typedef OnLoadedError = void Function();
 typedef OnShowed = void Function();
 typedef OnShowedError = void Function();
-typedef OnHide = void Function();
+typedef OnHide = void Function(PubstarReward? reward);
 typedef OnError = void Function(PubstarError error);
 typedef OnDone = void Function();
 typedef OnInit = void Function();
@@ -48,7 +65,7 @@ class ShowListener extends PubstarListener {
   ShowListener({this.onHide, this.onShowed, super.onError});
 
   @override
-  bool shouldRemove(String event) => event == 'SHOWED' || event == 'ERROR';
+  bool shouldRemove(String event) => event == 'HIDE' || event == 'ERROR';
 }
 
 class LoadAndShowListener extends PubstarListener {
@@ -101,13 +118,13 @@ class CallbackHandler {
     print("FLUTTER - sdk: Type of listener: ${listener.runtimeType}");
 
     if (listener is InitListener) {
-      _handleInitListener(listener, event, map);
+      handleInitListener(listener, event, map);
     } else if (listener is LoadListener) {
-      _handleLoadListener(listener, event, map);
+      handleLoadListener(listener, event, map);
     } else if (listener is ShowListener) {
-      _handleShowListener(listener, event, map);
+      handleShowListener(listener, event, map);
     } else if (listener is LoadAndShowListener) {
-      _handleLoadAndShowListener(listener, event, map);
+      handleLoadAndShowListener(listener, event, map);
     }
 
     print(
@@ -119,7 +136,7 @@ class CallbackHandler {
     }
   }
 
-  static void _handleInitListener(
+  static void handleInitListener(
     InitListener listener,
     String event,
     Map<String, dynamic> map,
@@ -140,7 +157,7 @@ class CallbackHandler {
     }
   }
 
-  static void _handleLoadListener(
+  static void handleLoadListener(
     LoadListener listener,
     String event,
     Map<String, dynamic> map,
@@ -161,7 +178,7 @@ class CallbackHandler {
     }
   }
 
-  static void _handleShowListener(
+  static void handleShowListener(
     ShowListener listener,
     String event,
     Map<String, dynamic> map,
@@ -171,7 +188,7 @@ class CallbackHandler {
         listener.onShowed?.call();
         break;
       case 'HIDE':
-        listener.onHide?.call();
+        listener.onHide?.call(PubstarReward.fromMap(map));
         break;
       case 'ERROR':
         listener.onError?.call(
@@ -185,7 +202,7 @@ class CallbackHandler {
     }
   }
 
-  static void _handleLoadAndShowListener(
+  static void handleLoadAndShowListener(
     LoadAndShowListener listener,
     String event,
     Map<String, dynamic> map,
@@ -198,7 +215,7 @@ class CallbackHandler {
         listener.onShowed?.call();
         break;
       case 'HIDE':
-        listener.onHide?.call();
+        listener.onHide?.call(PubstarReward.fromMap(map));
         break;
       case 'ERROR':
         listener.onError?.call(
