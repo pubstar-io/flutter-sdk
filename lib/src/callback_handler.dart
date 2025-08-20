@@ -21,22 +21,33 @@ typedef OnInit = void Function();
 sealed class PubstarListener {
   final OnError? onError;
   const PubstarListener({this.onError});
+
+  bool shouldRemove(String event);
 }
 
 class InitListener extends PubstarListener {
   final OnInit? onInit;
   InitListener({this.onInit, super.onError});
+
+  @override
+  bool shouldRemove(String event) => event == 'INIT' || event == 'ERROR';
 }
 
 class LoadListener extends PubstarListener {
   final OnLoaded? onLoaded;
   LoadListener({this.onLoaded, super.onError});
+
+  @override
+  bool shouldRemove(String event) => event == 'LOADED' || event == 'ERROR';
 }
 
 class ShowListener extends PubstarListener {
   final OnHide? onHide;
   final OnShowed? onShowed;
   ShowListener({this.onHide, this.onShowed, super.onError});
+
+  @override
+  bool shouldRemove(String event) => event == 'SHOWED' || event == 'ERROR';
 }
 
 class LoadAndShowListener extends PubstarListener {
@@ -50,6 +61,9 @@ class LoadAndShowListener extends PubstarListener {
     this.onHide,
     this.onShowed,
   });
+
+  @override
+  bool shouldRemove(String event) => event == 'HIDE' || event == 'ERROR';
 }
 
 class CallbackHandler {
@@ -90,6 +104,10 @@ class CallbackHandler {
       _handleShowListener(listener, event, map);
     } else if (listener is LoadAndShowListener) {
       _handleLoadAndShowListener(listener, event, map);
+    }
+
+    if (listener.shouldRemove(event)) {
+      _listeners.remove(cbId);
     }
   }
 
@@ -193,13 +211,6 @@ class CallbackHandler {
     final callbackId = generateCallbackId();
     _listeners[callbackId] = listener;
 
-    try {
-      await action(callbackId);
-    } finally {
-      print(
-        "FLUTTER - sdk: withCallbackListener called with callbackId: $callbackId",
-      );
-      _listeners.remove(callbackId);
-    }
+    await action(callbackId);
   }
 }
