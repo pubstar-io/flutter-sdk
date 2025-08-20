@@ -32,7 +32,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     try {
       await CallbackHandler.withCallbackListener(
         LoadListener(
-          onLoaded: () => print("FLUTTER - sdk: onLoaded"),
+          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAd"),
           onError:
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
@@ -54,8 +54,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     try {
       await CallbackHandler.withCallbackListener(
         ShowListener(
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
-          onHide: () => print("FLUTTER - sdk: onHide"),
+          onShowed: () => print("FLUTTER - sdk: onShowed showAd"),
+          onHide: () => print("FLUTTER - sdk: onHide showAd"),
           onError:
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
@@ -83,8 +83,8 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     try {
       await CallbackHandler.withCallbackListener(
         ShowListener(
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
-          onHide: () => print("FLUTTER - sdk: onHide"),
+          onShowed: () => print("FLUTTER - sdk: onShowed showAdWithViewId"),
+          onHide: () => print("FLUTTER - sdk: onHide showAdWithViewId"),
           onError:
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
@@ -114,9 +114,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide"),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded"),
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
+          onHide: () => print("FLUTTER - sdk: onHide loadAndShowAd"),
+          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowAd"),
+          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowAd"),
         ),
         (cbId) => methodChannel.invokeMethod('loadAndShowAd', {
           'adId': adId,
@@ -144,9 +144,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide"),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded"),
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
+          onHide: () => print("FLUTTER - sdk: onHide loadAndShowAdWithViewId"),
+          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowAdWithViewId"),
+          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowAdWithViewId"),
         ),
         (cbId) => methodChannel.invokeMethod('loadAndShowAdWithViewId', {
           'adId': adId,
@@ -176,9 +176,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide"),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded"),
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
+          onHide: () => print("FLUTTER - sdk: onHide loadAndShowBannerAd"),
+          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowBannerAd"),
+          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowBannerAd"),
         ),
         (cbId) => methodChannel.invokeMethod('loadAndShowBannerAd', {
           'adId': adId,
@@ -209,9 +209,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide"),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded"),
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
+          onHide: () => print("FLUTTER - sdk: onHide loadAndShowNativeAd"),
+          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowNativeAd"),
+          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowNativeAd"),
         ),
         (cbId) => methodChannel.invokeMethod('loadAndShowNativeAd', {
           'adId': adId,
@@ -242,9 +242,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
               (error) => print(
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
-          onHide: () => print("FLUTTER - sdk: onHide"),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded"),
-          onShowed: () => print("FLUTTER - sdk: onShowed"),
+          onHide: () => print("FLUTTER - sdk: onHide loadAndShowVideoAd"),
+          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowVideoAd"),
+          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowVideoAd"),
         ),
         (cbId) => methodChannel.invokeMethod('loadAndShowVideoAd', {
           'adId': adId,

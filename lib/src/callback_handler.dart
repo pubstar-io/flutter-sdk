@@ -86,15 +86,10 @@ class CallbackHandler {
     final String event = (map['event'] as String?) ?? '';
     final String? cbId = map['cbId'] as String?;
 
-    print("FLUTTER - sdk: Callback received - event: $event - cbId: $cbId");
-    print("FLUTTER - sdk: length listeners: ${_listeners.keys.toList()}");
-
     if (cbId == null) return;
 
     final listener = _listeners[cbId];
     if (listener == null) return;
-
-    print("FLUTTER - sdk: type listener is ${listener.runtimeType}");
 
     if (listener is InitListener) {
       _handleInitListener(listener, event, map);
