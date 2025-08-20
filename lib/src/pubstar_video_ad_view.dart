@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_core.dart';
 
@@ -26,6 +27,10 @@ class PubstarVideoAdView extends StatelessWidget {
     super.key,
     required this.adId,
     required this.media,
+    this.onError,
+    this.onLoaded,
+    this.onHide,
+    this.onShowed,
   });
 
   /// The ad ID to be loaded and displayed in this view.
@@ -38,11 +43,22 @@ class PubstarVideoAdView extends StatelessWidget {
   /// This should be a URL string as required.
   final String media;
 
+  final OnError? onError;
+  final OnLoaded? onLoaded;
+  final OnHide? onHide;
+  final OnShowed? onShowed;
+
   onPlatformViewCreated(int viewId) {
     PubstarIo.instance.loadAndShowVideoAd(
       adId: adId,
       viewId: viewId,
       media: media,
+      listener: LoadAndShowListener(
+        onError: onError,
+        onHide: onHide,
+        onLoaded: onLoaded,
+        onShowed: onShowed,
+      ),
     );
   }
 
