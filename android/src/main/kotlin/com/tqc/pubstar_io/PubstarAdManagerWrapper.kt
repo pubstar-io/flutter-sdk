@@ -68,7 +68,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
     fun showAd(
         adId: String,
         view: ViewGroup? = null,
-        onAdHide: () -> Unit,
+        onAdHide: (RewardModel?) -> Unit,
         onAdShowed: () -> Unit,
         onError: (ErrorCode) -> Unit,
     ) {
@@ -78,7 +78,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             view,
             object : AdShowedListener {
                 override fun onAdHide(any: RewardModel?) {
-                    onAdHide()
+                    onAdHide(any)
                 }
 
                 override fun onAdShowed() {
@@ -98,7 +98,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         view: ViewGroup? = null,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
-        onAdHide: () -> Unit,
+        onAdHide: (RewardModel?) -> Unit,
         onAdShowed: () -> Unit,
         onAdShowedError: (ErrorCode) -> Unit,
     ) {
@@ -117,7 +117,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             },
             object : AdShowedListener {
                 override fun onAdHide(any: RewardModel?) {
-                    onAdHide()
+                    onAdHide(any)
                 }
 
                 override fun onAdShowed() {
@@ -138,7 +138,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         isAllowLoadNext: Boolean = true,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
-        onAdHide: () -> Unit,
+        onAdHide: (RewardModel?) -> Unit,
         onAdShowed: () -> Unit,
         onAdShowedError: (ErrorCode) -> Unit,
     ) {
@@ -160,7 +160,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             .adShowedListener(
                 adShowedListener = object : AdShowedListener {
                     override fun onAdHide(any: RewardModel?) {
-                        onAdHide()
+                        onAdHide(any)
                     }
 
                     override fun onAdShowed() {
@@ -188,7 +188,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         isAllowLoadNext: Boolean = true,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
-        onAdHide: () -> Unit,
+        onAdHide: (RewardModel?) -> Unit,
         onAdShowed: () -> Unit,
         onAdShowedError: (ErrorCode) -> Unit,
     ) {
@@ -210,7 +210,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             .adShowedListener(
                 adShowedListener = object : AdShowedListener {
                     override fun onAdHide(any: RewardModel?) {
-                        onAdHide()
+                        onAdHide(any)
                     }
 
                     override fun onAdShowed() {
@@ -236,7 +236,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         media: MediaPlayer,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
-        onAdHide: () -> Unit,
+        onAdHide: (RewardModel?) -> Unit,
         onAdShowed: () -> Unit,
         onAdShowedError: (ErrorCode) -> Unit,
     ) {
@@ -258,7 +258,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             .adShowedListener(
                 adShowedListener = object : AdShowedListener {
                     override fun onAdHide(any: RewardModel?) {
-                        onAdHide()
+                        onAdHide(any)
                     }
 
                     override fun onAdShowed() {

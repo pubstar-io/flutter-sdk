@@ -17,6 +17,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.pubstar.mobile.ads.base.BannerAdRequest
 import io.pubstar.mobile.ads.base.NativeAdRequest
 import io.pubstar.mobile.ads.model.ErrorCode
+import io.pubstar.mobile.ads.model.RewardModel
 
 
 enum class PubstarAdEvent {
@@ -96,11 +97,20 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         }
 
-        fun onAdHideCallback(callbackId: String): () -> Unit {
-            return {
+        fun onAdHideCallback(callbackId: String): (reward: RewardModel?) -> Unit {
+            return { reward ->
+                var payload: Map<String, Any?> = emptyMap()
+                if (reward != null) {
+                    payload = mapOf(
+                        "type" to reward.type,
+                        "amount" to reward.amount
+                    )
+                }
+
                 emitCallback(
                     event = PubstarAdEvent.HIDE,
-                    cbId = callbackId
+                    cbId = callbackId,
+                    payload = payload,
                 )
             }
         }

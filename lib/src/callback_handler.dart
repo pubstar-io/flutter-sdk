@@ -8,6 +8,14 @@ class PubstarError {
   final String? name;
   final String? message;
   const PubstarError({this.code, this.name, this.message});
+
+  static PubstarError fromMap(Map<String, dynamic> map) {
+    return PubstarError(
+      code: (map['code'] as int).toInt(),
+      name: map['name'] as String,
+      message: map['message'] as String,
+    );
+  }
 }
 
 class PubstarReward {
@@ -146,13 +154,7 @@ class CallbackHandler {
         listener.onInit?.call();
         break;
       case 'ERROR':
-        listener.onError?.call(
-          PubstarError(
-            code: (map['code'] as int).toInt(),
-            name: map['name'] as String,
-            message: map['message'] as String,
-          ),
-        );
+        listener.onError?.call(PubstarError.fromMap(map));
         break;
     }
   }
@@ -167,13 +169,7 @@ class CallbackHandler {
         listener.onLoaded?.call();
         break;
       case 'ERROR':
-        listener.onError?.call(
-          PubstarError(
-            code: (map['code'] as int).toInt(),
-            name: map['name'] as String,
-            message: map['message'] as String,
-          ),
-        );
+        listener.onError?.call(PubstarError.fromMap(map));
         break;
     }
   }
@@ -191,13 +187,7 @@ class CallbackHandler {
         listener.onHide?.call(PubstarReward.fromMap(map));
         break;
       case 'ERROR':
-        listener.onError?.call(
-          PubstarError(
-            code: (map['code'] as int).toInt(),
-            name: map['name'] as String,
-            message: map['message'] as String,
-          ),
-        );
+        listener.onError?.call(PubstarError.fromMap(map));
         break;
     }
   }
@@ -218,13 +208,7 @@ class CallbackHandler {
         listener.onHide?.call(PubstarReward.fromMap(map));
         break;
       case 'ERROR':
-        listener.onError?.call(
-          PubstarError(
-            code: (map['code'] as int).toInt(),
-            name: map['name'] as String,
-            message: map['message'] as String,
-          ),
-        );
+        listener.onError?.call(PubstarError.fromMap(map));
         break;
     }
   }
