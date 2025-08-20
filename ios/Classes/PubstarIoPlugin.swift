@@ -230,14 +230,13 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
         
         func onErrorCallback(callbackId: String, message: String = "Pubstar is error") -> (ErrorCode) -> Void {
             return { errorCode in
-                print("onErrorCallback - errorCode: \(errorCode) - error: \(errorCode.rawValue)")
                 channel.invokeMethod(
                     self.methodChannelCallback,
                     arguments: [
                         "cbId": callbackId,
                         "event": "\(PubstarAdEvent.ERROR)",
-                        "code": "code",
-                        "name": "name",
+                        "code": errorCode.rawValue,
+                        "name": "\(errorCode)",
                         "message": message
                     ]
                 )

@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:pubstar_io/src/method_channel_name.dart';
 
 enum PubstarAdEvent { loaded, showed, hide, error, done }
 
@@ -80,13 +81,14 @@ class CallbackHandler {
   }
 
   static Future<void> _handleNativeCallback(MethodCall call) async {
-    print("FLUTTER - sdk: _handleNativeCallback called - call.method: ${call.method}");
-    if (call.method != 'pubstar_io#callback') return;
+    print(
+      "FLUTTER - sdk: _handleNativeCallback called - call.method: ${call.method}",
+    );
+    if (call.method != Constance.methodChannelCallback) return;
 
     final map = Map<String, dynamic>.from(call.arguments as Map);
     final String event = (map['event'] as String?) ?? '';
     final String? cbId = map['cbId'] as String?;
-
 
     print("FLUTTER - sdk: _listeners: ${_listeners.keys.toList()}");
     print("FLUTTER - sdk: event: $event - cbId: $cbId");
@@ -108,7 +110,11 @@ class CallbackHandler {
       _handleLoadAndShowListener(listener, event, map);
     }
 
+    print(
+      "FLUTTER - sdk: listener.shouldRemove: ${listener.shouldRemove(event)}",
+    );
     if (listener.shouldRemove(event)) {
+      print("FLUTTER - sdk: listener $cbId has been removed");
       _listeners.remove(cbId);
     }
   }
