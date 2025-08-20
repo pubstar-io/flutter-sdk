@@ -37,7 +37,11 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     throw UnimplementedError('showAd() has not been implemented.');
   }
 
-  Future<void> showAdWithViewId({required String adId, required int viewId}) {
+  Future<void> showAdWithViewId({
+    required String adId,
+    required int viewId,
+    ShowListener? listener,
+  }) {
     throw UnimplementedError('showAdWithViewId() has not been implemented.');
   }
 
@@ -48,6 +52,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
   Future<void> loadAndShowAdWithViewId({
     required String adId,
     required int viewId,
+    LoadAndShowListener? listener,
   }) {
     throw UnimplementedError(
       'loadAndShowAdWithViewId() has not been implemented.',
@@ -58,6 +63,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     required String adId,
     required int viewId,
     required PubstarAdSize tag,
+    LoadAndShowListener? listener,
   }) {
     throw UnimplementedError('loadAndShowBannerAd() has not been implemented.');
   }
@@ -66,6 +72,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
+    LoadAndShowListener? listener,
   }) {
     throw UnimplementedError('loadAndShowNativeAd() has not been implemented.');
   }
@@ -74,6 +81,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     required String adId,
     required int viewId,
     required String media,
+    LoadAndShowListener? listener,
   }) {
     throw UnimplementedError('loadAndShowVideoAd() has not been implemented.');
   }

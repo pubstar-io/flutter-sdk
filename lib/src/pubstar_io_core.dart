@@ -67,10 +67,12 @@ class PubstarIo {
   Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
+    ShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.showAdWithViewId(
       adId: adId,
       viewId: viewId,
+      listener: listener,
     );
   }
 
@@ -100,10 +102,12 @@ class PubstarIo {
   Future<void> loadAndShowAdWithViewId({
     required String adId,
     required int viewId,
+    LoadAndShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowAdWithViewId(
       adId: adId,
       viewId: viewId,
+      listener: listener,
     );
   }
 
@@ -111,11 +115,13 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required PubstarAdSize size,
+    LoadAndShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowBannerAd(
       adId: adId,
       viewId: viewId,
       tag: size,
+      listener: listener,
     );
   }
 
@@ -123,11 +129,13 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required PubstarAdSize size,
+    LoadAndShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowNativeAd(
       adId: adId,
       viewId: viewId,
       typeSize: size,
+      listener: listener,
     );
   }
 
@@ -135,11 +143,13 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required String media,
+    LoadAndShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowVideoAd(
       adId: adId,
       viewId: viewId,
       media: media,
+      listener: listener,
     );
   }
 }

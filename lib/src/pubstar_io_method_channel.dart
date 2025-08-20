@@ -70,20 +70,11 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
+    ShowListener? listener,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
-        ShowListener(
-          onShowed: () => print("FLUTTER - sdk: onShowed showAdWithViewId"),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide showAdWithViewId - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-              ),
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('showAdWithViewId', {
           'adId': adId,
           "viewId": viewId,
@@ -122,23 +113,11 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   Future<void> loadAndShowAdWithViewId({
     required String adId,
     required int viewId,
+    LoadAndShowListener? listener,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
-        LoadAndShowListener(
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-              ),
-          onLoaded:
-              () => print("FLUTTER - sdk: onLoaded loadAndShowAdWithViewId"),
-          onShowed:
-              () => print("FLUTTER - sdk: onShowed loadAndShowAdWithViewId"),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('loadAndShowAdWithViewId', {
           'adId': adId,
           'viewId': viewId,
@@ -159,21 +138,11 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required PubstarAdSize tag,
+    LoadAndShowListener? listener,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
-        LoadAndShowListener(
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide loadAndShowBannerAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-              ),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowBannerAd"),
-          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowBannerAd"),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('loadAndShowBannerAd', {
           'adId': adId,
           'viewId': viewId,
@@ -195,21 +164,11 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
+    LoadAndShowListener? listener,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
-        LoadAndShowListener(
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide loadAndShowNativeAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-              ),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowNativeAd"),
-          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowNativeAd"),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('loadAndShowNativeAd', {
           'adId': adId,
           'viewId': viewId,
@@ -231,21 +190,11 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required String media,
+    LoadAndShowListener? listener,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
-        LoadAndShowListener(
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide loadAndShowVideoAd  - type: ${reward?.type} - amount: ${reward?.amount}",
-              ),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowVideoAd"),
-          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowVideoAd"),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('loadAndShowVideoAd', {
           'adId': adId,
           'viewId': viewId,

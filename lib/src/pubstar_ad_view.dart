@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_core.dart';
 
@@ -50,7 +51,7 @@ class PubstarAdView extends StatelessWidget {
   /// Example usage:
   /// ```dart
   /// PubstarAdView(adId: 'your_ad_id')
-  /// PubstarAdView(adId: 'your_ad_id', mode: PubstarAdViewMode.loadAndShow)
+  /// PubstarAdView(adId: 'your_ad_id', mode: PubstarAdViewMode.onlyShow)
   /// ```
   ///
   /// __Usage notes:__
@@ -107,6 +108,22 @@ class PubstarAdView extends StatelessWidget {
             adId: adId,
             viewId: viewId,
             size: sizeValue,
+            listener: LoadAndShowListener(
+              onError:
+                  (error) => print(
+                    "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+                  ),
+              onHide:
+                  (reward) => print(
+                    "FLUTTER - app: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+                  ),
+              onLoaded:
+                  () =>
+                      print("FLUTTER - app: onLoaded loadAndShowAdWithViewId"),
+              onShowed:
+                  () =>
+                      print("FLUTTER - app: onShowed loadAndShowAdWithViewId"),
+            ),
           );
           break;
         case PubstarAdType.native:
@@ -114,6 +131,22 @@ class PubstarAdView extends StatelessWidget {
             adId: adId,
             viewId: viewId,
             size: sizeValue,
+            listener: LoadAndShowListener(
+              onError:
+                  (error) => print(
+                    "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+                  ),
+              onHide:
+                  (reward) => print(
+                    "FLUTTER - app: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+                  ),
+              onLoaded:
+                  () =>
+                      print("FLUTTER - app: onLoaded loadAndShowAdWithViewId"),
+              onShowed:
+                  () =>
+                      print("FLUTTER - app: onShowed loadAndShowAdWithViewId"),
+            ),
           );
           break;
       }
@@ -122,11 +155,42 @@ class PubstarAdView extends StatelessWidget {
     }
 
     if (mode == PubstarAdViewMode.onlyShow) {
-      PubstarIo.instance.showAdWithViewId(adId: adId, viewId: viewId);
+      PubstarIo.instance.showAdWithViewId(
+        adId: adId,
+        viewId: viewId,
+        listener: ShowListener(
+          onShowed: () => print("FLUTTER - sdk: onShowed showAdWithViewId"),
+          onHide:
+              (reward) => print(
+                "FLUTTER - sdk: onHide showAdWithViewId - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              ),
+          onError:
+              (error) => print(
+                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
+              ),
+        ),
+      );
       return;
     }
 
-    PubstarIo.instance.loadAndShowAdWithViewId(adId: adId, viewId: viewId);
+    PubstarIo.instance.loadAndShowAdWithViewId(
+      adId: adId,
+      viewId: viewId,
+      listener: LoadAndShowListener(
+        onError:
+            (error) => print(
+              "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+            ),
+        onHide:
+            (reward) => print(
+              "FLUTTER - app: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+            ),
+        onLoaded:
+            () => print("FLUTTER - app: onLoaded loadAndShowAdWithViewId"),
+        onShowed:
+            () => print("FLUTTER - app: onShowed loadAndShowAdWithViewId"),
+      ),
+    );
   }
 
   @override
