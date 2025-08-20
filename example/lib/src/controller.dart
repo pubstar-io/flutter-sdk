@@ -13,12 +13,14 @@ class Controller {
   Future<void> initPubstar() async {
     await PubstarIo.instance.init();
 
+    // *** Preload Ad ***
     // await loadAd(AdIdExample.bannerId);
     // await loadAd(AdIdExample.nativeId);
     // await loadAd(AdIdExample.interstitialId);
     // await loadAd(AdIdExample.openId);
     // await loadAd(AdIdExample.rewardedId);
     // await loadAd(AdIdExample.videoId);
+    // *** End preload Ad ***
   }
 
   Future<void> loadAd(String adId) async {
