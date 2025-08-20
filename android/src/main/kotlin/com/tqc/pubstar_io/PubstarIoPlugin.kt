@@ -250,14 +250,12 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
                 val tag = Validate.tag(call.argument<String>("tag"), result) ?: return
                 val size = extractBannerSize(tag)
-                val isAllowLoadNext = Validate.isAllowLoadNext(call.argument<Boolean>("isAllowLoadNext"))
                 val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowBannerAd(
                     adId,
                     adView,
                     size,
-                    isAllowLoadNext,
                     onAdLoaderError = onErrorCallback(
                         callbackId = callbackId,
                         message = "onAdLoader is failed."
@@ -277,14 +275,12 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
                 val typeSize = Validate.typeSize(call.argument<String>("typeSize"), result) ?: return
                 val size = extractNativeSize(typeSize)
-                val isAllowLoadNext = Validate.isAllowLoadNext(call.argument<Boolean>("isAllowLoadNext"))
                 val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowNativeAd(
                     adId,
                     adView,
                     size,
-                    isAllowLoadNext,
                     onAdLoaderError = onErrorCallback(
                         callbackId = callbackId,
                         message = "onAdLoader is failed."

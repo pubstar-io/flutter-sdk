@@ -135,7 +135,6 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         adId: String,
         view: ViewGroup? = null,
         size: NativeAdRequest.Type,
-        isAllowLoadNext: Boolean = true,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
         onAdHide: (RewardModel?) -> Unit,
@@ -143,7 +142,6 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         onAdShowedError: (ErrorCode) -> Unit,
     ) {
         val request = NativeAdRequest.Builder(mContext)
-            .isAllowLoadNext(isAllowLoadNext)
             .withView(view)
             .sizeType(size)
             .adLoaderListener(
@@ -185,7 +183,6 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         adId: String,
         view: ViewGroup? = null,
         size: BannerAdRequest.AdTag,
-        isAllowLoadNext: Boolean = true,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
         onAdHide: (RewardModel?) -> Unit,
@@ -193,7 +190,6 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         onAdShowedError: (ErrorCode) -> Unit,
     ) {
         val request = BannerAdRequest.Builder(mContext)
-            .isAllowLoadNext(isAllowLoadNext)
             .withView(view)
             .tag(size)
             .adLoaderListener(

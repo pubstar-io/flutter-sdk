@@ -89,14 +89,6 @@ object Validate {
         return typeSize
     }
 
-    fun isAllowLoadNext(isAllowLoadNext: Any?): Boolean {
-        if (isAllowLoadNext !is Boolean) {
-            return true
-        }
-
-        return isAllowLoadNext
-    }
-
     fun media(media: Any?, result: Result): String? {
         if (media !is String) {
             result.error(
