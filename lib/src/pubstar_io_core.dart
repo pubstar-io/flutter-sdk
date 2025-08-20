@@ -107,13 +107,11 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required PubstarAdSize size,
-    required bool isAllowLoadNext,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowBannerAd(
       adId: adId,
       viewId: viewId,
       tag: size,
-      isAllowLoadNext: isAllowLoadNext,
     );
   }
 
@@ -121,13 +119,11 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required PubstarAdSize size,
-    required bool isAllowLoadNext,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowNativeAd(
       adId: adId,
       viewId: viewId,
       typeSize: size,
-      isAllowLoadNext: isAllowLoadNext,
     );
   }
 

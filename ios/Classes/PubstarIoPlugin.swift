@@ -396,7 +396,6 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             guard let adId = call.extractAdId(result: result) else { return }
             guard let viewId = call.extractViewId(result: result) else { return }
             let tag = call.extractBannerSize(result: result)
-            let isAllowLoadNext = call.extractIsAllowLoadNext(result: result)
             guard let callbackId = call.extractCallbackIdId(result: result) else { return }
             
             guard let adView = PubstarAdViewRegistry.shared.views[viewId] else {
@@ -414,7 +413,6 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 adId: adId,
                 view: adView,
                 tag: tag,
-                isAllowLoadNext: isAllowLoadNext,
                 onLoaderError: onErrorCallback(callbackId: callbackId, message: "onAdLoader is failed."),
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
@@ -425,7 +423,6 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             guard let adId = call.extractAdId(result: result) else { return }
             guard let viewId = call.extractViewId(result: result) else { return }
             let size = call.extractNativeSize(result: result)
-            let isAllowLoadNext = call.extractIsAllowLoadNext(result: result)
             guard let callbackId = call.extractCallbackIdId(result: result) else { return }
             
             guard let adView = PubstarAdViewRegistry.shared.views[viewId] else {
@@ -443,7 +440,6 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 adId: adId,
                 view: adView,
                 size: size,
-                isAllowLoadNext: isAllowLoadNext,
                 onLoaderError: onErrorCallback(callbackId: callbackId, message: "onAdLoader is failed."),
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),

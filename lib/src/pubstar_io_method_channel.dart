@@ -168,7 +168,6 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required PubstarAdSize tag,
-    required bool isAllowLoadNext,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
@@ -185,7 +184,6 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           'adId': adId,
           'viewId': viewId,
           'tag': tag.name,
-          'isAllowLoadNext': isAllowLoadNext,
           'callbackId': cbId,
         }),
       );
@@ -203,7 +201,6 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
-    required bool isAllowLoadNext,
   }) async {
     try {
       await CallbackHandler.withCallbackListener(
@@ -220,7 +217,6 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           'adId': adId,
           'viewId': viewId,
           'typeSize': typeSize.name,
-          'isAllowLoadNext': isAllowLoadNext,
           'callbackId': cbId,
         }),
       );

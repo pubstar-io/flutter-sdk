@@ -64,7 +64,6 @@ class MockPubstarIoPlatform
     required String adId,
     required int viewId,
     required PubstarAdSize tag,
-    required bool isAllowLoadNext,
   }) {
     // TODO: implement loadAndShowBannerAd
     throw UnimplementedError();
@@ -75,7 +74,6 @@ class MockPubstarIoPlatform
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
-    required bool isAllowLoadNext,
   }) {
     // TODO: implement loadAndShowNativeAd
     throw UnimplementedError();

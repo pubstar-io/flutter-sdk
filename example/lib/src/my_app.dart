@@ -58,61 +58,59 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               Text('AD need view Example'),
               const SizedBox(height: 20),
-              Text('Banner AD'),
-              const SizedBox(height: 10),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: PubstarAdView(
-                        adId: AdIdExample.bannerId,
-                        mode: PubstarAdViewMode.loadAndShow,
-                        type: PubstarAdType.banner,
-                        size: PubstarAdSize.small,
-                        isAllowLoadNext: true,
-                      ),
-                    ),
-                  )
-                  : buildPlaceholder(),
+              // Text('Banner AD'),
+              // const SizedBox(height: 10),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 100,
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.bannerId,
+              //           mode: PubstarAdViewMode.loadAndShow,
+              //           type: PubstarAdType.banner,
+              //           size: PubstarAdSize.small,
+              //         ),
+              //       ),
+              //     )
+              //     : buildPlaceholder(),
 
-              Text('Native AD'),
-              const SizedBox(height: 10),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: PubstarAdView(
-                        adId: AdIdExample.nativeId,
-                        mode: PubstarAdViewMode.loadAndShow,
-                        type: PubstarAdType.native,
-                        size: PubstarAdSize.small,
-                        isAllowLoadNext: true,
-                      ),
-                    ),
-                  )
-                  : buildPlaceholder(),
-              const SizedBox(height: 10),
+              // Text('Native AD'),
+              // const SizedBox(height: 10),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 100,
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.nativeId,
+              //           mode: PubstarAdViewMode.loadAndShow,
+              //           type: PubstarAdType.native,
+              //           size: PubstarAdSize.small,
+              //         ),
+              //       ),
+              //     )
+              //     : buildPlaceholder(),
+              // const SizedBox(height: 10),
 
-              Text('Video AD'),
-              const SizedBox(height: 10),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 200,
-                      child: PubstarVideoAdView(
-                        adId: AdIdExample.videoId,
-                        media:
-                            'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
-                      ),
-                    ),
-                  )
-                  : buildPlaceholder(),
+              // Text('Video AD'),
+              // const SizedBox(height: 10),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 200,
+              //         child: PubstarVideoAdView(
+              //           adId: AdIdExample.videoId,
+              //           media:
+              //               'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+              //         ),
+              //       ),
+              //     )
+              //     : buildPlaceholder(),
               const SizedBox(height: 10),
               Text('-------------------------'),
 

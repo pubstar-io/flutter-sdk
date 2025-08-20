@@ -64,7 +64,6 @@ class PubstarAdView extends StatelessWidget {
     this.type,
     this.mode = PubstarAdViewMode.loadAndShow,
     this.size,
-    this.isAllowLoadNext,
   });
 
   /// The ad ID to be loaded and displayed in this view.
@@ -98,16 +97,8 @@ class PubstarAdView extends StatelessWidget {
   /// If null, the default size will be used. Default is [PubstarAdSize.small].
   final PubstarAdSize? size;
 
-  /// isAllowLoadNext property is allow load to cache after dismiss
-  ///
-  /// If true, the ad will be loaded to cache after dismiss.
-  /// If false, the ad will not be loaded to cache after dismiss.
-  /// Default is true.
-  final bool? isAllowLoadNext;
-
   onPlatformViewCreated(int viewId) {
     if (type != null) {
-      final bool isAllowLoadNextValue = isAllowLoadNext ?? true;
       final PubstarAdSize sizeValue = size ?? PubstarAdSize.small;
 
       switch (type!) {
@@ -116,7 +107,6 @@ class PubstarAdView extends StatelessWidget {
             adId: adId,
             viewId: viewId,
             size: sizeValue,
-            isAllowLoadNext: isAllowLoadNextValue,
           );
           break;
         case PubstarAdType.native:
@@ -124,7 +114,6 @@ class PubstarAdView extends StatelessWidget {
             adId: adId,
             viewId: viewId,
             size: sizeValue,
-            isAllowLoadNext: isAllowLoadNextValue,
           );
           break;
       }

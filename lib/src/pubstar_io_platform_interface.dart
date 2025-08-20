@@ -57,7 +57,6 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     required String adId,
     required int viewId,
     required PubstarAdSize tag,
-    required bool isAllowLoadNext,
   }) {
     throw UnimplementedError('loadAndShowBannerAd() has not been implemented.');
   }
@@ -66,7 +65,6 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
-    required bool isAllowLoadNext,
   }) {
     throw UnimplementedError('loadAndShowNativeAd() has not been implemented.');
   }

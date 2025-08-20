@@ -251,12 +251,11 @@ void main() {
     );
 
     test(
-      'loadAndShowBannerAd method should expect adId, viewId, tag and isAllowLoadNext arguments',
+      'loadAndShowBannerAd method should expect adId, viewId, tag arguments',
       () async {
         const testAdId = 'ad_example_id';
         const viewId = 83;
         const tag = PubstarAdSize.small;
-        const isAllowLoadNext = true;
 
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -265,7 +264,6 @@ void main() {
                 'adId': testAdId,
                 'viewId': viewId,
                 'tag': tag.name,
-                'isAllowLoadNext': isAllowLoadNext,
               });
               return null;
             });
@@ -275,7 +273,6 @@ void main() {
             adId: testAdId,
             viewId: viewId,
             tag: tag,
-            isAllowLoadNext: isAllowLoadNext,
           ),
           returnsNormally,
         );
@@ -288,7 +285,6 @@ void main() {
         const testAdId = 'ad_example_id';
         const viewId = 83;
         const tag = PubstarAdSize.small;
-        const isAllowLoadNext = true;
 
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -303,7 +299,6 @@ void main() {
             adId: testAdId,
             viewId: viewId,
             tag: tag,
-            isAllowLoadNext: isAllowLoadNext,
           ),
           throwsA(isA<PubstarIoException>()),
         );
@@ -311,12 +306,11 @@ void main() {
     );
 
     test(
-      'loadAndShowBannerAd method should expect adId, viewId, tag and isAllowLoadNext arguments',
+      'loadAndShowBannerAd method should expect adId, viewId, tag arguments',
       () async {
         const testAdId = 'ad_example_id';
         const viewId = 83;
         const tag = PubstarAdSize.small;
-        const isAllowLoadNext = true;
 
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -325,7 +319,6 @@ void main() {
                 'adId': testAdId,
                 'viewId': viewId,
                 'tag': tag.name,
-                'isAllowLoadNext': isAllowLoadNext,
               });
               return null;
             });
@@ -335,7 +328,6 @@ void main() {
             adId: testAdId,
             viewId: viewId,
             tag: tag,
-            isAllowLoadNext: isAllowLoadNext,
           ),
           returnsNormally,
         );
@@ -348,7 +340,6 @@ void main() {
         const testAdId = 'ad_example_id';
         const viewId = 83;
         const tag = PubstarAdSize.small;
-        const isAllowLoadNext = true;
 
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -363,7 +354,6 @@ void main() {
             adId: testAdId,
             viewId: viewId,
             tag: tag,
-            isAllowLoadNext: isAllowLoadNext,
           ),
           throwsA(isA<PubstarIoException>()),
         );
@@ -371,7 +361,7 @@ void main() {
     );
 
     test(
-      'loadAndShowVideoAd method should expect adId, viewId, tag and isAllowLoadNext arguments',
+      'loadAndShowVideoAd method should expect adId, viewId, tag arguments',
       () async {
         const testAdId = 'ad_example_id';
         const viewId = 83;

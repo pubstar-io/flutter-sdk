@@ -124,7 +124,6 @@ public final class PubstarAdManagerWrapper {
         adId: String,
         view: UIView? = nil,
         size: NativeAdRequest.TypeSize,
-        isAllowLoadNext: Bool = true,
         onLoaderError: @escaping (ErrorCode) -> Void,
         onLoaded: @escaping () -> Void,
         onHide: @escaping (RewardModel?) -> Void,
@@ -150,7 +149,6 @@ public final class PubstarAdManagerWrapper {
         }
         
         let request = NativeAdRequest.Builder(context: _context!)
-            .isAllowLoadNext(isAllowLoadNext)
             .withView(view)
             .sizeType(size)
             .adLoaderListener(adNetLoaderListener)
@@ -168,7 +166,6 @@ public final class PubstarAdManagerWrapper {
         adId: String,
         view: UIView? = nil,
         tag: BannerAdRequest.AdTag,
-        isAllowLoadNext: Bool = true,
         onLoaderError: @escaping (ErrorCode) -> Void,
         onLoaded: @escaping () -> Void,
         onHide: @escaping (RewardModel?) -> Void,
@@ -194,7 +191,6 @@ public final class PubstarAdManagerWrapper {
         }
         
         let request = BannerAdRequest.Builder(context: _context!)
-            .isAllowLoadNext(isAllowLoadNext)
             .withView(view)
             .tag(tag)
             .adLoaderListener(adNetLoaderListener)

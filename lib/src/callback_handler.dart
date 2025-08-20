@@ -73,7 +73,7 @@ class CallbackHandler {
     final String? cbId = map['cbId'] as String?;
 
     print("FLUTTER - sdk: Callback received - event: $event - cbId: $cbId");
-    print("FLUTTER - sdk: length listeners: ${_listeners.length}");
+    print("FLUTTER - sdk: length listeners: ${_listeners.keys.toList()}");
 
     if (cbId == null) return;
 
@@ -147,6 +147,9 @@ class CallbackHandler {
     try {
       await action(callbackId);
     } finally {
+      print(
+        "FLUTTER - sdk: withCallbackListener called with callbackId: $callbackId",
+      );
       _listeners.remove(callbackId);
     }
   }
