@@ -48,20 +48,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<void> showAd(String adId) async {
+  Future<void> showAd(String adId, [ShowListener? listener]) async {
     try {
       await CallbackHandler.withCallbackListener(
-        ShowListener(
-          onShowed: () => print("FLUTTER - sdk: onShowed showAd"),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide showAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-              ),
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError showAd, code: ${error.code} - name: ${error.name} - message: ${error.message}",
-              ),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('showAd', {
           'adId': adId,
           'callbackId': cbId,

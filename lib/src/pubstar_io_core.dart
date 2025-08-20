@@ -50,8 +50,8 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.showAd(adId: 'your_ad_id');
   /// ```
-  Future<void> showAd(String adId) async {
-    await PubstarIoPlatform.instance.showAd(adId);
+  Future<void> showAd(String adId, [ShowListener? listener]) async {
+    await PubstarIoPlatform.instance.showAd(adId, listener);
   }
 
   /// Shows an ad only one in a specific native view, using [adId] and [viewId].
