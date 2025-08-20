@@ -40,7 +40,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         ),
         (cbId) => methodChannel.invokeMethod('loadAd', {
           'adId': adId,
-          'callbackId': adId,
+          'callbackId': cbId,
         }),
       );
     } on PlatformException catch (e) {
@@ -53,8 +53,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<void> showAd({required String adId}) async {
+  Future<void> showAd(String adId) async {
     try {
+      print("FLUTTER - sdk: showAd called");
       await CallbackHandler.withCallbackListener(
         ShowListener(
           onShowed: () => print("FLUTTER - sdk: onShowed showAd"),
@@ -66,7 +67,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         ),
         (cbId) => methodChannel.invokeMethod('showAd', {
           'adId': adId,
-          'callbackId': adId,
+          'callbackId': cbId,
         }),
       );
     } on PlatformException catch (e) {

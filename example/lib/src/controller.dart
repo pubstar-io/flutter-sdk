@@ -26,10 +26,14 @@ class Controller {
   }
 
   Future<void> showAd(String adId) async {
-    await PubstarIo.instance.showAd(adId: adId);
+    await PubstarIo.instance.showAd(adId);
   }
 
   Future<void> loadAndShowAd(String adId) async {
-    await PubstarIo.instance.loadAndShowAd(adId);
+    // await PubstarIo.instance.loadAndShowAd(adId);
+
+
+    // await PubstarIo.instance.loadAd(adId);
+    await PubstarIo.instance.showAd(adId);
   }
 }
