@@ -38,7 +38,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
         ),
-        (cbId) => methodChannel.invokeMethod('loadAd', {'callbackId': adId}),
+        (cbId) => methodChannel.invokeMethod('loadAd', {
+          'adId': adId,
+          'callbackId': adId,
+        }),
       );
     } on PlatformException catch (e) {
       throw PubstarIoException(
@@ -145,8 +148,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
                 "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
               ),
           onHide: () => print("FLUTTER - sdk: onHide loadAndShowAdWithViewId"),
-          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAndShowAdWithViewId"),
-          onShowed: () => print("FLUTTER - sdk: onShowed loadAndShowAdWithViewId"),
+          onLoaded:
+              () => print("FLUTTER - sdk: onLoaded loadAndShowAdWithViewId"),
+          onShowed:
+              () => print("FLUTTER - sdk: onShowed loadAndShowAdWithViewId"),
         ),
         (cbId) => methodChannel.invokeMethod('loadAndShowAdWithViewId', {
           'adId': adId,

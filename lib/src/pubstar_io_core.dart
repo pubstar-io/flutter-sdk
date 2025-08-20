@@ -49,7 +49,7 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.showAd(adId: 'your_ad_id');
   /// ```
-  Future<void> showAd({required String adId}) async {
+  Future<void> showAd(String adId) async {
     await PubstarIoPlatform.instance.showAd(adId: adId);
   }
 

@@ -315,9 +315,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             
             PubstarAdManagerWrapper.loadAd(
                 adId: adId,
-                onLoaded: {
-                    result(true)
-                },
+                onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onError: onErrorCallback(callbackId: callbackId, message: "loadAd is failed.")
             )
         case "showAd":
