@@ -16,24 +16,16 @@ class CallbackHandler {
   }
 
   static Future<void> _handleNativeCallback(MethodCall call) async {
-    print(
-      "FLUTTER - sdk: _handleNativeCallback called - call.method: ${call.method}",
-    );
     if (call.method != Constance.methodChannelCallback) return;
 
     final map = Map<String, dynamic>.from(call.arguments as Map);
     final String event = (map['event'] as String?) ?? '';
     final String? cbId = map['cbId'] as String?;
 
-    print("FLUTTER - sdk: _listeners: ${_listeners.keys.toList()}");
-    print("FLUTTER - sdk: event: $event - cbId: $cbId");
-
     if (cbId == null) return;
 
     final listener = _listeners[cbId];
     if (listener == null) return;
-
-    print("FLUTTER - sdk: Type of listener: ${listener.runtimeType}");
 
     if (listener is InitListener) {
       handleInitListener(listener, event, map);
@@ -46,11 +38,7 @@ class CallbackHandler {
       handleLoadAndShowListener(listener as LoadAndShowListener, event, map);
     }
 
-    print(
-      "FLUTTER - sdk: listener.shouldRemove: ${listener.shouldRemove(event)}",
-    );
     if (listener.shouldRemove(event)) {
-      print("FLUTTER - sdk: listener $cbId has been removed");
       _listeners.remove(cbId);
     }
   }
