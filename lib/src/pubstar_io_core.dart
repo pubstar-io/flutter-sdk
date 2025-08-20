@@ -86,7 +86,7 @@ class PubstarIo {
   /// ```
   Future<void> loadAndShowAd(
     String adId, [
-    LoadAndShowListener? listener,
+    LoadAndShowNoViewListener? listener,
   ]) async {
     await PubstarIoPlatform.instance.loadAndShowAd(adId, listener);
   }

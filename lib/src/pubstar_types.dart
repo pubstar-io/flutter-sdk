@@ -88,3 +88,19 @@ class LoadAndShowListener extends PubstarListener {
   @override
   bool shouldRemove(String event) => event == 'SHOWED' || event == 'ERROR';
 }
+
+class LoadAndShowNoViewListener extends PubstarListener {
+  final OnLoaded? onLoaded;
+  final OnHide? onHide;
+  final OnShowed? onShowed;
+
+  LoadAndShowNoViewListener({
+    this.onLoaded,
+    super.onError,
+    this.onHide,
+    this.onShowed,
+  });
+
+  @override
+  bool shouldRemove(String event) => event == 'HIDE' || event == 'ERROR';
+}

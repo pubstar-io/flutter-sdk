@@ -54,7 +54,7 @@ class Controller {
   Future<void> loadAndShowAd(String adId) async {
     await PubstarIo.instance.loadAndShowAd(
       adId,
-      LoadAndShowListener(
+      LoadAndShowNoViewListener(
         onError:
             (error) => print(
               "FLUTTER - app: onError loadAndShowAd, code: ${error.code} - rawCode: ${error.name}",

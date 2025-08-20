@@ -148,7 +148,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.loadAd(AdIdExample.interstitialId);
+                  widget.controller.loadAndShowAd(AdIdExample.interstitialId);
                 },
                 child: const Text('Show Interstitial Ad'),
               ),
@@ -156,7 +156,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  widget.controller.showAd(AdIdExample.interstitialId);
+                  widget.controller.loadAndShowAd(AdIdExample.openId);
                 },
                 child: const Text('Show Open Ad'),
               ),

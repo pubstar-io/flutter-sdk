@@ -91,7 +91,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<void> loadAndShowAd(adId, [LoadAndShowListener? listener]) async {
+  Future<void> loadAndShowAd(adId, [LoadAndShowNoViewListener? listener]) async {
     try {
       await CallbackHandler.withCallbackListener(
         listener,

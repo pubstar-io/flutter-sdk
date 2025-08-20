@@ -41,8 +41,9 @@ class CallbackHandler {
       handleLoadListener(listener, event, map);
     } else if (listener is ShowListener) {
       handleShowListener(listener, event, map);
-    } else if (listener is LoadAndShowListener) {
-      handleLoadAndShowListener(listener, event, map);
+    } else if (listener is LoadAndShowListener ||
+        listener is LoadAndShowNoViewListener) {
+      handleLoadAndShowListener(listener as LoadAndShowListener, event, map);
     }
 
     print(
