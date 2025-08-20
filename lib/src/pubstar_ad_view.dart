@@ -65,6 +65,10 @@ class PubstarAdView extends StatelessWidget {
     this.type,
     this.mode = PubstarAdViewMode.loadAndShow,
     this.size,
+    this.onError,
+    this.onLoaded,
+    this.onHide,
+    this.onShowed,
   });
 
   /// The ad ID to be loaded and displayed in this view.
@@ -98,6 +102,11 @@ class PubstarAdView extends StatelessWidget {
   /// If null, the default size will be used. Default is [PubstarAdSize.small].
   final PubstarAdSize? size;
 
+  final OnError? onError;
+  final OnLoaded? onLoaded;
+  final OnHide? onHide;
+  final OnShowed? onShowed;
+
   onPlatformViewCreated(int viewId) {
     if (type != null) {
       final PubstarAdSize sizeValue = size ?? PubstarAdSize.small;
@@ -109,20 +118,10 @@ class PubstarAdView extends StatelessWidget {
             viewId: viewId,
             size: sizeValue,
             listener: LoadAndShowListener(
-              onError:
-                  (error) => print(
-                    "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
-                  ),
-              onHide:
-                  (reward) => print(
-                    "FLUTTER - app: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-                  ),
-              onLoaded:
-                  () =>
-                      print("FLUTTER - app: onLoaded loadAndShowAdWithViewId"),
-              onShowed:
-                  () =>
-                      print("FLUTTER - app: onShowed loadAndShowAdWithViewId"),
+              onError: onError,
+              onHide: onHide,
+              onLoaded: onLoaded,
+              onShowed: onShowed,
             ),
           );
           break;
@@ -132,20 +131,10 @@ class PubstarAdView extends StatelessWidget {
             viewId: viewId,
             size: sizeValue,
             listener: LoadAndShowListener(
-              onError:
-                  (error) => print(
-                    "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
-                  ),
-              onHide:
-                  (reward) => print(
-                    "FLUTTER - app: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-                  ),
-              onLoaded:
-                  () =>
-                      print("FLUTTER - app: onLoaded loadAndShowAdWithViewId"),
-              onShowed:
-                  () =>
-                      print("FLUTTER - app: onShowed loadAndShowAdWithViewId"),
+              onError: onError,
+              onHide: onHide,
+              onLoaded: onLoaded,
+              onShowed: onShowed,
             ),
           );
           break;
@@ -159,15 +148,9 @@ class PubstarAdView extends StatelessWidget {
         adId: adId,
         viewId: viewId,
         listener: ShowListener(
-          onShowed: () => print("FLUTTER - sdk: onShowed showAdWithViewId"),
-          onHide:
-              (reward) => print(
-                "FLUTTER - sdk: onHide showAdWithViewId - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-              ),
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
+          onError: onError,
+          onHide: onHide,
+          onShowed: onShowed,
         ),
       );
       return;
@@ -177,18 +160,10 @@ class PubstarAdView extends StatelessWidget {
       adId: adId,
       viewId: viewId,
       listener: LoadAndShowListener(
-        onError:
-            (error) => print(
-              "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
-            ),
-        onHide:
-            (reward) => print(
-              "FLUTTER - app: onHide loadAndShowAdWithViewId  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-            ),
-        onLoaded:
-            () => print("FLUTTER - app: onLoaded loadAndShowAdWithViewId"),
-        onShowed:
-            () => print("FLUTTER - app: onShowed loadAndShowAdWithViewId"),
+        onError: onError,
+        onHide: onHide,
+        onLoaded: onLoaded,
+        onShowed: onShowed,
       ),
     );
   }

@@ -71,6 +71,22 @@ class _MyAppState extends State<MyApp> {
                         mode: PubstarAdViewMode.loadAndShow,
                         type: PubstarAdType.banner,
                         size: PubstarAdSize.small,
+                        onError:
+                            (error) => print(
+                              "FLUTTER - app: onError banner, code: ${error.code} - rawCode: ${error.name}",
+                            ),
+                        onHide:
+                            (reward) => print(
+                              "FLUTTER - app: onHide banner  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+                            ),
+                        onLoaded:
+                            () => print(
+                              "FLUTTER - app: onLoaded banner",
+                            ),
+                        onShowed:
+                            () => print(
+                              "FLUTTER - app: onShowed banner",
+                            ),
                       ),
                     ),
                   )
@@ -89,6 +105,22 @@ class _MyAppState extends State<MyApp> {
                         mode: PubstarAdViewMode.loadAndShow,
                         type: PubstarAdType.native,
                         size: PubstarAdSize.small,
+                        onError:
+                            (error) => print(
+                              "FLUTTER - app: onError native, code: ${error.code} - rawCode: ${error.name}",
+                            ),
+                        onHide:
+                            (reward) => print(
+                              "FLUTTER - app: onHide native  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+                            ),
+                        onLoaded:
+                            () => print(
+                              "FLUTTER - app: onLoaded native",
+                            ),
+                        onShowed:
+                            () => print(
+                              "FLUTTER - app: onShowed native",
+                            ),
                       ),
                     ),
                   )

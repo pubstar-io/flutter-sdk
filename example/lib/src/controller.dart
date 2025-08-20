@@ -28,7 +28,7 @@ class Controller {
         onLoaded: () => print("FLUTTER - app: onLoaded loadAd"),
         onError:
             (error) => print(
-              "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+              "FLUTTER - app: onError loadAd, code: ${error.code} - rawCode: ${error.name}",
             ),
       ),
     );
@@ -57,7 +57,7 @@ class Controller {
       LoadAndShowListener(
         onError:
             (error) => print(
-              "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+              "FLUTTER - app: onError loadAndShowAd, code: ${error.code} - rawCode: ${error.name}",
             ),
         onHide:
             (reward) => print(
