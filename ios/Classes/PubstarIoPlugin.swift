@@ -67,10 +67,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
         
         func onAdHideCallback(callbackId: String) -> (RewardModel?) -> Void {
             return { reward in
-                var arguments: [String: Any] = [
-                    "cbId": callbackId,
-                    "event": "\(PubstarAdEvent.HIDE)"
-                ]
+                var arguments: [String: Any] = [:]
 
                 if let reward = reward {
                     arguments["type"] = reward.type
