@@ -84,6 +84,10 @@ class CallbackHandler {
 
     if (listener is InitListener) {
       _handleInitListener(listener, event, map);
+    } else if (listener is LoadListener) {
+      _handleLoadListener(listener, event, map);
+    } else if (listener is ShowListener) {
+      _handleShowListener(listener, event, map);
     } else if (listener is LoadAndShowListener) {
       _handleLoadAndShowListener(listener, event, map);
     }
@@ -97,6 +101,51 @@ class CallbackHandler {
     switch (event) {
       case 'INIT':
         listener.onInit?.call();
+        break;
+      case 'ERROR':
+        listener.onError?.call(
+          PubstarError(
+            code: (map['code'] as int).toInt(),
+            name: map['name'] as String,
+            message: map['message'] as String,
+          ),
+        );
+        break;
+    }
+  }
+
+  static void _handleLoadListener(
+    LoadListener listener,
+    String event,
+    Map<String, dynamic> map,
+  ) {
+    switch (event) {
+      case 'LOADED':
+        listener.onLoaded?.call();
+        break;
+      case 'ERROR':
+        listener.onError?.call(
+          PubstarError(
+            code: (map['code'] as int).toInt(),
+            name: map['name'] as String,
+            message: map['message'] as String,
+          ),
+        );
+        break;
+    }
+  }
+
+  static void _handleShowListener(
+    ShowListener listener,
+    String event,
+    Map<String, dynamic> map,
+  ) {
+    switch (event) {
+      case 'SHOWED':
+        listener.onShowed?.call();
+        break;
+      case 'HIDE':
+        listener.onHide?.call();
         break;
       case 'ERROR':
         listener.onError?.call(
