@@ -41,17 +41,26 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
            return
        }
         
+        func invokeAdEvent(callbackId: String, event: PubstarAdEvent, extra: [String: Any]? = nil) {
+            var args: [String: Any] = [
+                "cbId": callbackId,
+                "event": "\(event)"
+            ]
+            if let extra = extra {
+                args.merge(extra) { (_, new) in new }
+            }
+            
+            channel.invokeMethod(methodChannelCallback, arguments: args)
+        }
+        
         func onErrorCallback(callbackId: String, message: String = "Pubstar is error") -> (ErrorCode) -> Void {
             return { errorCode in
-                channel.invokeMethod(
-                    self.methodChannelCallback,
-                    arguments: [
-                        "cbId": callbackId,
-                        "event": "\(PubstarAdEvent.ERROR)",
-                        "code": errorCode.rawValue,
-                        "name": "\(errorCode)",
-                        "message": message
-                    ]
+                invokeAdEvent(
+                    callbackId: callbackId,
+                    event: .ERROR,
+                    extra: ["code": errorCode.rawValue,
+                            "name": "\(errorCode)",
+                            "message": message]
                 )
             }
         }
@@ -68,31 +77,19 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                     arguments["amount"] = reward.amount
                 }
 
-                channel.invokeMethod(self.methodChannelCallback, arguments: arguments)
+                invokeAdEvent(callbackId: callbackId, event: .HIDE, extra: arguments)
             }
         }
         
         func onAdShowedCallback(callbackId: String) -> () -> Void {
             return {
-                channel.invokeMethod(
-                    self.methodChannelCallback,
-                    arguments: [
-                        "cbId": callbackId,
-                        "event": "\(PubstarAdEvent.SHOWED)"
-                    ]
-                )
+                invokeAdEvent(callbackId: callbackId, event: .SHOWED)
             }
         }
         
         func onAdLoadedCallback(callbackId: String) -> () -> Void {
             return {
-                channel.invokeMethod(
-                    self.methodChannelCallback,
-                    arguments: [
-                        "cbId": callbackId,
-                        "event": "\(PubstarAdEvent.LOADED)"
-                    ]
-                )
+                invokeAdEvent(callbackId: callbackId, event: .LOADED)
             }
         }
         
