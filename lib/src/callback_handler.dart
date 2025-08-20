@@ -89,7 +89,7 @@ class LoadAndShowListener extends PubstarListener {
   });
 
   @override
-  bool shouldRemove(String event) => event == 'HIDE' || event == 'ERROR';
+  bool shouldRemove(String event) => event == 'SHOWED' || event == 'ERROR';
 }
 
 class CallbackHandler {
