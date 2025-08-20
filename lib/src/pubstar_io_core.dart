@@ -1,5 +1,6 @@
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
+import 'package:pubstar_io/src/pubstar_types.dart';
 
 /// The main singleton entry-point for Pubstar IO Ads SDK.
 ///
@@ -37,8 +38,8 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.loadAd('your_ad_id');
   /// ```
-  Future<void> loadAd(String adId) async {
-    await PubstarIoPlatform.instance.loadAd(adId);
+  Future<void> loadAd(String adId, [LoadListener? listener]) async {
+    await PubstarIoPlatform.instance.loadAd(adId, listener);
   }
 
   /// Shows an ad only once using the given [adId].

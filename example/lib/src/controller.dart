@@ -22,7 +22,16 @@ class Controller {
   }
 
   Future<void> loadAd(String adId) async {
-    await PubstarIo.instance.loadAd(adId);
+    await PubstarIo.instance.loadAd(
+      adId,
+      LoadListener(
+        onLoaded: () => print("FLUTTER - app: onLoaded loadAd"),
+        onError:
+            (error) => print(
+              "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+            ),
+      ),
+    );
   }
 
   Future<void> showAd(String adId) async {

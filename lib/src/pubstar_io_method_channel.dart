@@ -4,6 +4,7 @@ import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/callback_handler.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_exception.dart';
+import 'package:pubstar_io/src/pubstar_types.dart';
 
 import 'pubstar_io_platform_interface.dart';
 
@@ -28,16 +29,10 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   }
 
   @override
-  Future<void> loadAd(String adId) async {
+  Future<void> loadAd(String adId, [LoadListener? listener]) async {
     try {
       await CallbackHandler.withCallbackListener(
-        LoadListener(
-          onLoaded: () => print("FLUTTER - sdk: onLoaded loadAd"),
-          onError:
-              (error) => print(
-                "FLUTTER - sdk: onError, code: ${error.code} - rawCode: ${error.name}",
-              ),
-        ),
+        listener,
         (cbId) => methodChannel.invokeMethod('loadAd', {
           'adId': adId,
           'callbackId': cbId,

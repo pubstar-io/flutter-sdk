@@ -1,5 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pubstar_io/pubstar_io.dart';
+import 'package:pubstar_io/src/pubstar_types.dart';
 
 import 'pubstar_io_method_channel.dart';
 
@@ -28,7 +29,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     throw UnimplementedError('init() has not been implemented.');
   }
 
-  Future<void> loadAd(String adId) {
+  Future<void> loadAd(String adId, [LoadListener? listener]) {
     throw UnimplementedError('loadAd() has not been implemented.');
   }
 
