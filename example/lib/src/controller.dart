@@ -52,6 +52,20 @@ class Controller {
   }
 
   Future<void> loadAndShowAd(String adId) async {
-    await PubstarIo.instance.loadAndShowAd(adId);
+    await PubstarIo.instance.loadAndShowAd(
+      adId,
+      LoadAndShowListener(
+        onError:
+            (error) => print(
+              "FLUTTER - app: onError, code: ${error.code} - rawCode: ${error.name}",
+            ),
+        onHide:
+            (reward) => print(
+              "FLUTTER - app: onHide loadAndShowAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+            ),
+        onLoaded: () => print("FLUTTER - app: onLoaded loadAndShowAd"),
+        onShowed: () => print("FLUTTER - app: onShowed loadAndShowAd"),
+      ),
+    );
   }
 }

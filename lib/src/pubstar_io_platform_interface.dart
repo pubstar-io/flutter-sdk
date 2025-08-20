@@ -41,7 +41,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     throw UnimplementedError('showAdWithViewId() has not been implemented.');
   }
 
-  Future<void> loadAndShowAd(String adId) {
+  Future<void> loadAndShowAd(String adId, [LoadAndShowListener? listener]) {
     throw UnimplementedError('loadAndShowAd() has not been implemented.');
   }
 

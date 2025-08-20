@@ -128,7 +128,7 @@ class CallbackHandler {
     Future<void> Function(String callbackId) action,
   ) async {
     final callbackId = generateCallbackId();
-    
+
     if (listener != null) {
       _listeners[callbackId] = listener;
     }

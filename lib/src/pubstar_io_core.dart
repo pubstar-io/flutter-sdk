@@ -82,8 +82,11 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.loadAndShowAd('your_ad_id');
   /// ```
-  Future<void> loadAndShowAd(String adId) async {
-    await PubstarIoPlatform.instance.loadAndShowAd(adId);
+  Future<void> loadAndShowAd(
+    String adId, [
+    LoadAndShowListener? listener,
+  ]) async {
+    await PubstarIoPlatform.instance.loadAndShowAd(adId, listener);
   }
 
   /// Loads and shows an ad using [adId] and [viewId].
