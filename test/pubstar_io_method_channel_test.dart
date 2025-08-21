@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pubstar_io/pubstar_io.dart';
+import 'package:pubstar_io/src/callback_handler.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:pubstar_io/src/pubstar_io_exception.dart';
@@ -49,13 +50,19 @@ void main() {
       },
     );
 
-    test('loadAd method should expect adId argument', () async {
+    test('loadAd should call methodChannel with adId and callbackId', () async {
       const testAdId = 'ad_example_id';
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
             expect(methodCall.method, 'loadAd');
-            expect(methodCall.arguments, {'adId': testAdId});
+
+            final args = methodCall.arguments as Map;
+
+            expect(args['adId'], testAdId);
+            expect(args['callbackId'], isNotNull);
+            expect(args['callbackId'], isA<String>());
+
             return null;
           });
 
@@ -76,24 +83,11 @@ void main() {
             });
 
         expect(
-          () async => await platform.showAd(adId: testAdId),
+          () async => await platform.showAd(testAdId),
           throwsA(isA<PubstarIoException>()),
         );
       },
     );
-
-    test('loadAd method should expect adId argument', () async {
-      const testAdId = 'ad_example_id';
-
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-            expect(methodCall.method, 'loadAd');
-            expect(methodCall.arguments, {'adId': testAdId});
-            return null;
-          });
-
-      expect(() async => await platform.loadAd(testAdId), returnsNormally);
-    });
 
     test(
       'showAd method should throw PubstarIoException when PlatformException',
@@ -109,7 +103,7 @@ void main() {
             });
 
         expect(
-          () async => await platform.showAd(adId: testAdId),
+          () async => await platform.showAd(testAdId),
           throwsA(isA<PubstarIoException>()),
         );
       },
@@ -124,10 +118,14 @@ void main() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'showAdWithViewId');
-              expect(methodCall.arguments, {
-                'adId': testAdId,
-                'viewId': viewId,
-              });
+
+              final args = methodCall.arguments as Map;
+
+              expect(args['adId'], testAdId);
+              expect(args['viewId'], viewId);
+              expect(args['callbackId'], isNotNull);
+              expect(args['callbackId'], isA<String>());
+
               return null;
             });
 
@@ -162,19 +160,25 @@ void main() {
     );
 
     test(
-      'loadAndShowAd method should expect adId and viewId arguments',
+      'loadAndShow method should expect adId and viewId arguments',
       () async {
         const testAdId = 'ad_example_id';
 
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'loadAndShowAd');
-              expect(methodCall.arguments, {'adId': testAdId});
+
+              final args = methodCall.arguments as Map<Object?, Object?>;
+
+              expect(args['adId'], testAdId);
+              expect(args['callbackId'], isNotNull);
+              expect(args['callbackId'], isA<String>());
+
               return null;
             });
 
         expect(
-          () async => await platform.loadAndShowAd(testAdId),
+          () async => await platform.loadAndShow(testAdId),
           returnsNormally,
         );
       },
@@ -194,7 +198,7 @@ void main() {
             });
 
         expect(
-          () async => await platform.loadAndShowAd(testAdId),
+          () async => await platform.loadAndShow(testAdId),
           throwsA(isA<PubstarIoException>()),
         );
       },
@@ -209,10 +213,14 @@ void main() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'loadAndShowAdWithViewId');
-              expect(methodCall.arguments, {
-                'adId': testAdId,
-                'viewId': viewId,
-              });
+
+              final args = methodCall.arguments as Map;
+
+              expect(args['adId'], testAdId);
+              expect(args['viewId'], viewId);
+              expect(args['callbackId'], isNotNull);
+              expect(args['callbackId'], isA<String>());
+
               return null;
             });
 
@@ -260,11 +268,15 @@ void main() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'loadAndShowBannerAd');
-              expect(methodCall.arguments, {
-                'adId': testAdId,
-                'viewId': viewId,
-                'tag': tag.name,
-              });
+
+              final args = methodCall.arguments as Map<Object?, Object?>;
+
+              expect(args['adId'], testAdId);
+              expect(args['viewId'], viewId);
+              expect(args['tag'], tag.name);
+              expect(args['callbackId'], isNotNull);
+              expect(args['callbackId'], isA<String>());
+
               return null;
             });
 
@@ -305,34 +317,35 @@ void main() {
       },
     );
 
-    test(
-      'loadAndShowBannerAd method should expect adId, viewId, tag arguments',
-      () async {
-        const testAdId = 'ad_example_id';
-        const viewId = 83;
-        const tag = PubstarAdSize.small;
+    test('loadAndShowBannerAd should send correct arguments', () async {
+      const testAdId = 'ad_example_id';
+      const viewId = 83;
+      const tag = PubstarAdSize.small;
 
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-            .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-              expect(methodCall.method, 'loadAndShowBannerAd');
-              expect(methodCall.arguments, {
-                'adId': testAdId,
-                'viewId': viewId,
-                'tag': tag.name,
-              });
-              return null;
-            });
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+            expect(methodCall.method, 'loadAndShowBannerAd');
 
-        expect(
-          () async => await platform.loadAndShowBannerAd(
-            adId: testAdId,
-            viewId: viewId,
-            tag: tag,
-          ),
-          returnsNormally,
-        );
-      },
-    );
+            final args = methodCall.arguments as Map<Object?, Object?>;
+
+            expect(args['adId'], testAdId);
+            expect(args['viewId'], viewId);
+            expect(args['tag'], tag.name);
+            expect(args['callbackId'], isNotNull);
+            expect(args['callbackId'], isA<String>());
+
+            return null;
+          });
+
+      expect(
+        () async => await platform.loadAndShowBannerAd(
+          adId: testAdId,
+          viewId: viewId,
+          tag: tag,
+        ),
+        returnsNormally,
+      );
+    });
 
     test(
       'loadAndShowBannerAd method should throw PubstarIoException when PlatformException',
@@ -370,11 +383,15 @@ void main() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
               expect(methodCall.method, 'loadAndShowVideoAd');
-              expect(methodCall.arguments, {
-                'adId': testAdId,
-                'viewId': viewId,
-                'media': media,
-              });
+
+              final args = methodCall.arguments as Map<Object?, Object?>;
+
+              expect(args['adId'], testAdId);
+              expect(args['viewId'], viewId);
+              expect(args['media'], media);
+              expect(args['callbackId'], isNotNull);
+              expect(args['callbackId'], isA<String>());
+
               return null;
             });
 

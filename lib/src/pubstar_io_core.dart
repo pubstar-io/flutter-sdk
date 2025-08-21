@@ -82,7 +82,7 @@ class PubstarIo {
     String adId, [
     LoadAndShowNoViewListener? listener,
   ]) async {
-    await PubstarIoPlatform.instance.loadAndShowAd(adId, listener);
+    await PubstarIoPlatform.instance.loadAndShow(adId, listener);
   }
 
   /// Loads and shows an ad using [adId] and [viewId].

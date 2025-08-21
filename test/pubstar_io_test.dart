@@ -3,6 +3,7 @@ import 'package:pubstar_io/src/pubstar_ad_view.dart';
 import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
 import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:pubstar_io/src/pubstar_types.dart';
 
 class MockPubstarIoPlatform
     with MockPlatformInterfaceMixin
@@ -14,28 +15,16 @@ class MockPubstarIoPlatform
   }
 
   @override
-  Future<bool?> loadAd(String adId) {
+  Future<void> loadAd(String adId, [LoadListener? listener]) {
     // TODO: implement loadAd
     throw UnimplementedError();
   }
 
   @override
-  Future<String?> showAd({required String adId, int? viewId}) {
-    // TODO: implement showAd
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String?> showAdWithViewId({
-    required String adId,
-    required int viewId,
-  }) {
-    // TODO: implement showAdWithViewId
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> loadAndShowAd(String adId) {
+  Future<void> loadAndShow(
+    String adId, [
+    LoadAndShowNoViewListener? listener,
+  ]) {
     // TODO: implement loadAndShowAd
     throw UnimplementedError();
   }
@@ -44,18 +33,9 @@ class MockPubstarIoPlatform
   Future<void> loadAndShowAdWithViewId({
     required String adId,
     required int viewId,
+    LoadAndShowListener? listener,
   }) {
     // TODO: implement loadAndShowAdWithViewId
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> loadAndShowVideoAd({
-    required String adId,
-    required int viewId,
-    required String media,
-  }) {
-    // TODO: implement loadAndShowVideoAd
     throw UnimplementedError();
   }
 
@@ -64,6 +44,7 @@ class MockPubstarIoPlatform
     required String adId,
     required int viewId,
     required PubstarAdSize tag,
+    LoadAndShowListener? listener,
   }) {
     // TODO: implement loadAndShowBannerAd
     throw UnimplementedError();
@@ -74,8 +55,36 @@ class MockPubstarIoPlatform
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
+    LoadAndShowListener? listener,
   }) {
     // TODO: implement loadAndShowNativeAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> loadAndShowVideoAd({
+    required String adId,
+    required int viewId,
+    required String media,
+    LoadAndShowListener? listener,
+  }) {
+    // TODO: implement loadAndShowVideoAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> showAd(String adId, [ShowListener? listener]) {
+    // TODO: implement showAd
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> showAdWithViewId({
+    required String adId,
+    required int viewId,
+    ShowListener? listener,
+  }) {
+    // TODO: implement showAdWithViewId
     throw UnimplementedError();
   }
 }

@@ -15,8 +15,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('getPlatformVersion test', (WidgetTester tester) async {
-    final PubstarIo plugin = PubstarIo.instance;
-    await plugin.init();
+    await PubstarIo.init();
     // The version string depends on the host platform running the test, so
     // just assert that some non-empty string is returned.
     expect(true, "true");
