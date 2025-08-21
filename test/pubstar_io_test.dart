@@ -21,10 +21,7 @@ class MockPubstarIoPlatform
   }
 
   @override
-  Future<void> loadAndShow(
-    String adId, [
-    LoadAndShowNoViewListener? listener,
-  ]) {
+  Future<void> loadAndShow(String adId, [LoadAndShowNoViewListener? listener]) {
     // TODO: implement loadAndShowAd
     throw UnimplementedError();
   }

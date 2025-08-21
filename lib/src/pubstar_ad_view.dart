@@ -105,7 +105,7 @@ class PubstarAdView extends StatelessWidget {
   ///
   /// This callback will provide a [PubstarError] object containing
   /// error details such as code, name, and message.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// PubstarAdView(
