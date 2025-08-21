@@ -184,11 +184,11 @@ Show ad had loaded before.
 
 `LoadListener`
 
-| Callback             | Function                                                                                   |
-| -------------------- | ------------------------------------------------------------------------------------------ |
-| `onHide`             | call when ad hidden by press close button. return **optional** object type `PubstarReward` |
-| `onShowed`           | call when ad showed                                                                        |
-| `onError`            | call when show ad failed. return object type `PubstarError`                                |
+| Callback             | Function                                                                                                          |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `onHide`             | call when ad hidden/closed (supports rewarded ads). Returns detailed `PubstarReward` object (`type`, `amount`). |
+| `onShowed`           | call when ad showed                                                                                               |
+| `onError`            | call when show ad failed. return object type `PubstarError`                                                       |
 
 #### Example
 
@@ -212,18 +212,18 @@ PubstarIo.showAd(
 
 ### loadAndShow()
 
-Load ad then show ad in one.
+Load and immediately show an ad by ID.
 
 #### Event
 
 `LoadAndShowNoViewListener`
 
-| Callback             | Function                                                                                   |
-| -------------------- | -------------------------------------------------------------------------------------------|
-| `onLoaded`           | call when ad loaded                                                                        |
-| `onShowed`           | call when ad showed                                                                        |
-| `onHide`             | call when ad hidden by press close button. return **optional** object type `PubstarReward` |
-| `onError`            | call when show ad failed. return object type `PubstarError`                                |
+| Callback             | Function                                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------|
+| `onLoaded`           | call when ad loaded                                                                                               |
+| `onShowed`           | call when ad showed                                                                                               |
+| `onHide`             | call when ad hidden/closed (supports rewarded ads). Returns detailed `PubstarReward` object (`type`, `amount`). |
+| `onError`            | call when show ad failed. return object type `PubstarError`                                                       |
 
 #### Example
 
@@ -252,16 +252,16 @@ Load ad then show ad, using for Banner ad and Native ad.
 
 #### API
 
-| Props                   | Function                                                                       |
-| ----------------------- | ------------------------------------------------------------------------------ |
-| `adId`                  | id of Banner or Native ad                                                      |
-| `size`                  | size of ad View. (`small`, `medium`, `large`)                                  |
-| `type`                  | type of ad View. (`banner`, `native`)                                          |
-| `mode`                  | mode of ad View (`onlyShow`, `loadAndShow`)                                    |
-| `onError`               | call when show ad failed. return object type `PubstarError`                    |
-| `onHide`                | call when ad closed return **optional** object type `PubstarReward`            |
-| `onLoaded`              | call when ad loaded                                                            |
-| `onShowed`              | call when ad showed                                                            |
+| Props                   | Function                                                                                                   |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `adId`                  | id of Banner or Native ad                                                                                  |
+| `size`                  | size of ad View. (`small`, `medium`, `large`)                                                              |
+| `type`                  | type of ad View. (`banner`, `native`)                                                                      |
+| `mode`                  | mode of ad View (`onlyShow`, `loadAndShow`)                                                                |
+| `onError`               | call when show ad failed. return object type `PubstarError`                                                |
+| `onHide`                | call when ad hidden/closed (supports rewarded ads). Returns detailed PubstarReward object (type, amount) |
+| `onLoaded`              | call when ad loaded                                                                                        |
+| `onShowed`              | call when ad showed                                                                                        |
 
 #### Example
 
@@ -290,14 +290,14 @@ Load video ad then show video ad, using for Video ad.
 
 #### API
 
-| Props                   | Function                                                                       |
-| ----------------------- | ------------------------------------------------------------------------------ |
-| `adId`                  | id of Video ad                                                      |
-| `media`                 | url of media video                                    |
-| `onError`               | call when show ad failed. return object type `PubstarError`                    |
-| `onHide`                | call when ad closed return **optional** object type `PubstarReward`            |
-| `onLoaded`              | call when ad loaded                                                            |
-| `onShowed`              | call when ad showed                                                            |
+| Props                   | Function                                                                                                   |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `adId`                  | id of Video ad                                                                                             | 
+| `media`                 | url of media video                                                                                         |
+| `onError`               | call when show ad failed. return object type `PubstarError`                                                |
+| `onHide`                | call when ad hidden/closed (supports rewarded ads). Returns detailed PubstarReward object (type, amount) |
+| `onLoaded`              | call when ad loaded                                                                                        |
+| `onShowed`              | call when ad showed                                                                                        |
 
 #### Example
 

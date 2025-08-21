@@ -23,4 +23,33 @@
 - Requires valid Pubstar Ads API key/ad unit IDs for proper operation.
 - See documentation and inline comments for usage examples.
 
+## [1.1.8+3] - 2025-08-21
 
+### Added
+- **New example Ads IDs** via `AdIdExample` class:
+  - `bannerId`, `nativeId`, `interstitialId`, `openId`, `rewardedId`, `videoId`
+- **Controller utilities** to demonstrate usage:
+  - `Pubstar.init()`: Initialize SDK with preload ad examples.
+  - `loadAd(String adId)`: Load an ad by ID with `LoadListener`.
+  - `showAd(String adId)`: Show an ad by ID with `ShowListener`.
+  - `loadAndShow(String adId)`: Load and immediately show an ad by ID with `LoadAndShowNoViewListener`.
+- **Improved ad lifecycle callbacks**:
+  - `onLoaded`: Called when ad successfully loaded.
+  - `onShowed`: Called when ad displayed.
+  - `onHide`: Called when ad hidden/closed (supports rewarded ads). Returns detailed `PubstarReward` object (`type`, `amount`).
+  - `onError`: Returns detailed `PubstarError` object (`code`, `name`, `message`).
+- **New Listener classes** for flexible event handling:
+  - `LoadListener`: For handling ad load-only scenarios (before showing).
+  - `ShowListener`: For ads that are already preloaded and then shown.
+  - `LoadAndShowNoViewListener`: For loading and showing ads without attaching to a native view.
+  - `LoadAndShowListener`: For handling ad load + show in a native view (e.g., `PubstarAdView`).
+
+### Changed
+- Updated `PubstarAdView` widget:
+  - Added detailed **callback documentation** for `onError`, `onLoaded`, `onHide`, `onShowed`.
+  - Clearer usage notes for different ad display modes (`onlyShow` vs `loadAndShow`).
+- More structured example logging in Flutter for debugging lifecycle events.
+
+### Notes
+- Please ensure you call `PubstarIo.init()` before loading or showing ads.
+- Reward callbacks (`onHide`) now return optional reward info (`type`, `amount`) for rewarded ads.
