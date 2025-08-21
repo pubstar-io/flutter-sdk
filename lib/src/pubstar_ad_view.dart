@@ -102,9 +102,67 @@ class PubstarAdView extends StatelessWidget {
   /// If null, the default size will be used. Default is [PubstarAdSize.small].
   final PubstarAdSize? size;
 
+  /// Called when an error occurs during the ad lifecycle.
+  ///
+  /// This callback will provide a [PubstarError] object containing
+  /// error details such as code, name, and message.
+  /// 
+  /// Example:
+  /// ```dart
+  /// PubstarAdView(
+  ///   adId: 'your_ad_id',
+  ///   onError: (error) {
+  ///     print("Ad failed with code: ${error.code}, message: ${error.message}");
+  ///   },
+  /// )
+  /// ```
   final OnError? onError;
+
+  /// Called when the ad has been successfully loaded.
+  ///
+  /// Use this callback to know when the ad content is ready to be displayed.
+  ///
+  /// Example:
+  /// ```dart
+  /// PubstarAdView(
+  ///   adId: 'your_ad_id',
+  ///   onLoaded: () {
+  ///     print("Ad loaded successfully!");
+  ///   },
+  /// )
+  /// ```
   final OnLoaded? onLoaded;
+
+  /// Called when the ad is hidden or closed by the user.
+  ///
+  /// For rewarded ads, this callback may also return a reward object
+  /// containing the reward type and amount if applicable.
+  ///
+  /// Example:
+  /// ```dart
+  /// PubstarAdView(
+  ///   adId: 'your_ad_id',
+  ///   onHide: (reward) {
+  ///     print("Ad was closed by the user");
+  ///   },
+  /// )
+  /// ```
   final OnHide? onHide;
+
+  /// Called when the ad is shown to the user.
+  ///
+  /// Use this callback to track impressions or log analytics
+  /// when the ad becomes visible on the screen.
+  ///
+  /// Example:
+  /// ```dart
+  /// PubstarAdView(
+  ///   adId: 'your_ad_id',
+  ///   onShowed: () {
+  ///     print("Ad is now visible to the user");
+  ///   },
+  /// )
+  /// ```
   final OnShowed? onShowed;
 
   onPlatformViewCreated(int viewId) {
@@ -113,7 +171,7 @@ class PubstarAdView extends StatelessWidget {
 
       switch (type!) {
         case PubstarAdType.banner:
-          PubstarIo.instance.loadAndShowBannerAd(
+          PubstarIo.loadAndShowBannerAd(
             adId: adId,
             viewId: viewId,
             size: sizeValue,
@@ -126,7 +184,7 @@ class PubstarAdView extends StatelessWidget {
           );
           break;
         case PubstarAdType.native:
-          PubstarIo.instance.loadAndShowNativeAd(
+          PubstarIo.loadAndShowNativeAd(
             adId: adId,
             viewId: viewId,
             size: sizeValue,
@@ -144,7 +202,7 @@ class PubstarAdView extends StatelessWidget {
     }
 
     if (mode == PubstarAdViewMode.onlyShow) {
-      PubstarIo.instance.showAdWithViewId(
+      PubstarIo.showAdWithViewId(
         adId: adId,
         viewId: viewId,
         listener: ShowListener(
@@ -156,7 +214,7 @@ class PubstarAdView extends StatelessWidget {
       return;
     }
 
-    PubstarIo.instance.loadAndShowAdWithViewId(
+    PubstarIo.loadAndShowAdWithViewId(
       adId: adId,
       viewId: viewId,
       listener: LoadAndShowListener(

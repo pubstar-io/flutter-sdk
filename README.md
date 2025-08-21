@@ -119,7 +119,7 @@ Must be called **once** before loading or showing any ad.
 import 'package:pubstar_io/pubstar_io.dart';
 
 void main() async {
-  await PubstarIo.instance.init();  <--- init Pubstar
+  await PubstarIo.init();  <--- init Pubstar
 
   runApp(MyApp());
 }
@@ -135,7 +135,7 @@ The example app in this repository shows an example usage of every single API, c
 | [init()](#init)                                                     | `Future<void>`      |
 | [loadAd()](#loadad)                                                 | `Function<void>`    |
 | [showAd()](#showad)                                                 | `Function<void>`    |
-| [loadAndShowAd()](#loadandshowad)                                     | `Function<void>`    |
+| [loadAndShow()](#loadandshow)                                       | `Function<void>`    |
 | [PubstarAdView](#pubstaradview)                                     | `Widget`            |
 | [PubstarVideoAdView](#pubstarvideoadview)                           | `Widget`            |
 
@@ -163,7 +163,7 @@ Load Pubstar ads by adId to application.
 #### Example
 
 ```dart
-PubstarIo.instance.loadAd(
+PubstarIo.loadAd(
   adId,
   LoadListener(
     onLoaded: () => print("FLUTTER - app: onLoaded loadAd"),
@@ -193,7 +193,7 @@ Show ad had loaded before.
 #### Example
 
 ```dart
-PubstarIo.instance.showAd(
+PubstarIo.showAd(
   adId,
   ShowListener(
     onShowed: () => print("FLUTTER - app: onShowed showAd"),
@@ -210,7 +210,7 @@ PubstarIo.instance.showAd(
 ```
 
 
-### loadAndShowAd()
+### loadAndShow()
 
 Load ad then show ad in one.
 
@@ -228,19 +228,19 @@ Load ad then show ad in one.
 #### Example
 
 ```dart
-PubstarIo.instance.loadAndShowAd(
+PubstarIo.loadAndShow(
   adId,
   LoadAndShowNoViewListener(
     onError:
         (error) => print(
-          "FLUTTER - app: onError loadAndShowAd, code: ${error.code} - rawCode: ${error.name}",
+          "FLUTTER - app: onError loadAndShow, code: ${error.code} - rawCode: ${error.name}",
         ),
     onHide:
         (reward) => print(
-          "FLUTTER - app: onHide loadAndShowAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+          "FLUTTER - app: onHide loadAndShow  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
         ),
-    onLoaded: () => print("FLUTTER - app: onLoaded loadAndShowAd"),
-    onShowed: () => print("FLUTTER - app: onShowed loadAndShowAd"),
+    onLoaded: () => print("FLUTTER - app: onLoaded loadAndShow"),
+    onShowed: () => print("FLUTTER - app: onShowed loadAndShow"),
   ),
 );
 ```

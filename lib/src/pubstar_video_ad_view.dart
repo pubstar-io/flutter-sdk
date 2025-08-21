@@ -49,7 +49,7 @@ class PubstarVideoAdView extends StatelessWidget {
   final OnShowed? onShowed;
 
   onPlatformViewCreated(int viewId) {
-    PubstarIo.instance.loadAndShowVideoAd(
+    PubstarIo.loadAndShowVideoAd(
       adId: adId,
       viewId: viewId,
       media: media,

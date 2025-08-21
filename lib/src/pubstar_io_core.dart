@@ -12,12 +12,6 @@ import 'package:pubstar_io/src/pubstar_types.dart';
 /// await PubstarIo.instance.showAd(adId: 'your_ad_id');
 /// ```
 class PubstarIo {
-  PubstarIo._internal();
-
-  static final PubstarIo _instance = PubstarIo._internal();
-
-  static PubstarIo get instance => _instance;
-
   /// Initializes the Pubstar IO Ads SDK.
   ///
   /// Must be called **once** before loading or showing any ad.
@@ -26,7 +20,7 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.init();
   /// ```
-  Future<void> init() async {
+  static Future<void> init() async {
     await PubstarIoPlatform.instance.init();
   }
 
@@ -38,7 +32,7 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.loadAd('your_ad_id');
   /// ```
-  Future<void> loadAd(String adId, [LoadListener? listener]) async {
+  static Future<void> loadAd(String adId, [LoadListener? listener]) async {
     await PubstarIoPlatform.instance.loadAd(adId, listener);
   }
 
@@ -50,7 +44,7 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.showAd(adId: 'your_ad_id');
   /// ```
-  Future<void> showAd(String adId, [ShowListener? listener]) async {
+  static Future<void> showAd(String adId, [ShowListener? listener]) async {
     await PubstarIoPlatform.instance.showAd(adId, listener);
   }
 
@@ -64,7 +58,7 @@ class PubstarIo {
   /// // Trong callback onPlatformViewCreated:
   /// await PubstarIo.instance.showAdWithViewId(adId: 'your_ad_id', viewId: viewId);
   /// ```
-  Future<void> showAdWithViewId({
+  static Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
     ShowListener? listener,
@@ -84,7 +78,7 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.loadAndShowAd('your_ad_id');
   /// ```
-  Future<void> loadAndShowAd(
+  static Future<void> loadAndShow(
     String adId, [
     LoadAndShowNoViewListener? listener,
   ]) async {
@@ -99,7 +93,7 @@ class PubstarIo {
   /// ```dart
   /// await PubstarIo.instance.loadAndShowAdWithViewId(adId: 'your_ad_id', viewId: 123);
   /// ```
-  Future<void> loadAndShowAdWithViewId({
+  static Future<void> loadAndShowAdWithViewId({
     required String adId,
     required int viewId,
     LoadAndShowListener? listener,
@@ -111,7 +105,7 @@ class PubstarIo {
     );
   }
 
-  Future<void> loadAndShowBannerAd({
+  static Future<void> loadAndShowBannerAd({
     required String adId,
     required int viewId,
     required PubstarAdSize size,
@@ -125,7 +119,7 @@ class PubstarIo {
     );
   }
 
-  Future<void> loadAndShowNativeAd({
+  static Future<void> loadAndShowNativeAd({
     required String adId,
     required int viewId,
     required PubstarAdSize size,
@@ -139,7 +133,7 @@ class PubstarIo {
     );
   }
 
-  Future<void> loadAndShowVideoAd({
+  static Future<void> loadAndShowVideoAd({
     required String adId,
     required int viewId,
     required String media,

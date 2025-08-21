@@ -11,7 +11,7 @@ class AdIdExample {
 
 class Controller {
   Future<void> initPubstar() async {
-    await PubstarIo.instance.init();
+    await PubstarIo.init();
 
     // *** Preload Ad ***
     // await loadAd(AdIdExample.bannerId);
@@ -24,7 +24,7 @@ class Controller {
   }
 
   Future<void> loadAd(String adId) async {
-    await PubstarIo.instance.loadAd(
+    await PubstarIo.loadAd(
       adId,
       LoadListener(
         onLoaded: () => print("FLUTTER - app: onLoaded loadAd"),
@@ -37,7 +37,7 @@ class Controller {
   }
 
   Future<void> showAd(String adId) async {
-    await PubstarIo.instance.showAd(
+    await PubstarIo.showAd(
       adId,
       ShowListener(
         onShowed: () => print("FLUTTER - app: onShowed showAd"),
@@ -54,7 +54,7 @@ class Controller {
   }
 
   Future<void> loadAndShowAd(String adId) async {
-    await PubstarIo.instance.loadAndShowAd(
+    await PubstarIo.loadAndShow(
       adId,
       LoadAndShowNoViewListener(
         onError:
