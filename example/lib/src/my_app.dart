@@ -68,9 +68,9 @@ class _MyAppState extends State<MyApp> {
                       height: 100,
                       child: PubstarAdView(
                         adId: AdIdExample.bannerId,
-                        mode: PubstarAdViewMode.loadAndShow,
-                        type: PubstarAdType.banner,
                         size: PubstarAdSize.small,
+                        type: PubstarAdType.banner,
+                        mode: PubstarAdViewMode.loadAndShow,
                         onError:
                             (error) => print(
                               "FLUTTER - app: onError banner, code: ${error.code} - rawCode: ${error.name}",

@@ -4,16 +4,27 @@
 
 PubStar Flutter Mobile AD SDK is a comprehensive software development kit designed to empower developers with robust tools and functionalities for integrating advertisements seamlessly into Flutter mobile applications. Whether you're a seasoned developer or a newcomer to the world of app monetization, our SDK offers a user-friendly solution to maximize revenue streams while ensuring a non-intrusive and engaging user experience.
 
----
+## TOC
+
+- [Features](#features)
+- [Platform Support](#platform-support)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [API](#api)
+- [Release Notes](#release-notes)
+- [ID Test Ad](#id-test-ad)
+- [Support](#support)
+
 
 ## Features
 
 - ✅ **Display native ads** on Android & iOS with Pubstar API.
-- ✅ Full-featured API: load, show, and handle ad events.
+- ✅ Full-featured API: load, show, loadAndShow, and handle ad events.
 - ✅ Easy-to-use Flutter widget: `PubstarAdView` and `PubstarVideoAdView`.
-- ✅ Structured ad event stream for type-safe event handling.
+- ✅ Structured ad event callback for type-safe event handling.
 
----
 
 ## Platform Support
 
@@ -21,22 +32,20 @@ PubStar Flutter Mobile AD SDK is a comprehensive software development kit design
 |---------|-----|
 | ✔       | ✔   |
 
----
 
 ## Requirements
 
 - iOS >= 13.0
 - Min Dart SDK >= 3.7
 
-## Getting Started
 
-### 1. Installation
+## Installation
 
 Add the dependency in your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  pubstar_io: ^1.1.8
+  pubstar_io
 ```
 
 Then run:
@@ -116,87 +125,204 @@ void main() async {
 }
 ```
 
-### Load & Show an Ad
 
-Loads an ad with the given `ad_id`.
+## API
+
+The example app in this repository shows an example usage of every single API, consult the example app if you have questions, and if you think you see a problem make sure you can reproduce it using the example app before reporting it, thank you.
+
+| Method                                                              | Return Type         |
+| ------------------------------------------------------------------- | ------------------- |
+| [init()](#init)                                                     | `Future<void>`      |
+| [loadAd()](#loadad)                                                 | `Function<void>`    |
+| [showAd()](#showad)                                                 | `Function<void>`    |
+| [loadAndShowAd()](#loadandshowad)                                     | `Function<void>`    |
+| [PubstarAdView](#pubstaradview)                                     | `Widget`            |
+| [PubstarVideoAdView](#pubstarvideoadview)                           | `Widget`            |
+
+### init()
+
+Initialization Pubstar SDK.
 
 ```dart
-await PubstarIo.instance.loadAd('your_ad_id');
-await PubstarIo.instance.showAd('your_ad_id');
-await PubstarIo.instance.loadAndShowAd('your_ad_id');
+Pubstar.init();
 ```
 
-### Show Ad in a Native View (Recommended)
+### loadAd()
 
-A Flutter widget for displaying a native ad view using Pubstar IO plugin.
+Load Pubstar ads by adId to application.
 
-#### Usage notes:
-- You must call `PubstarIo.instance.init()` before using this widget.
-- The `ad_id` parameter must be a valid ad unit ID from your ad provider.
-- Place this widget inside your widget tree where you want the ad to appear.
-- Handles lifecycle and automatically calls `showAdWithViewId`.
-- The `type` parameter allows you to specify the ad type (Banner or Video).
-- The `size` parameter allows you to specify the ad size (Small, Medium, Large, Collapsible).
-- The `isAllowLoadNext` parameter allows load to cache after dismiss.
-- The `media` parameter is specify the Video URL.
+#### Event
+
+`LoadListener`
+
+| Callback                             | Function                                                      |
+| ------------------------------------ | ------------------------------------------------------------- |
+| `onError`                            | call when load ad failed. return object type `PubstarError`   |
+| `onLoaded`                           | call when ad loaded                                           |
+
+#### Example
 
 ```dart
-/// Only show ad when the view is loaded.
-///
-/// You must call PubstarIo.instance.loadAd before using this.
-PubstarAdView(adId: 'your_ad_id');
+PubstarIo.instance.loadAd(
+  adId,
+  LoadListener(
+    onLoaded: () => print("FLUTTER - app: onLoaded loadAd"),
+    onError:
+        (error) => print(
+          "FLUTTER - app: onError loadAd, code: ${error.code} - rawCode: ${error.name}",
+        ),
+  ),
+);
+```
 
-/// Load ad first, then show when ready.
+
+### showAd()
+
+Show ad had loaded before.
+
+#### Event
+
+`LoadListener`
+
+| Callback             | Function                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------ |
+| `onHide`             | call when ad hidden by press close button. return **optional** object type `PubstarReward` |
+| `onShowed`           | call when ad showed                                                                        |
+| `onError`            | call when show ad failed. return object type `PubstarError`                                |
+
+#### Example
+
+```dart
+PubstarIo.instance.showAd(
+  adId,
+  ShowListener(
+    onShowed: () => print("FLUTTER - app: onShowed showAd"),
+    onHide:
+        (reward) => print(
+          "FLUTTER - app: onHide showAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+        ),
+    onError:
+        (error) => print(
+          "FLUTTER - app: onError showAd, code: ${error.code} - name: ${error.name} - message: ${error.message}",
+        ),
+  ),
+);
+```
+
+
+### loadAndShowAd()
+
+Load ad then show ad in one.
+
+#### Event
+
+`LoadAndShowNoViewListener`
+
+| Callback             | Function                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------------|
+| `onLoaded`           | call when ad loaded                                                                        |
+| `onShowed`           | call when ad showed                                                                        |
+| `onHide`             | call when ad hidden by press close button. return **optional** object type `PubstarReward` |
+| `onError`            | call when show ad failed. return object type `PubstarError`                                |
+
+#### Example
+
+```dart
+PubstarIo.instance.loadAndShowAd(
+  adId,
+  LoadAndShowNoViewListener(
+    onError:
+        (error) => print(
+          "FLUTTER - app: onError loadAndShowAd, code: ${error.code} - rawCode: ${error.name}",
+        ),
+    onHide:
+        (reward) => print(
+          "FLUTTER - app: onHide loadAndShowAd  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+        ),
+    onLoaded: () => print("FLUTTER - app: onLoaded loadAndShowAd"),
+    onShowed: () => print("FLUTTER - app: onShowed loadAndShowAd"),
+  ),
+);
+```
+
+
+### PubstarAdView
+
+Load ad then show ad, using for Banner ad and Native ad.
+
+#### API
+
+| Props                   | Function                                                                       |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `adId`                  | id of Banner or Native ad                                                      |
+| `size`                  | size of ad View. (`small`, `medium`, `large`)                                  |
+| `type`                  | type of ad View. (`banner`, `native`)                                          |
+| `mode`                  | mode of ad View (`onlyShow`, `loadAndShow`)                                    |
+| `onError`               | call when show ad failed. return object type `PubstarError`                    |
+| `onHide`                | call when ad closed return **optional** object type `PubstarReward`            |
+| `onLoaded`              | call when ad loaded                                                            |
+| `onShowed`              | call when ad showed                                                            |
+
+#### Example
+
+```dart
 PubstarAdView(
-  adId: 'your_ad_id', 
-  mode: PubstarAdViewMode.loadAndShow,
-  type: PubstarAdType.native,
+  adId: adId,
   size: PubstarAdSize.small,
-  isAllowLoadNext: true,
+  type: PubstarAdType.banner,
+  mode: PubstarAdViewMode.loadAndShow,
+  onError:
+      (error) => print(
+        "FLUTTER - app: onError banner, code: ${error.code} - rawCode: ${error.name}",
+      ),
+  onHide:
+      (reward) => print(
+        "FLUTTER - app: onHide banner  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+      ),
+  onLoaded: () => print("FLUTTER - app: onLoaded banner"),
+  onShowed: () => print("FLUTTER - app: onShowed banner"),
 )
+```
 
-/// Load and show a video ad.
+### PubstarVideoAdView
+
+Load video ad then show video ad, using for Video ad.
+
+#### API
+
+| Props                   | Function                                                                       |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `adId`                  | id of Video ad                                                      |
+| `media`                 | url of media video                                    |
+| `onError`               | call when show ad failed. return object type `PubstarError`                    |
+| `onHide`                | call when ad closed return **optional** object type `PubstarReward`            |
+| `onLoaded`              | call when ad loaded                                                            |
+| `onShowed`              | call when ad showed                                                            |
+
+#### Example
+
+```dart
 PubstarVideoAdView(
-  adId: AdIdExample.videoId,
+  adId: adId,
   media:
       'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+  onError:
+      (error) => print(
+        "FLUTTER - app: onError video, code: ${error.code} - rawCode: ${error.name}",
+      ),
+  onHide:
+      (reward) => print(
+        "FLUTTER - app: onHide video  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+      ),
+  onLoaded: () => print("FLUTTER - app: onLoaded video"),
+  onShowed: () => print("FLUTTER - app: onShowed video"),
 )
 ```
 
-### Listen to Ad Events
-Listen all possible ad events emitted by the Pubstar IO Ads plugin.
 
-```dart
-class _MyAppState extends State<MyApp> {
-  StreamSubscription? _subscription;
+## Release Notes
 
-  @override
-  void initState() {
-    super.initState();
-
-    _subscription = PubstarEventService().listen((data) {
-      print('Event from native: $data');
-    });
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-
-    super.dispose();
-  }
-}
-```
-
-## API Reference
-Check the main exported classes:
-- PubstarIo (singleton for core ad operations)
-
-- PubstarAdView (Flutter widget for ad views)
-
-- PubstarAdVideo (Flutter widget for ad videos)
-
-- PubstarEventService (ad event listener)
+See the [CHANGELOG.md](https://github.com/pubstar-io/flutter-sdk/blob/main/CHANGELOG.md).
 
 ## ID Test AD
 
