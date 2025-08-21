@@ -33,9 +33,10 @@ class CallbackHandler {
       handleLoadListener(listener, event, map);
     } else if (listener is ShowListener) {
       handleShowListener(listener, event, map);
-    } else if (listener is LoadAndShowListener ||
-        listener is LoadAndShowNoViewListener) {
-      handleLoadAndShowListener(listener as LoadAndShowListener, event, map);
+    } else if (listener is LoadAndShowListener) {
+      handleLoadAndShowListener(listener, event, map);
+    } else if (listener is LoadAndShowNoViewListener) {
+      handleLoadAndShowNoViewListener(listener, event, map);
     }
 
     if (listener.shouldRemove(event)) {
@@ -93,6 +94,27 @@ class CallbackHandler {
 
   static void handleLoadAndShowListener(
     LoadAndShowListener listener,
+    String event,
+    Map<String, dynamic> map,
+  ) {
+    switch (event) {
+      case 'LOADED':
+        listener.onLoaded?.call();
+        break;
+      case 'SHOWED':
+        listener.onShowed?.call();
+        break;
+      case 'HIDE':
+        listener.onHide?.call(PubstarReward.fromMap(map));
+        break;
+      case 'ERROR':
+        listener.onError?.call(PubstarError.fromMap(map));
+        break;
+    }
+  }
+
+  static void handleLoadAndShowNoViewListener(
+    LoadAndShowNoViewListener listener,
     String event,
     Map<String, dynamic> map,
   ) {
