@@ -72,15 +72,17 @@ class _MyAppState extends State<MyApp> {
                         type: PubstarAdType.banner,
                         mode: PubstarAdViewMode.loadAndShow,
                         onError:
-                            (error) => print(
+                            (error) => debugPrint(
                               "FLUTTER - app: onError banner, code: ${error.code} - rawCode: ${error.name}",
                             ),
                         onHide:
-                            (reward) => print(
+                            (reward) => debugPrint(
                               "FLUTTER - app: onHide banner  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
                             ),
-                        onLoaded: () => print("FLUTTER - app: onLoaded banner"),
-                        onShowed: () => print("FLUTTER - app: onShowed banner"),
+                        onLoaded:
+                            () => debugPrint("FLUTTER - app: onLoaded banner"),
+                        onShowed:
+                            () => debugPrint("FLUTTER - app: onShowed banner"),
                       ),
                     ),
                   )
@@ -100,15 +102,17 @@ class _MyAppState extends State<MyApp> {
                         type: PubstarAdType.native,
                         size: PubstarAdSize.small,
                         onError:
-                            (error) => print(
+                            (error) => debugPrint(
                               "FLUTTER - app: onError native, code: ${error.code} - rawCode: ${error.name}",
                             ),
                         onHide:
-                            (reward) => print(
+                            (reward) => debugPrint(
                               "FLUTTER - app: onHide native  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
                             ),
-                        onLoaded: () => print("FLUTTER - app: onLoaded native"),
-                        onShowed: () => print("FLUTTER - app: onShowed native"),
+                        onLoaded:
+                            () => debugPrint("FLUTTER - app: onLoaded native"),
+                        onShowed:
+                            () => debugPrint("FLUTTER - app: onShowed native"),
                       ),
                     ),
                   )
@@ -128,15 +132,17 @@ class _MyAppState extends State<MyApp> {
                         media:
                             'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
                         onError:
-                            (error) => print(
+                            (error) => debugPrint(
                               "FLUTTER - app: onError video, code: ${error.code} - rawCode: ${error.name}",
                             ),
                         onHide:
-                            (reward) => print(
+                            (reward) => debugPrint(
                               "FLUTTER - app: onHide video  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
                             ),
-                        onLoaded: () => print("FLUTTER - app: onLoaded video"),
-                        onShowed: () => print("FLUTTER - app: onShowed video"),
+                        onLoaded:
+                            () => debugPrint("FLUTTER - app: onLoaded video"),
+                        onShowed:
+                            () => debugPrint("FLUTTER - app: onShowed video"),
                       ),
                     ),
                   )
