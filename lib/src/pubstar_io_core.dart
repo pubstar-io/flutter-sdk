@@ -1,6 +1,5 @@
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
-import 'package:pubstar_io/src/pubstar_types.dart';
 
 /// The main singleton entry-point for Pubstar IO Ads SDK.
 ///
