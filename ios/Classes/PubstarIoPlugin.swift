@@ -14,7 +14,6 @@ enum PubstarAdEvent: Int {
 public class PubstarIoPlugin: NSObject, FlutterPlugin {
     private static let methodChanelName = "pubstar_io"
     private let methodChannelCallback = "pubstar_io#callback"
-    private static let eventChanelName = "pubstar_io_event"
     private static let nativeViewId = "pubstar_ad_view"
     private var channel: FlutterMethodChannel?
     
@@ -96,6 +95,22 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             }
         }
         
+        
+        func onInitDoneTestCallback() -> () -> Void {
+            return {
+                result(
+                    FlutterError(
+                        code: "errorCode",
+                        message: "Pubstar initialization failed.",
+                        details: [
+                            "errorCode": "1",
+                            "errorRawValue": "errorCode.rawValue"
+                        ]
+                    )
+                )
+            }
+        }
+        
         func onInitErrorCallback() -> (ErrorCode) -> Void {
             return { errorCode in
                 result(
@@ -114,7 +129,8 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
         switch call.method {
         case "init":
             PubstarAdManagerWrapper.initPubstar(
-                onDone: onInitDoneCallback(),
+//                onDone: onInitDoneCallback(),
+                onDone: onInitDoneTestCallback(),
                 onError: onInitErrorCallback()
             )
         case "loadAd":

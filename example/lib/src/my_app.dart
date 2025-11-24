@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io_example/src/controller.dart';
-import 'dart:developer';
 
 class MyApp extends StatefulWidget {
   MyApp({super.key});
@@ -16,7 +13,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isAdSdkReady = false;
-  StreamSubscription? _subscription;
 
   @override
   void initState() {
@@ -27,17 +23,6 @@ class _MyAppState extends State<MyApp> {
         _isAdSdkReady = true;
       });
     });
-
-    _subscription = PubstarEventService().listen((data) {
-      log('📩 Event from native: $data');
-    });
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-
-    super.dispose();
   }
 
   Widget buildPlaceholder() {
