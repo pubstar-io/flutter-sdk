@@ -3,17 +3,18 @@ package com.tqc.pubstar_io
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
+import android.util.Log
 import android.view.ViewGroup
-import io.pubstar.mobile.ads.base.BannerAdRequest
-import io.pubstar.mobile.ads.base.IMARequest
-import io.pubstar.mobile.ads.base.NativeAdRequest
-import io.pubstar.mobile.ads.interfaces.AdLoaderListener
-import io.pubstar.mobile.ads.interfaces.AdShowedListener
-import io.pubstar.mobile.ads.interfaces.InitAdListener
-import io.pubstar.mobile.ads.interfaces.PubStarAdController
-import io.pubstar.mobile.ads.model.ErrorCode
-import io.pubstar.mobile.ads.model.RewardModel
-import io.pubstar.mobile.ads.pub.PubStarAdManager
+import io.pubstar.mobile.core.base.BannerAdRequest
+import io.pubstar.mobile.core.base.IMARequest
+import io.pubstar.mobile.core.base.NativeAdRequest
+import io.pubstar.mobile.core.interfaces.AdLoaderListener
+import io.pubstar.mobile.core.interfaces.AdShowedListener
+import io.pubstar.mobile.core.interfaces.InitAdListener
+import io.pubstar.mobile.core.interfaces.PubStarAdController
+import io.pubstar.mobile.core.models.ErrorCode
+import io.pubstar.mobile.core.models.RewardModel
+import io.pubstar.mobile.core.api.PubStarAdManager
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
     private val pubStarAdController: PubStarAdController by lazy {
@@ -43,6 +44,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 }
 
                 override fun onError(code: ErrorCode) {
+                    Log.d("Flutter - adk", "init onError: ${code.code} - ${code.name}")
                     onError(code)
                 }
             })

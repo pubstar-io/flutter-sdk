@@ -32,7 +32,10 @@
             android:value="2" />
         <meta-data
             android:name="io.pubstar.key"
-            android:value="pub-app-id-1233" />
+            android:value="pub-app-id-1692" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

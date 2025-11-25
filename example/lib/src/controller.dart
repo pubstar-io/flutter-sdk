@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 
 class AdIdExample {
-  static const String bannerId = "1233/99228313580";
-  static const String nativeId = "1233/99228313581";
-  static const String interstitialId = "1233/99228313582";
-  static const String openId = "1233/99228313583";
-  static const String rewardedId = "1233/99228313584";
+  static const String bannerId = "1692/99228314092";
+  static const String nativeId = "1692/99228314093";
+  static const String interstitialId = "1692/99228314089";
+  static const String openId = "1692/99228314090";
+  static const String rewardedId = "1692/99228314091";
   static const String videoId = "1233/99228313585";
 }
 
