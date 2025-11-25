@@ -3,7 +3,6 @@ package com.tqc.pubstar_io
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
-import android.util.Log
 import android.view.ViewGroup
 import io.pubstar.mobile.core.base.BannerAdRequest
 import io.pubstar.mobile.core.base.IMARequest
@@ -44,7 +43,6 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 }
 
                 override fun onError(code: ErrorCode) {
-                    Log.d("Flutter - adk", "init onError: ${code.code} - ${code.name}")
                     onError(code)
                 }
             })
