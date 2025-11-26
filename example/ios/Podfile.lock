@@ -13,12 +13,11 @@ PODS:
     - PrebidMobile (~> 3.0.0)
   - pubstar_io (1.3.1):
     - Flutter
-    - Pubstar
+    - Pubstar (~> 1.3.1)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - Pubstar (~> 1.3.1)
   - pubstar_io (from `.symlinks/plugins/pubstar_io/ios`)
 
 SPEC REPOS:
@@ -43,8 +42,8 @@ SPEC CHECKSUMS:
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   PrebidMobile: b30c7fc32ebfa6a300879b10b5d01eddcdfd9197
   Pubstar: 915b448f467c5ad309724c6f0d8ac6be3f593f6b
-  pubstar_io: 47b60631c4251a96f109d898ee5c900618df708f
+  pubstar_io: cd08a69b923bb6bf5aa3fb34a1997e90ba4800d0
 
-PODFILE CHECKSUM: 46e46687a694599226dae0c8f7e78396f94b8d1e
+PODFILE CHECKSUM: 2945164726dbe41673f75ca41946dafad164532d
 
 COCOAPODS: 1.16.2

@@ -15,7 +15,7 @@ PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '12.0'
+  s.platform = :ios, '13.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
@@ -34,6 +34,10 @@ PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
   # }
 
   s.static_framework = true
-  s.dependency 'Pubstar'
+  s.dependency 'Pubstar', '~> 1.3.1'
+
+  # s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.26.1'
+  # s.dependency 'AppLovinSDK', '~> 13.5.0'
+  # s.dependency 'PrebidMobile', '~> 3.0.0'
 
 end
