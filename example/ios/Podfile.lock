@@ -1,36 +1,30 @@
 PODS:
   - AppLovinSDK (13.5.1)
   - Flutter (1.0.0)
-  - Google-Mobile-Ads-SDK (11.10.0):
-    - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleAds-IMA-iOS-SDK (3.26.1)
-  - GoogleUserMessagingPlatform (3.1.0)
   - integration_test (0.0.1):
     - Flutter
   - PrebidMobile (3.0.2):
     - PrebidMobile/core (= 3.0.2)
   - PrebidMobile/core (3.0.2)
-  - Pubstar (1.3.0):
+  - Pubstar (1.3.1):
     - AppLovinSDK (~> 13.5.0)
-    - Google-Mobile-Ads-SDK (~> 11.10.0)
     - GoogleAds-IMA-iOS-SDK (~> 3.26.1)
     - PrebidMobile (~> 3.0.0)
-  - pubstar_io (1.3.0):
+  - pubstar_io (1.3.1):
     - Flutter
     - Pubstar
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - Pubstar (~> 1.3.0)
+  - Pubstar (~> 1.3.1)
   - pubstar_io (from `.symlinks/plugins/pubstar_io/ios`)
 
 SPEC REPOS:
   trunk:
     - AppLovinSDK
-    - Google-Mobile-Ads-SDK
     - GoogleAds-IMA-iOS-SDK
-    - GoogleUserMessagingPlatform
     - PrebidMobile
     - Pubstar
 
@@ -45,14 +39,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AppLovinSDK: 8d9af6c7617e4d35b38aa8393a3e9d161a74b230
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  Google-Mobile-Ads-SDK: 13e6e98edfd78ad8d8a791edb927658cc260a56f
   GoogleAds-IMA-iOS-SDK: 10b8f194e7cd2714d4de9a0587c46c8aaf06c620
-  GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   PrebidMobile: b30c7fc32ebfa6a300879b10b5d01eddcdfd9197
-  Pubstar: 6cf95af1de794c4a6e063bd400e3e3508e7413dd
-  pubstar_io: 678027545d200f1a5ce6b46aa4762f68d0a99ae3
+  Pubstar: 915b448f467c5ad309724c6f0d8ac6be3f593f6b
+  pubstar_io: 47b60631c4251a96f109d898ee5c900618df708f
 
-PODFILE CHECKSUM: 8bbeabefdc20dffbbb8a6d73b8f98d917c0312a4
+PODFILE CHECKSUM: e7a2acf20e844e020029fab66359480474cecc70
 
 COCOAPODS: 1.16.2
