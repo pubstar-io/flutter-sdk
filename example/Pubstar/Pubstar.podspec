@@ -13,7 +13,6 @@ Pod::Spec.new do |s|
   s.vendored_frameworks = 'Pubstar.xcframework'
   s.static_framework = true
 
-  # s.dependency 'Google-Mobile-Ads-SDK', '~> 11.10.0'
   s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.26.1'
   s.dependency 'AppLovinSDK', '~> 13.5.0'
   s.dependency 'PrebidMobile', '~> 3.0.0'
