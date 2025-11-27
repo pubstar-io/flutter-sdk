@@ -36,8 +36,4 @@ PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
   s.static_framework = true
   s.dependency 'Pubstar', '~> 1.3.1'
 
-  # s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.26.1'
-  # s.dependency 'AppLovinSDK', '~> 13.5.0'
-  # s.dependency 'PrebidMobile', '~> 3.0.0'
-
 end
