@@ -12,7 +12,13 @@ class AdIdExample {
 
 class Controller {
   Future<void> initPubstar() async {
-    await PubstarIo.init();
+    try {
+      await PubstarIo.init();
+    } on PubstarIoException catch (e) {
+      print(
+        "FLUTTER - app: init Pubstar SDK error ${e.errorCode} - ${e.message} - ${e.details}",
+      );
+    }
 
     // *** Preload Ad ***
     // await loadAd(AdIdExample.bannerId);

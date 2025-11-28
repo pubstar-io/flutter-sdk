@@ -14,7 +14,6 @@ enum PubstarAdEvent: Int {
 public class PubstarIoPlugin: NSObject, FlutterPlugin {
     private static let methodChanelName = "pubstar_io"
     private let methodChannelCallback = "pubstar_io#callback"
-    private static let eventChanelName = "pubstar_io_event"
     private static let nativeViewId = "pubstar_ad_view"
     private var channel: FlutterMethodChannel?
     

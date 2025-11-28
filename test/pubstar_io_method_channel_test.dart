@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
-import 'package:pubstar_io/src/pubstar_io_exception.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
