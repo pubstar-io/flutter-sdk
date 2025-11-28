@@ -1,3 +1,19 @@
+## [1.3.1] - 2025-11-28
+
+### Changed
+- **Reduced overall SDK size**  
+  - Optimized internal architecture to significantly reduce the plugin size on both Android and iOS.
+- **Faster initialization performance (`init()`)**  
+  - Improved startup flow and asynchronous handling, resulting in faster SDK initialization.
+- **Improved ad loading speed**  
+  - Enhanced the ad loading pipeline, reducing latency and increasing load stability.
+- **Enhanced modularity for future ad network integrations**  
+  - Refactored core structure to make it easier to extend and integrate additional ad networks in upcoming versions.
+
+### Notes
+- No API changes are required when upgrading to 1.3.1.
+- Recommended update for better performance and long-term support.
+
 ## [1.1.8+2] - 2025-05-25
 
 ### Added
