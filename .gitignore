@@ -32,3 +32,4 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 build/
 Pubstar/Frameworks/PAGAdSDK.xcframework
+example/pubspec.lock

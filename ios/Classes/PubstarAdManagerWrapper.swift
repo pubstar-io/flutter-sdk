@@ -61,7 +61,7 @@ public final class PubstarAdManagerWrapper {
         view: UIView? = nil,
         onHide: @escaping (RewardModel?) -> Void,
         onShowed: @escaping () -> Void,
-        onError: @escaping (ErrorCode) -> Void,
+        onError: @escaping (ErrorCode) -> Void
     ) {
         if _context == nil {
             return
@@ -79,7 +79,7 @@ public final class PubstarAdManagerWrapper {
             context: _context!,
             key: adId,
             view: view,
-            adShowedListener: adShowedListener,
+            adShowedListener: adShowedListener
         )
     }
     

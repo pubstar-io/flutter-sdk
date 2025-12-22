@@ -14,10 +14,11 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.pubstar.mobile.core.base.BannerAdRequest
-import io.pubstar.mobile.core.base.NativeAdRequest
-import io.pubstar.mobile.core.models.ErrorCode
-import io.pubstar.mobile.core.models.RewardModel
+import io.pubstar.mobile.ads.base.BannerAdRequest
+import io.pubstar.mobile.ads.base.NativeAdRequest
+import io.pubstar.mobile.ads.model.ErrorCode
+import io.pubstar.mobile.ads.model.RewardModel
+
 
 enum class PubstarAdEvent {
     LOADED,

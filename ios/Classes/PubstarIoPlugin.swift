@@ -172,7 +172,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
                 onShowed: onAdShowedCallback(callbackId: callbackId),
-                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed."),
+                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed.")
             )
         case "loadAndShowAdWithViewId":
             guard let adId = call.extractAdId(result: result) else { return }
@@ -197,7 +197,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
                 onShowed: onAdShowedCallback(callbackId: callbackId),
-                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed."),
+                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed.")
             )
         case "loadAndShowBannerAd":
             guard let adId = call.extractAdId(result: result) else { return }
@@ -224,7 +224,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
                 onShowed: onAdShowedCallback(callbackId: callbackId),
-                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed."),
+                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed.")
             )
         case "loadAndShowNativeAd":
             guard let adId = call.extractAdId(result: result) else { return }
@@ -251,7 +251,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
                 onShowed: onAdShowedCallback(callbackId: callbackId),
-                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed."),
+                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed.")
             )
         case "loadAndShowVideoAd":
             guard let adId = call.extractAdId(result: result) else { return }
@@ -282,7 +282,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
                 onShowed: onAdShowedCallback(callbackId: callbackId),
-                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed."),
+                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed.")
             )
 
         default:
