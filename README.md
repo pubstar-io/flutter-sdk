@@ -105,7 +105,16 @@ Update your app's Info.plist file to add several keys:
 
 ### Android
 
-#### 1. Add Pubstar Key to AndroidManifest.
+#### 1. Configure Maven Repositories
+Open your project-level build.gradle or settings.gradle and add:
+```bash
+repositories {
+  mavenCentral()
+  maven { url = uri("https://artifactory.appodeal.com/appodeal") }  <--- add this
+}
+```
+
+#### 2. Add Pubstar Key to AndroidManifest.
 Open `AndroidManifest.xml` and add inside `<application>`:
 
 ```bash
