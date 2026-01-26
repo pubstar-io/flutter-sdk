@@ -1,3 +1,24 @@
+
+### [1.5.0] - 2026-01-22
+
+- **OpenRTB (ORTB) Bidding Adapter**
+  - Added a dedicated ORTB Adapter that supports ad auctioning based on the IAB OpenRTB 2.6 specification:
+    https://github.com/InteractiveAdvertisingBureau/openrtb2.6
+
+  - Supported ad formats:
+    - Banner
+
+    - Interstitial
+
+    - Rewarded
+
+  - ORTB bidding is handled entirely inside the SDK via the adapter layer, without requiring any additional client-side configuration.
+
+- Summary
+  - All bidding logic is encapsulated inside the SDK and driven by server configuration.
+
+    This release significantly reduces integration complexity while enabling advanced auction-based advertising workflows.
+
 ## [1.3.2] - 2025-12-19
 
 ### Added
