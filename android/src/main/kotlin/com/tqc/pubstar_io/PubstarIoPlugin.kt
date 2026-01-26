@@ -80,6 +80,31 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onMethodCall(call: MethodCall, result: Result) {
         val pubstarAdManagerWrapper = PubstarAdManagerWrapper.getInstance(mContext)
 
+        // Wrapper to ensure result is only called once
+        var resultCalled = false
+        val safeResult = object : Result {
+            override fun success(value: Any?) {
+                if (!resultCalled) {
+                    resultCalled = true
+                    result.success(value)
+                }
+            }
+
+            override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
+                if (!resultCalled) {
+                    resultCalled = true
+                    result.error(errorCode, errorMessage, errorDetails)
+                }
+            }
+
+            override fun notImplemented() {
+                if (!resultCalled) {
+                    resultCalled = true
+                    result.notImplemented()
+                }
+            }
+        }
+
         fun onErrorCallback(
             callbackId: String,
             message: String = "Pubstar is error"
@@ -135,13 +160,13 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
         fun onInitDoneCallback(): () -> Unit {
             return {
-                result.success(true)
+                safeResult.success(true)
             }
         }
 
         fun onInitErrorCallback(): (ErrorCode) -> Unit {
             return { errorCode ->
-                result.error(
+                safeResult.error(
                     errorCode.code.toString(),
                     "Pubstar init error",
                     mapOf(
@@ -329,7 +354,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
 
             else -> {
-                result.notImplemented()
+                safeResult.notImplemented()
             }
         }
     }
