@@ -3,7 +3,7 @@
 
 - **OpenRTB (ORTB) Bidding Adapter**
   - Added a dedicated ORTB Adapter that supports ad auctioning based on the IAB OpenRTB 2.6 specification:
-    https://github.com/InteractiveAdvertisingBureau/openrtb2.6
+    https://github.com/InteractiveAdvertisingBureau/openrtb2.x
 
   - Supported ad formats:
     - Banner
