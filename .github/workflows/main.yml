@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  contents: write
 
 jobs:
   publish:
@@ -37,3 +38,44 @@ jobs:
 
       - name: Test publishing package
         run: dart pub publish --dry-run
+
+      - name: Read version from pubspec.yaml
+        id: pubspec
+        run: |
+          VERSION=$(python3 - <<'PY'
+          import yaml
+          with open("pubspec.yaml","r",encoding="utf-8") as f:
+              data = yaml.safe_load(f)
+          v = str(data.get("version","")).strip()
+          # pubspec version có thể là "1.2.3+4" -> lấy phần "1.2.3"
+          print(v.split("+")[0])
+          PY
+          )
+          if [ -z "$VERSION" ]; then
+            echo "❌ pubspec.yaml missing version"
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create git tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          TAG="${{ steps.pubspec.outputs.tag }}"
+          echo "Creating tag: $TAG"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Nếu tag đã tồn tại thì bỏ qua để tránh fail
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists. Skip."
+            exit 0
+          fi
+
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+      # - name: Publish to pub.dev
+      #   if: github.event_name == 'workflow_dispatch'
+      #   run: dart pub publish --force
