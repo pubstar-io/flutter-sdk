@@ -3,8 +3,11 @@ name: Publish Flutter package to pub.dev
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - 'pubspec.yaml'
+      - '!build/**'
 
 permissions:
   contents: read
@@ -24,58 +27,89 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Pub get
-        run: flutter pub get
-
-      - name: Format code
-        run: dart format .
-
-      - name: Analyze
-        run: dart analyze
-
-      - name: Run tests
-        run: flutter test
-
-      - name: Test publishing package
-        run: dart pub publish --dry-run
-
-      - name: Read version from pubspec.yaml
+      - name: Extract version from pubspec.yaml
         id: pubspec
         run: |
           VERSION=$(python3 - <<'PY'
-          import yaml
-          with open("pubspec.yaml","r",encoding="utf-8") as f:
-              data = yaml.safe_load(f)
-          v = str(data.get("version","")).strip()
-          # pubspec version có thể là "1.2.3+4" -> lấy phần "1.2.3"
-          print(v.split("+")[0])
-          PY
+            import yaml
+            with open("pubspec.yaml","r",encoding="utf-8") as f:
+                data = yaml.safe_load(f)
+            v = str(data.get("version","")).strip()
+            # pubspec version có thể là "1.2.3+4" -> lấy phần "1.2.3"
+            print(v.split("+")[0])
+            PY
           )
+
           if [ -z "$VERSION" ]; then
             echo "❌ pubspec.yaml missing version"
             exit 1
           fi
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=v$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create git tag
-        if: github.event_name == 'workflow_dispatch'
+      - name: Check if Tag exists
+        id: check_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_SDK_IOS }}
         run: |
-          TAG="${{ steps.pubspec.outputs.tag }}"
-          echo "Creating tag: $TAG"
+          TAG_NAME="${{ steps.pubspec.outputs.tag }}"
+          REMOTE_REPO="pubstar-io/flutter-sdk"
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "Checking tag $TAG_NAME on $REMOTE_REPO..."
 
-          # Nếu tag đã tồn tại thì bỏ qua để tránh fail
-          if git rev-parse "$TAG" >/dev/null 2>&1; then
-            echo "Tag $TAG already exists. Skip."
-            exit 0
+          if gh api repos/$REMOTE_REPO/git/ref/tags/$TAG_NAME >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists. Skipping publish to avoid error."
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag $TAG_NAME is not exists."
+            echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
-          git tag -a "$TAG" -m "Release $TAG"
-          git push origin "$TAG"
+      - name: Pub get
+        if: steps.check_tag.outputs.exists == 'false'
+        run: flutter pub get
 
-      # - name: Publish to pub.dev
-      #   if: github.event_name == 'workflow_dispatch'
-      #   run: dart pub publish --force
+      - name: Format code
+        if: steps.check_tag.outputs.exists == 'false'
+        run: dart format .
+
+      - name: Analyze
+        if: steps.check_tag.outputs.exists == 'false'
+        run: dart analyze
+
+      - name: Run tests
+        if: steps.check_tag.outputs.exists == 'false'
+        run: flutter test
+
+      - name: Test publishing package
+        if: steps.check_tag.outputs.exists == 'false'
+        run: dart pub publish --dry-run
+
+      - name: Zip project source code using git
+        id: zip_step
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          ZIP_NAME="flutter_sdk_${{ steps.pubspec.outputs.version }}.zip"
+
+          git archive -o $ZIP_NAME HEAD
+          echo "zip_file=$ZIP_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release and upload asset
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: pubstar-io/flutter-sdk
+          tag_name: ${{ steps.pubspec.outputs.tag }}
+          target_commitish: main
+          name: ${{ steps.pubspec.outputs.version }}
+          generate_release_notes: true
+          files: |
+            ${{ steps.zip_project.outputs.zip_file }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_SDK_IOS }}
+
+      - name: Publish to pub.dev
+        if: steps.check_tag.outputs.exists == 'false'
+        if: github.event_name == 'workflow_dispatch'
+        run: dart pub publish --force
