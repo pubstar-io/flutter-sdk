@@ -33,13 +33,14 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         listener,
         (cbId) => methodChannel.invokeMethod('loadAd', {
           'adId': adId,
-          'callbackId': cbId,
+          'callbackId': 'cbId',
         }),
       );
     } on PlatformException catch (e) {
       throw PubstarIoException(
         errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
         message: e.message.toString(),
+
         details: e.details.toString(),
       );
     }
@@ -100,7 +101,9 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
       );
     } on PlatformException catch (e) {
       throw PubstarIoException(
-        errorCode: ErrorCodeUtil.errorCodeFromNative(e.code),
+        errorCode: ErrorCodeUtil.errorCodeFromNative(
+          e.code
+        ),
         message: e.message.toString(),
         details: e.details.toString(),
       );

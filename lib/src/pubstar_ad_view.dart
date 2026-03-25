@@ -182,7 +182,7 @@ class PubstarAdView extends StatelessWidget {
             ),
           );
           break;
-        case PubstarAdType.native:
+        case PubstarAdType.banner:
           PubstarIo.loadAndShowNativeAd(
             adId: adId,
             viewId: viewId,
