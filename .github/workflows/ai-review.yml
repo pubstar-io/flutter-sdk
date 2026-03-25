@@ -1,0 +1,35 @@
+# .github/workflows/ai-review.yml
+name: AI Code Review
+
+# Khi nào chạy? → Khi có PR mới hoặc cập nhật PR trên nhánh main/dev.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [dev]
+
+# on:
+#   workflow_dispatch:
+
+# Quyền cần thiết
+permissions:
+  contents: read           # Đọc code
+  pull-requests: write     # Viết comment vào PR
+  issues: write           # Viết comment (backup)
+
+jobs:
+  ai_review:
+    name: AI Code Review
+    runs-on: self-hosted
+
+    steps:
+      # Bước 1: Tải code về
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # Bước 2: Chạy AI reviewer
+      - name: Run OpenRouter AI Code Reviewer
+        uses: pubstar-io/ai-review-bot@main
+        with:
+          openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}  # API key (sẽ setup ở bước sau)
+          github-token: ${{ secrets.GITHUB_TOKEN }}              # Token tự động có sẵn
+          review-language: 'vietnamese'  # Ngôn ngữ review (vietnamese hoặc english)
