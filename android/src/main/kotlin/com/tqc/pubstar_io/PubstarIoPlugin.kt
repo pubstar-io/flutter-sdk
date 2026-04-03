@@ -200,6 +200,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "loadAd is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "showAd" -> {
@@ -216,6 +217,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "showAd is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "showAdWithViewId" -> {
@@ -233,6 +235,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowAd" -> {
@@ -251,6 +254,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowAdWithViewId" -> {
@@ -270,6 +274,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowBannerAd" -> {
@@ -295,6 +300,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowNativeAd" -> {
@@ -320,6 +326,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowVideoAd" -> {
@@ -347,6 +354,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             else -> {
