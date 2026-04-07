@@ -60,11 +60,13 @@ class PubstarIo {
   static Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
+    PubstarNativeCustomConfig? customConfig,
     ShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.showAdWithViewId(
       adId: adId,
       viewId: viewId,
+      customConfig: customConfig,
       listener: listener,
     );
   }
@@ -122,12 +124,14 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required PubstarAdSize size,
+    PubstarNativeCustomConfig? customConfig,
     LoadAndShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowNativeAd(
       adId: adId,
       viewId: viewId,
       typeSize: size,
+      customConfig: customConfig,
       listener: listener,
     );
   }
