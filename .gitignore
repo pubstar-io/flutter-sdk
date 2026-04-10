@@ -33,3 +33,10 @@ migrate_working_dir/
 build/
 Pubstar/Frameworks/PAGAdSDK.xcframework
 example/pubspec.lock
+
+# example
+example/ios/Podfile.lock
+example/pubspec.lock
+
+# test Native code
+ios/Frameworks

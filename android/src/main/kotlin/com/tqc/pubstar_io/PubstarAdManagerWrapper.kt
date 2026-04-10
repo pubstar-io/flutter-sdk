@@ -1,19 +1,22 @@
 package com.tqc.pubstar_io
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
 import android.view.ViewGroup
-import io.pubstar.mobile.ads.base.BannerAdRequest
-import io.pubstar.mobile.ads.base.IMARequest
-import io.pubstar.mobile.ads.base.NativeAdRequest
-import io.pubstar.mobile.ads.interfaces.AdLoaderListener
-import io.pubstar.mobile.ads.interfaces.AdShowedListener
-import io.pubstar.mobile.ads.interfaces.InitAdListener
-import io.pubstar.mobile.ads.interfaces.PubStarAdController
-import io.pubstar.mobile.ads.model.ErrorCode
-import io.pubstar.mobile.ads.model.RewardModel
-import io.pubstar.mobile.ads.pub.PubStarAdManager
+import com.google.android.ump.FormError
+import io.pubstar.mobile.core.base.BannerAdRequest
+import io.pubstar.mobile.core.base.IMARequest
+import io.pubstar.mobile.core.base.NativeAdRequest
+import io.pubstar.mobile.core.interfaces.AdLoaderListener
+import io.pubstar.mobile.core.interfaces.AdShowedListener
+import io.pubstar.mobile.core.interfaces.InitAdListener
+import io.pubstar.mobile.core.interfaces.PubStarAdController
+import io.pubstar.mobile.core.models.ErrorCode
+import io.pubstar.mobile.core.models.RewardModel
+import io.pubstar.mobile.core.api.PubStarAdManager
+import io.pubstar.mobile.core.utils.GoogleMobileAdsConsentManager
 
 class PubstarAdManagerWrapper private constructor(private val mContext: Context) {
     private val pubStarAdController: PubStarAdController by lazy {
@@ -36,17 +39,30 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         onDone: () -> Unit,
         onError: (ErrorCode) -> Unit
     ) {
-        PubStarAdManager.getInstance()
-            .setInitAdListener(object : InitAdListener {
-                override fun onDone() {
-                    onDone()
-                }
+        if (mContext !is Activity) {
+            onError(ErrorCode.INIT_ERROR)
+            return
+        }
 
-                override fun onError(code: ErrorCode) {
-                    onError(code)
+        PubStarAdManager.gatherConsent(
+            mContext,
+            object : GoogleMobileAdsConsentManager.OnConsentGatheringCompleteListener {
+                override fun consentGatheringComplete(error: FormError?) {
+
+                    PubStarAdManager.getInstance()
+                        .setInitAdListener(object : InitAdListener {
+                            override fun onDone() {
+                                onDone()
+                            }
+
+                            override fun onError(code: ErrorCode) {
+                                onError(code)
+                            }
+                        })
+                        .init(mContext)
                 }
-            })
-            .init(mContext)
+            }
+        )
     }
 
     fun loadAd(
@@ -145,28 +161,28 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             .withView(view)
             .sizeType(size)
             .adLoaderListener(object : AdLoaderListener {
-                    override fun onError(code: ErrorCode) {
-                        onAdLoaderError(code)
-                    }
-
-                    override fun onLoaded() {
-                        onAdLoaded()
-                    }
+                override fun onError(code: ErrorCode) {
+                    onAdLoaderError(code)
                 }
+
+                override fun onLoaded() {
+                    onAdLoaded()
+                }
+            }
             )
             .adShowedListener(object : AdShowedListener {
-                    override fun onAdHide(any: RewardModel?) {
-                        onAdHide(any)
-                    }
-
-                    override fun onAdShowed() {
-                        onAdShowed()
-                    }
-
-                    override fun onError(code: ErrorCode) {
-                        onAdShowedError(code)
-                    }
+                override fun onAdHide(any: RewardModel?) {
+                    onAdHide(any)
                 }
+
+                override fun onAdShowed() {
+                    onAdShowed()
+                }
+
+                override fun onError(code: ErrorCode) {
+                    onAdShowedError(code)
+                }
+            }
             )
             .build()
 
@@ -191,28 +207,28 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             .withView(view)
             .tag(size)
             .adLoaderListener(object : AdLoaderListener {
-                    override fun onError(code: ErrorCode) {
-                        onAdLoaderError(code)
-                    }
-
-                    override fun onLoaded() {
-                        onAdLoaded()
-                    }
+                override fun onError(code: ErrorCode) {
+                    onAdLoaderError(code)
                 }
+
+                override fun onLoaded() {
+                    onAdLoaded()
+                }
+            }
             )
             .adShowedListener(object : AdShowedListener {
-                    override fun onAdHide(any: RewardModel?) {
-                        onAdHide(any)
-                    }
-
-                    override fun onAdShowed() {
-                        onAdShowed()
-                    }
-
-                    override fun onError(code: ErrorCode) {
-                        onAdShowedError(code)
-                    }
+                override fun onAdHide(any: RewardModel?) {
+                    onAdHide(any)
                 }
+
+                override fun onAdShowed() {
+                    onAdShowed()
+                }
+
+                override fun onError(code: ErrorCode) {
+                    onAdShowedError(code)
+                }
+            }
             )
             .build()
 
@@ -237,28 +253,28 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             .withView(view)
             .withMedia(media)
             .adLoaderListener(object : AdLoaderListener {
-                    override fun onError(code: ErrorCode) {
-                        onAdLoaderError(code)
-                    }
-
-                    override fun onLoaded() {
-                        onAdLoaded()
-                    }
+                override fun onError(code: ErrorCode) {
+                    onAdLoaderError(code)
                 }
+
+                override fun onLoaded() {
+                    onAdLoaded()
+                }
+            }
             )
             .adShowedListener(object : AdShowedListener {
-                    override fun onAdHide(any: RewardModel?) {
-                        onAdHide(any)
-                    }
-
-                    override fun onAdShowed() {
-                        onAdShowed()
-                    }
-
-                    override fun onError(code: ErrorCode) {
-                        onAdShowedError(code)
-                    }
+                override fun onAdHide(any: RewardModel?) {
+                    onAdHide(any)
                 }
+
+                override fun onAdShowed() {
+                    onAdShowed()
+                }
+
+                override fun onError(code: ErrorCode) {
+                    onAdShowedError(code)
+                }
+            }
             )
             .build()
 

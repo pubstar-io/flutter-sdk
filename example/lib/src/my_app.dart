@@ -104,34 +104,34 @@ class _MyAppState extends State<MyApp> {
                   : buildPlaceholder(),
               const SizedBox(height: 10),
 
-              Text('Video AD'),
-              const SizedBox(height: 10),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 200,
-                      child: PubstarVideoAdView(
-                        adId: AdIdExample.videoId,
-                        media:
-                            'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
-                        onError:
-                            (error) => debugPrint(
-                              "FLUTTER - app: onError video, code: ${error.code} - rawCode: ${error.name}",
-                            ),
-                        onHide:
-                            (reward) => debugPrint(
-                              "FLUTTER - app: onHide video  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-                            ),
-                        onLoaded:
-                            () => debugPrint("FLUTTER - app: onLoaded video"),
-                        onShowed:
-                            () => debugPrint("FLUTTER - app: onShowed video"),
-                      ),
-                    ),
-                  )
-                  : buildPlaceholder(),
+              // Text('Video AD'),
+              // const SizedBox(height: 10),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 200,
+              //         child: PubstarVideoAdView(
+              //           adId: AdIdExample.videoId,
+              //           media:
+              //               'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+              //           onError:
+              //               (error) => debugPrint(
+              //                 "FLUTTER - app: onError video, code: ${error.code} - rawCode: ${error.name}",
+              //               ),
+              //           onHide:
+              //               (reward) => debugPrint(
+              //                 "FLUTTER - app: onHide video  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              //               ),
+              //           onLoaded:
+              //               () => debugPrint("FLUTTER - app: onLoaded video"),
+              //           onShowed:
+              //               () => debugPrint("FLUTTER - app: onShowed video"),
+              //         ),
+              //       ),
+              //     )
+              //     : buildPlaceholder(),
               const SizedBox(height: 10),
               Text('-------------------------'),
 
