@@ -1,4 +1,8 @@
 
+### [1.5.1-1] - 2026-04-10
+
+- Updated Android release version to `1.5.1-1` for pub.dev publishing.
+
 ### [1.5.0] - 2026-01-22
 
 - **OpenRTB (ORTB) Bidding Adapter**
