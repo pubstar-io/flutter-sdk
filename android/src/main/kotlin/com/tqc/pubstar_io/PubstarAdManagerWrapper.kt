@@ -280,7 +280,7 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         val layoutId = resolveResId(config.layoutName, "layout")
         if (layoutId == 0) return null
 
-        val loadingView = resolveOptionalView(inflater, layoutId, config.loadingViewId)
+        val loadingView = resolveOptionalView(inflater, config.loadingViewId)
         val builder = NativeAdViewBinder.Builder(layoutId)
 
         resolveResId(config.advertiserTextViewId, "id").takeIf { it != 0 }?.let {
@@ -308,12 +308,12 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         return builder.build()
     }
 
-    private fun resolveOptionalView(inflater: LayoutInflater, layoutId: Int, viewName: String?): View? {
+    private fun resolveOptionalView(inflater: LayoutInflater, viewName: String?): View? {
         if (viewName.isNullOrBlank()) return null
-        val id = resolveResId(viewName, "id")
+        val id = resolveResId(viewName, "layout")
         if (id == 0) return null
-        val rootView = inflater.inflate(layoutId, null, false)
-        return rootView.findViewById(id)
+        val rootView = inflater.inflate(id, null, false)
+        return rootView
     }
 
     private fun resolveResId(name: String?, type: String): Int {
