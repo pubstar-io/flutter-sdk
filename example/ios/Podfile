@@ -27,6 +27,8 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 
 flutter_ios_podfile_setup
 
+pod 'Pubstar', :path => '/Users/mobile/Developments/sdk/PubStar-SDK/ios-sdk/Pubstar'
+
 target 'Runner' do
  use_frameworks!
 

@@ -237,6 +237,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             guard let viewId = call.extractViewId(result: result) else { return }
             let size = call.extractNativeSize(result: result)
             guard let callbackId = call.extractCallbackIdId(result: result) else { return }
+            let customConfig = call.extractCustomConfig()
             
             guard let adView = PubstarAdViewRegistry.shared.views[viewId] else {
                 result(
@@ -257,7 +258,8 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),
                 onShowed: onAdShowedCallback(callbackId: callbackId),
-                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed.")
+                onShowedError: onErrorCallback(callbackId: callbackId, message: "onShowed is failed."),
+                customConfig: customConfig
             )
             result(nil)
         case "loadAndShowVideoAd":
