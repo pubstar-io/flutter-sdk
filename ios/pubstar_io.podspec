@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'pubstar_io'
-  s.version          = '1.5.0'
+  s.version          = '1.6.0'
   s.summary          = 'PubStar Mobile AD SDK'
   s.description      = <<-DESC
 PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
@@ -18,7 +18,10 @@ PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
   s.platform = :ios, '13.0'
 
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.pod_target_xcconfig = { 
+    'DEFINES_MODULE' => 'YES', 
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'
+  }
   s.swift_versions = ['5.3']
 
   # If your plugin requires a privacy manifest, for example if it uses any
@@ -32,8 +35,30 @@ PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
   # s.pod_target_xcconfig = {
   #   'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/../../Frameworks'
   # }
+  # s.vendored_frameworks = [
+  #   'Frameworks/Pubstar.xcframework',
+  #   # 'Frameworks/ima/PubStarImaAdapter.xcframework'
+  # ]
+  # s.vendored_frameworks = 'Frameworks/**/*.xcframework'
+  s.vendored_frameworks = [
+    'Frameworks/Pubstar.xcframework',
+    'Frameworks/ima/PubStarImaAdapter.xcframework'
+  ]
+
+  s.dependency 'Google-Mobile-Ads-SDK', '~> 12.14.0'
+  s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.26.1'
+  s.dependency 'AppLovinSDK', '~> 13.5.0'
+  s.dependency 'PrebidMobile', '~> 3.0.2'
+  s.dependency 'PrebidMobileGAMEventHandlers', '~> 3.0.2'
+  s.dependency 'PrebidMobileMAXAdapters', '~> 3.0.2'
+  s.dependency 'PrebidMobileAdMobAdapters', '~> 3.0.2'
+
 
   s.static_framework = true
-  s.dependency 'Pubstar', '~> 1.5.0'
+  # s.dependency 'Pubstar'
+  
+  # Setup frameworks for Release Production
+  # s.static_framework = true
+  # s.dependency 'Pubstar', '~> 1.6.0'
 
 end

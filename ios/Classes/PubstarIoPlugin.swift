@@ -270,9 +270,13 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 return
             }
             
+            print("[TEST] loadAndShowVideoAd media: \(media)")
+            
             guard let url = URL(string: media) else {
                 return
             }
+            
+            print("[TEST] loadAndShowVideoAd url: \(url)")
             
             PubstarAdManagerWrapper.loadAndShowVideoAd(
                 adId: adId,
