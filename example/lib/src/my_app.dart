@@ -43,95 +43,95 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               Text('AD need view Example'),
               const SizedBox(height: 20),
-              Text('Banner AD'),
-              const SizedBox(height: 10),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: PubstarAdView(
-                        adId: AdIdExample.bannerId,
-                        size: PubstarAdSize.small,
-                        type: PubstarAdType.banner,
-                        mode: PubstarAdViewMode.loadAndShow,
-                        onError:
-                            (error) => debugPrint(
-                              "FLUTTER - app: onError banner, code: ${error.code} - rawCode: ${error.name}",
-                            ),
-                        onHide:
-                            (reward) => debugPrint(
-                              "FLUTTER - app: onHide banner  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-                            ),
-                        onLoaded:
-                            () => debugPrint("FLUTTER - app: onLoaded banner"),
-                        onShowed:
-                            () => debugPrint("FLUTTER - app: onShowed banner"),
-                      ),
-                    ),
-                  )
-                  : buildPlaceholder(),
-
-              Text('Native AD'),
-              const SizedBox(height: 10),
-              _isAdSdkReady
-                  ? ColoredBox(
-                    color: Colors.grey.shade300,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: PubstarAdView(
-                        adId: AdIdExample.nativeId,
-                        mode: PubstarAdViewMode.loadAndShow,
-                        type: PubstarAdType.native,
-                        size: PubstarAdSize.small,
-                        onError:
-                            (error) => debugPrint(
-                              "FLUTTER - app: onError native, code: ${error.code} - rawCode: ${error.name}",
-                            ),
-                        onHide:
-                            (reward) => debugPrint(
-                              "FLUTTER - app: onHide native  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
-                            ),
-                        onLoaded:
-                            () => debugPrint("FLUTTER - app: onLoaded native"),
-                        onShowed:
-                            () => debugPrint("FLUTTER - app: onShowed native"),
-                      ),
-                    ),
-                  )
-                  : buildPlaceholder(),
-              const SizedBox(height: 10),
-
-              // Text('Video AD'),
+              // Text('Banner AD'),
               // const SizedBox(height: 10),
               // _isAdSdkReady
               //     ? ColoredBox(
               //       color: Colors.grey.shade300,
               //       child: SizedBox(
               //         width: double.infinity,
-              //         height: 200,
-              //         child: PubstarVideoAdView(
-              //           adId: AdIdExample.videoId,
-              //           media:
-              //               'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+              //         height: 100,
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.bannerId,
+              //           size: PubstarAdSize.small,
+              //           type: PubstarAdType.banner,
+              //           mode: PubstarAdViewMode.loadAndShow,
               //           onError:
               //               (error) => debugPrint(
-              //                 "FLUTTER - app: onError video, code: ${error.code} - rawCode: ${error.name}",
+              //                 "FLUTTER - app: onError banner, code: ${error.code} - rawCode: ${error.name}",
               //               ),
               //           onHide:
               //               (reward) => debugPrint(
-              //                 "FLUTTER - app: onHide video  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              //                 "FLUTTER - app: onHide banner  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
               //               ),
               //           onLoaded:
-              //               () => debugPrint("FLUTTER - app: onLoaded video"),
+              //               () => debugPrint("FLUTTER - app: onLoaded banner"),
               //           onShowed:
-              //               () => debugPrint("FLUTTER - app: onShowed video"),
+              //               () => debugPrint("FLUTTER - app: onShowed banner"),
               //         ),
               //       ),
               //     )
               //     : buildPlaceholder(),
+
+              // Text('Native AD'),
+              // const SizedBox(height: 10),
+              // _isAdSdkReady
+              //     ? ColoredBox(
+              //       color: Colors.grey.shade300,
+              //       child: SizedBox(
+              //         width: double.infinity,
+              //         height: 100,
+              //         child: PubstarAdView(
+              //           adId: AdIdExample.nativeId,
+              //           mode: PubstarAdViewMode.loadAndShow,
+              //           type: PubstarAdType.native,
+              //           size: PubstarAdSize.small,
+              //           onError:
+              //               (error) => debugPrint(
+              //                 "FLUTTER - app: onError native, code: ${error.code} - rawCode: ${error.name}",
+              //               ),
+              //           onHide:
+              //               (reward) => debugPrint(
+              //                 "FLUTTER - app: onHide native  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+              //               ),
+              //           onLoaded:
+              //               () => debugPrint("FLUTTER - app: onLoaded native"),
+              //           onShowed:
+              //               () => debugPrint("FLUTTER - app: onShowed native"),
+              //         ),
+              //       ),
+              //     )
+              //     : buildPlaceholder(),
+              const SizedBox(height: 10),
+
+              Text('Video AD'),
+              const SizedBox(height: 10),
+              _isAdSdkReady
+                  ? ColoredBox(
+                    color: Colors.grey.shade300,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 200,
+                      child: PubstarVideoAdView(
+                        adId: AdIdExample.videoId,
+                        media:
+                            'https://storage.googleapis.com/gvabox/media/samples/stock.mp4',
+                        onError:
+                            (error) => debugPrint(
+                              "FLUTTER - app: video onError, code: ${error.code} - rawCode: ${error.name}",
+                            ),
+                        onHide:
+                            (reward) => debugPrint(
+                              "FLUTTER - app: video onHide  - type: ${reward?.type ?? ""} - amount: ${reward?.amount ?? 0}",
+                            ),
+                        onLoaded:
+                            () => debugPrint("FLUTTER - app: video onLoaded"),
+                        onShowed:
+                            () => debugPrint("FLUTTER - app: video onShowed"),
+                      ),
+                    ),
+                  )
+                  : buildPlaceholder(),
               const SizedBox(height: 10),
               Text('-------------------------'),
 
