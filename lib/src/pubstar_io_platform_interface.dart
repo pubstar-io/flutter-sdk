@@ -80,6 +80,7 @@ abstract class PubstarIoPlatform extends PlatformInterface {
     required String adId,
     required int viewId,
     required String media,
+    required PubStarVideoAdType type,
     LoadAndShowListener? listener,
   }) {
     throw UnimplementedError('loadAndShowVideoAd() has not been implemented.');

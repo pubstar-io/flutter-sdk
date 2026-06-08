@@ -152,5 +152,31 @@ extension FlutterMethodCall {
         
         return media
     }
+    
+    func extractTypeVideo(result: @escaping FlutterResult) -> IMARequest.IMAType? {
+        guard
+            let args = self.arguments as? [String: Any],
+            let value = args["type"] as? String
+        else {
+            result(
+                FlutterError(
+                    code: "INVALID_ARGUMENT",
+                    message: "Missing type of video",
+                    details: nil
+                )
+            )
+            return nil
+        }
+        
+        switch value {
+        case "inStream":
+            return .inStream
+        case "outStream":
+            return .outStream
+            
+        default:
+            return nil
+        }
+    }
 }
 
