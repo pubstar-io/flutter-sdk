@@ -136,12 +136,14 @@ class PubstarIo {
     required String adId,
     required int viewId,
     required String media,
+    required PubStarVideoAdType type,
     LoadAndShowListener? listener,
   }) async {
     await PubstarIoPlatform.instance.loadAndShowVideoAd(
       adId: adId,
       viewId: viewId,
       media: media,
+      type: type,
       listener: listener,
     );
   }

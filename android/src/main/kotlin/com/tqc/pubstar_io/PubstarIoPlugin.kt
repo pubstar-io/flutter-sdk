@@ -5,6 +5,7 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
+import android.widget.VideoView
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -15,6 +16,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.pubstar.mobile.core.base.BannerAdRequest
+import io.pubstar.mobile.core.base.IMARequest
 import io.pubstar.mobile.core.base.NativeAdRequest
 import io.pubstar.mobile.core.models.ErrorCode
 import io.pubstar.mobile.core.models.RewardModel
@@ -324,21 +326,15 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
                 val media = Validate.media(call.argument<String>("media"), result) ?: return
+                val typeVideo = Validate.typeVideo(call.argument<String>("type"), result) ?: return
+                val type = extractTypeNative(typeVideo)
                 val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
-
-                val mediaPlayer = MediaPlayer()
-                mediaPlayer.setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MOVIE)
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .build()
-                )
-                mediaPlayer.setDataSource(media)
 
                 pubstarAdManagerWrapper.loadAndShowVideoAd(
                     adId = adId,
                     view = adView,
-                    media = mediaPlayer,
+                    media = media,
+                    type = type,
                     onAdLoaderError = onErrorCallback(
                         callbackId = callbackId,
                         message = "onAdLoader is failed."
@@ -421,6 +417,23 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivity() {
         mContext = applicationContext
+    }
+
+
+    private fun extractTypeNative(size: String): IMARequest.Type {
+        return when (size) {
+            "inStream" -> {
+                IMARequest.Type.IN_STREAM
+            }
+
+            "outStream" -> {
+                IMARequest.Type.OUT_STREAM
+            }
+
+            else -> {
+                IMARequest.Type.IN_STREAM
+            }
+        }
     }
 }
 

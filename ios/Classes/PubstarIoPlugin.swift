@@ -257,6 +257,7 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
             guard let adId = call.extractAdId(result: result) else { return }
             guard let viewId = call.extractViewId(result: result) else { return }
             guard let media = call.extractMedia(result: result) else { return }
+            guard let type = call.extractTypeVideo(result: result) else { return }
             guard let callbackId = call.extractCallbackIdId(result: result) else { return }
             
             guard let adView = PubstarAdViewRegistry.shared.views[viewId] else {
@@ -270,14 +271,11 @@ public class PubstarIoPlugin: NSObject, FlutterPlugin {
                 return
             }
             
-            guard let url = URL(string: media) else {
-                return
-            }
-            
             PubstarAdManagerWrapper.loadAndShowVideoAd(
                 adId: adId,
                 view: adView,
-                media: AVPlayer(url: url),
+                media: media,
+                type: type,
                 onLoaderError: onErrorCallback(callbackId: callbackId, message: "onLoaded is failed."),
                 onLoaded: onAdLoadedCallback(callbackId: callbackId),
                 onHide: onAdHideCallback(callbackId: callbackId),

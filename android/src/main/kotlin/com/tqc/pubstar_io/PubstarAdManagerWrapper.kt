@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
 import android.view.ViewGroup
+import android.widget.VideoView
 import com.google.android.ump.FormError
 import io.pubstar.mobile.core.base.BannerAdRequest
 import io.pubstar.mobile.core.base.IMARequest
@@ -48,7 +49,6 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
             mContext,
             object : GoogleMobileAdsConsentManager.OnConsentGatheringCompleteListener {
                 override fun consentGatheringComplete(error: FormError?) {
-
                     PubStarAdManager.getInstance()
                         .setInitAdListener(object : InitAdListener {
                             override fun onDone() {
@@ -240,8 +240,9 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
 
     fun loadAndShowVideoAd(
         adId: String,
-        view: ViewGroup? = null,
-        media: MediaPlayer,
+        view: ViewGroup,
+        media: String,
+        type: IMARequest.Type,
         onAdLoaderError: (ErrorCode) -> Unit,
         onAdLoaded: () -> Unit,
         onAdHide: (RewardModel?) -> Unit,
@@ -251,7 +252,8 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
         val request = IMARequest.Builder(mContext)
             .isAllowCache(true)
             .withView(view)
-            .withMedia(media)
+            .withSize(IMARequest.Size.Medium)
+            .withType(type)
             .adLoaderListener(object : AdLoaderListener {
                 override fun onError(code: ErrorCode) {
                     onAdLoaderError(code)
@@ -274,13 +276,44 @@ class PubstarAdManagerWrapper private constructor(private val mContext: Context)
                 override fun onError(code: ErrorCode) {
                     onAdShowedError(code)
                 }
-            }
+            })
+
+        if (type == IMARequest.Type.IN_STREAM) {
+            this.createVideoForInStreamAds(
+                containerView = view,
+                path = media,
+                callback = { player ->
+                    request.withMedia(player)
+                }
             )
-            .build()
+        }
 
         pubStarAdController.loadAndShow(
             adId,
-            request
+            request.build()
         )
+    }
+
+    private fun createVideoForInStreamAds(
+        containerView: ViewGroup,
+        path: String,
+        callback: (mediaPlayer: MediaPlayer) -> Unit
+    ) {
+        val videoPlayer = VideoView(mContext)
+
+        val layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        videoPlayer.layoutParams = layoutParams
+        containerView.addView(videoPlayer)
+
+        videoPlayer.setVideoPath(path)
+        videoPlayer.setOnPreparedListener { mp ->
+            mp.isLooping = false
+            videoPlayer.start()
+
+            callback(mp)
+        }
     }
 }

@@ -188,6 +188,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required String media,
+    required PubStarVideoAdType type,
     LoadAndShowListener? listener,
   }) async {
     try {
@@ -197,6 +198,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           'adId': adId,
           'viewId': viewId,
           'media': media,
+          'type': type.name,
           'callbackId': cbId,
         }),
       );
