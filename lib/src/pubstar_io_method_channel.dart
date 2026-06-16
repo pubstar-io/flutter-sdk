@@ -68,6 +68,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
   Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
+    PubstarNativeCustomConfig? customConfig,
     ShowListener? listener,
   }) async {
     try {
@@ -76,6 +77,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
         (cbId) => methodChannel.invokeMethod('showAdWithViewId', {
           'adId': adId,
           "viewId": viewId,
+          "customConfig": customConfig?.toMap(),
           "callbackId": cbId,
         }),
       );
@@ -162,6 +164,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
+    PubstarNativeCustomConfig? customConfig,
     LoadAndShowListener? listener,
   }) async {
     try {
@@ -171,6 +174,7 @@ class MethodChannelPubstarIo extends PubstarIoPlatform {
           'adId': adId,
           'viewId': viewId,
           'typeSize': typeSize.name,
+          'customConfig': customConfig?.toMap(),
           'callbackId': cbId,
         }),
       );

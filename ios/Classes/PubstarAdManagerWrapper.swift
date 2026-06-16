@@ -152,7 +152,8 @@ public final class PubstarAdManagerWrapper {
         onLoaded: @escaping () -> Void,
         onHide: @escaping (RewardModel?) -> Void,
         onShowed: @escaping () -> Void,
-        onShowedError: @escaping (ErrorCode) -> Void
+        onShowedError: @escaping (ErrorCode) -> Void,
+        customConfig: NativeAdViewBinder? = nil
     ) {
         if _context == nil {
             return
@@ -172,12 +173,23 @@ public final class PubstarAdManagerWrapper {
             onShowedError(errorCode)
         }
 
-        let request = NativeAdRequest.Builder(context: _context!)
-            .withView(view)
-            .sizeType(size)
-            .adLoaderListener(adNetLoaderListener)
-            .adShowedListener(adNetShowListener)
-            .build()
+        var request: NativeAdRequest
+        if customConfig != nil {
+            request = NativeAdRequest.Builder(context: _context!)
+                .withView(view)
+                .withNativeAdViewBinderCustom(customConfig!)
+                .sizeType(.Custom)
+                .adLoaderListener(adNetLoaderListener)
+                .adShowedListener(adNetShowListener)
+                .build()
+        } else {
+            request = NativeAdRequest.Builder(context: _context!)
+                .withView(view)
+                .sizeType(size)
+                .adLoaderListener(adNetLoaderListener)
+                .adShowedListener(adNetShowListener)
+                .build()
+        }
 
         _pubStarAdController
             .loadAndShow(

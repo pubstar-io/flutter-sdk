@@ -64,6 +64,7 @@ class PubstarAdView extends StatelessWidget {
     this.type,
     this.mode = PubstarAdViewMode.loadAndShow,
     this.size,
+    this.nativeCustomConfig,
     this.onError,
     this.onLoaded,
     this.onHide,
@@ -100,6 +101,12 @@ class PubstarAdView extends StatelessWidget {
   /// - [PubstarAdSize.collapsible]: **Only** available of Banner ad view. Full size for native ad.
   /// If null, the default size will be used. Default is [PubstarAdSize.small].
   final PubstarAdSize? size;
+
+  /// Optional custom native layout configuration.
+  ///
+  /// If provided with [type] = [PubstarAdType.native], the plugin will try to
+  /// render native ads using custom binder mapping on supported platforms.
+  final PubstarNativeCustomConfig? nativeCustomConfig;
 
   /// Called when an error occurs during the ad lifecycle.
   ///
@@ -164,7 +171,7 @@ class PubstarAdView extends StatelessWidget {
   /// ```
   final OnShowed? onShowed;
 
-  onPlatformViewCreated(int viewId) {
+  void onPlatformViewCreated(int viewId) {
     if (type != null) {
       final PubstarAdSize sizeValue = size ?? PubstarAdSize.small;
 
@@ -187,6 +194,7 @@ class PubstarAdView extends StatelessWidget {
             adId: adId,
             viewId: viewId,
             size: sizeValue,
+            customConfig: nativeCustomConfig,
             listener: LoadAndShowListener(
               onError: onError,
               onHide: onHide,
@@ -204,6 +212,7 @@ class PubstarAdView extends StatelessWidget {
       PubstarIo.showAdWithViewId(
         adId: adId,
         viewId: viewId,
+        customConfig: nativeCustomConfig,
         listener: ShowListener(
           onError: onError,
           onHide: onHide,

@@ -200,6 +200,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "loadAd is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "showAd" -> {
@@ -216,16 +217,19 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "showAd is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "showAdWithViewId" -> {
                 val adId = Validate.adId(call.argument<Any>("adId"), result) ?: return
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
+                val customConfig = NativeCustomConfig.fromMap(call.argument<Map<*, *>>("customConfig"))
                 val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.showAd(
                     adId,
                     adView,
+                    customConfig,
                     onAdHide = onAdHideCallback(callbackId),
                     onAdShowed = onAdShowedCallback(callbackId),
                     onError = onErrorCallback(
@@ -233,6 +237,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowAd" -> {
@@ -251,6 +256,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowAdWithViewId" -> {
@@ -270,6 +276,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowBannerAd" -> {
@@ -295,6 +302,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowNativeAd" -> {
@@ -302,12 +310,14 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val adView = Validate.adView(call.argument<Int>("viewId"), result) ?: return
                 val typeSize = Validate.typeSize(call.argument<String>("typeSize"), result) ?: return
                 val size = extractNativeSize(typeSize)
+                val customConfig = NativeCustomConfig.fromMap(call.argument<Map<*, *>>("customConfig"))
                 val callbackId = Validate.callbackId(call.argument<Any>("callbackId"), result) ?: return
 
                 pubstarAdManagerWrapper.loadAndShowNativeAd(
                     adId,
                     adView,
                     size,
+                    customConfig,
                     onAdLoaderError = onErrorCallback(
                         callbackId = callbackId,
                         message = "onAdLoader is failed."
@@ -320,6 +330,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             "loadAndShowVideoAd" -> {
@@ -347,6 +358,7 @@ class PubstarIoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         message = "onShowed is failed."
                     )
                 )
+                safeResult.success(null)
             }
 
             else -> {
