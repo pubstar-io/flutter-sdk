@@ -7,15 +7,14 @@ on:
       - main
     paths:
       - 'pubspec.yaml'
-      - '!build/**'
 
 permissions:
-  contents: read
   contents: write
+  id-token: write   # required for pub.dev OIDC publishing
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
@@ -30,23 +29,16 @@ jobs:
       - name: Extract version from pubspec.yaml
         id: pubspec
         run: |
-          VERSION=$(python3 - <<'PY'
-            import yaml
-            with open("pubspec.yaml","r",encoding="utf-8") as f:
-                data = yaml.safe_load(f)
-            v = str(data.get("version","")).strip()
-            # pubspec version có thể là "1.2.3+4" -> lấy phần "1.2.3"
-            print(v.split("+")[0])
-            PY
-          )
+          VERSION=$(grep '^version:' pubspec.yaml | head -n1 | sed 's/version:[[:space:]]*//' | cut -d'+' -f1 | tr -d '[:space:]')
 
           if [ -z "$VERSION" ]; then
             echo "❌ pubspec.yaml missing version"
             exit 1
           fi
 
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Resolved version: $VERSION (tag v$VERSION)"
 
       - name: Check if Tag exists
         id: check_tag
@@ -60,10 +52,10 @@ jobs:
 
           if gh api repos/$REMOTE_REPO/git/ref/tags/$TAG_NAME >/dev/null 2>&1; then
             echo "Tag $TAG_NAME already exists. Skipping publish to avoid error."
-            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "exists=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Tag $TAG_NAME is not exists."
-            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag $TAG_NAME does not exist."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Pub get
@@ -82,7 +74,7 @@ jobs:
         if: steps.check_tag.outputs.exists == 'false'
         run: flutter test
 
-      - name: Test publishing package
+      - name: Test publishing package (dry run)
         if: steps.check_tag.outputs.exists == 'false'
         run: dart pub publish --dry-run
 
@@ -91,9 +83,8 @@ jobs:
         if: steps.check_tag.outputs.exists == 'false'
         run: |
           ZIP_NAME="flutter_sdk_${{ steps.pubspec.outputs.version }}.zip"
-
-          git archive -o $ZIP_NAME HEAD
-          echo "zip_file=$ZIP_NAME" >> $GITHUB_OUTPUT
+          git archive -o "$ZIP_NAME" HEAD
+          echo "zip_file=$ZIP_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release and upload asset
         if: steps.check_tag.outputs.exists == 'false'
@@ -105,11 +96,28 @@ jobs:
           name: ${{ steps.pubspec.outputs.version }}
           generate_release_notes: true
           files: |
-            ${{ steps.zip_project.outputs.zip_file }}
+            ${{ steps.zip_step.outputs.zip_file }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_SDK_IOS }}
 
+      # --- pub.dev authentication ---
+      # Provide credentials via the PUB_CREDENTIALS secret (contents of
+      # pub-credentials.json from a machine that ran `dart pub login`).
+      # This works on self-hosted runners without OIDC. If you prefer OIDC,
+      # remove this step and enable "Automated publishing" for the package
+      # on pub.dev (the id-token: write permission above is already set).
+      - name: Setup pub.dev credentials
+        if: steps.check_tag.outputs.exists == 'false'
+        env:
+          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
+        run: |
+          if [ -z "$PUB_CREDENTIALS" ]; then
+            echo "PUB_CREDENTIALS secret is empty — relying on OIDC (Automated publishing must be enabled on pub.dev)."
+            exit 0
+          fi
+          mkdir -p "$HOME/.config/dart"
+          printf '%s' "$PUB_CREDENTIALS" > "$HOME/.config/dart/pub-credentials.json"
+
       - name: Publish to pub.dev
         if: steps.check_tag.outputs.exists == 'false'
-        if: github.event_name == 'workflow_dispatch'
         run: dart pub publish --force

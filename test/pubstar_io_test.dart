@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pubstar_io/src/pubstar_ad_view.dart';
+import 'package:pubstar_io/src/pubstar_video_ad_view.dart';
 import 'package:pubstar_io/src/pubstar_io_platform_interface.dart';
 import 'package:pubstar_io/src/pubstar_io_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -52,6 +53,7 @@ class MockPubstarIoPlatform
     required String adId,
     required int viewId,
     required PubstarAdSize typeSize,
+    PubstarNativeCustomConfig? customConfig,
     LoadAndShowListener? listener,
   }) {
     // TODO: implement loadAndShowNativeAd
@@ -63,6 +65,7 @@ class MockPubstarIoPlatform
     required String adId,
     required int viewId,
     required String media,
+    required PubStarVideoAdType type,
     LoadAndShowListener? listener,
   }) {
     // TODO: implement loadAndShowVideoAd
@@ -79,6 +82,7 @@ class MockPubstarIoPlatform
   Future<void> showAdWithViewId({
     required String adId,
     required int viewId,
+    PubstarNativeCustomConfig? customConfig,
     ShowListener? listener,
   }) {
     // TODO: implement showAdWithViewId
