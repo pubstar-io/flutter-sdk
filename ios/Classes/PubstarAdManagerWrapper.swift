@@ -42,7 +42,9 @@ public final class PubstarAdManagerWrapper {
             from: context,
             listener: ConsentGatheringCompleteHandler(onComplete: { error in
                 PubStarAdManager.getInstance()
-                    .setIsDebug(isDebug: true)
+                    // isDebug = true khiến SDK bỏ qua `io.pubstar.key` trong Info.plist
+                    // và dùng App ID debug dựng sẵn -> lệch với ad unit của app.
+                    .setIsDebug(isDebug: false)
                     .setInitAdListener(
                         InitAdListenerHandler(
                             onDone: {
