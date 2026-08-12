@@ -10,7 +10,7 @@ PubStar Mobile Ads SDK is a comprehensive monetization solution that enables dev
 
 The SDK provides a unified and flexible API for loading, displaying, and managing ads while ensuring a non-intrusive and optimized user experience.
 
-> **Current version:** `1.6.0`
+> **Current version:** `1.6.1`
 
 ### Supported Ad Formats
 
@@ -38,7 +38,7 @@ Add the dependency in your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  pubstar_io: ^1.6.0
+  pubstar_io: ^1.6.1
 ```
 
 Then run:
