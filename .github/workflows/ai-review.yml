@@ -19,7 +19,7 @@ permissions:
 jobs:
   ai_review:
     name: AI Code Review
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       # Bước 1: Tải code về
