@@ -41,6 +41,47 @@ typedef OnError = void Function(PubstarError error);
 typedef OnDone = void Function();
 typedef OnInit = void Function();
 
+/// Configuration for rendering custom native ad layouts.
+///
+/// Resource names are resolved on Android from the host app package.
+class PubstarNativeCustomConfig {
+  const PubstarNativeCustomConfig({
+    required this.layoutName,
+    this.advertiserTextViewId,
+    this.iconImageViewId,
+    this.titleTextViewId,
+    this.mediaContentViewGroupId,
+    this.bodyTextViewId,
+    this.callToActionButtonId,
+    this.loadingViewId,
+    this.ctaColorHex,
+  });
+
+  final String layoutName;
+  final String? advertiserTextViewId;
+  final String? iconImageViewId;
+  final String? titleTextViewId;
+  final String? mediaContentViewGroupId;
+  final String? bodyTextViewId;
+  final String? callToActionButtonId;
+  final String? loadingViewId;
+  final String? ctaColorHex;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'layoutName': layoutName,
+      'advertiserTextViewId': advertiserTextViewId,
+      'iconImageViewId': iconImageViewId,
+      'titleTextViewId': titleTextViewId,
+      'mediaContentViewGroupId': mediaContentViewGroupId,
+      'bodyTextViewId': bodyTextViewId,
+      'callToActionButtonId': callToActionButtonId,
+      'loadingViewId': loadingViewId,
+      'ctaColorHex': ctaColorHex,
+    };
+  }
+}
+
 sealed class PubstarListener {
   final OnError? onError;
   const PubstarListener({this.onError});

@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'pubstar_io'
-  s.version          = '1.5.0'
+  s.version          = '1.6.1'
   s.summary          = 'PubStar Mobile AD SDK'
   s.description      = <<-DESC
 PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
@@ -27,13 +27,19 @@ PubStar Flutter AD SDK helps developers easily integrate ads into Flutter apps.
   # see https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
   # s.resource_bundles = {'pubstar_io_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
 
-  # Setup frameworks load frameworks from local
+  # Setup frameworks load frameworks from development path
   # s.vendored_frameworks = 'Frameworks/Pubstar.xcframework'
-  # s.pod_target_xcconfig = {
-  #   'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/../../Frameworks'
-  # }
+  # s.dependency 'Google-Mobile-Ads-SDK', '~> 12.14.0'
+  # s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.26.1'
+  # s.dependency 'AppLovinSDK', '~> 13.5.0'
+  # s.dependency 'PrebidMobile', '~> 3.0.2'
+  # s.dependency 'PrebidMobileGAMEventHandlers', '~> 3.0.2'
+  # s.dependency 'PrebidMobileMAXAdapters', '~> 3.0.2'
+  # s.dependency 'PrebidMobileAdMobAdapters', '~> 3.0.2'
 
+  
+  # Setup frameworks for Release Production
   s.static_framework = true
-  s.dependency 'Pubstar', '~> 1.5.0'
+  s.dependency 'Pubstar', '~> 1.6.0'
 
 end

@@ -1,6 +1,6 @@
 name: pubstar_io
 description: "Pubstar Flutter AD SDK helps developers easily integrate ads into Flutter apps."
-version: 1.5.1-1
+version: 1.6.1
 homepage: https://github.com/pubstar-io/flutter-sdk
 repository: https://github.com/pubstar-io/flutter-sdk
 

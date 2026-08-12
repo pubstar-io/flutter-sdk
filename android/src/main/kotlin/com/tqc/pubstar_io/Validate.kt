@@ -110,4 +110,17 @@ object Validate {
 
         return media
     }
+
+    fun typeVideo(value: Any?, result: Result): String? {
+        if (value !is String) {
+            result.error(
+                "INVALID_ARGUMENT",
+                "Type of Video is not a String",
+                null
+            )
+            return null
+        }
+
+        return value
+    }
 }

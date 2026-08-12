@@ -398,6 +398,7 @@ void main() {
             adId: testAdId,
             viewId: viewId,
             media: media,
+            type: PubStarVideoAdType.outStream,
           ),
           returnsNormally,
         );
@@ -424,6 +425,7 @@ void main() {
             adId: testAdId,
             viewId: viewId,
             media: media,
+            type: PubStarVideoAdType.outStream,
           ),
           throwsA(isA<PubstarIoException>()),
         );

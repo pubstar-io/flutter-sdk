@@ -5,6 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:pubstar_io/pubstar_io.dart';
 import 'package:pubstar_io/src/method_channel_name.dart';
 
+/// The type of ad to be displayed in the PubstarVideoAdView.
+///
+/// - [inStream]: Display an in-stream video ad.
+/// - [outStream]: Display an out-stream video ad.
+enum PubStarVideoAdType { inStream, outStream }
+
 class PubstarVideoAdView extends StatelessWidget {
   /// A Flutter widget for displaying a video ad view using Pubstar IO plugin.
   ///
@@ -26,6 +32,7 @@ class PubstarVideoAdView extends StatelessWidget {
     super.key,
     required this.adId,
     required this.media,
+    required this.type,
     this.onError,
     this.onLoaded,
     this.onHide,
@@ -42,6 +49,16 @@ class PubstarVideoAdView extends StatelessWidget {
   /// This should be a URL string as required.
   final String media;
 
+  /// The type for displaying the ad in this view.
+  ///
+  /// If you want to use a specific type and more control (eg: custom size), you must set it.
+  /// - [PubStarVideoAdType.inStream]: Display an in-stream video ad.
+  /// - [PubStarVideoAdType.outStream]: Display an out-stream video ad.
+  ///
+  /// If null, the ad will be loaded and shown without a specific type.
+  /// If you want to use a specific type, you must set it.
+  final PubStarVideoAdType type;
+
   final OnError? onError;
   final OnLoaded? onLoaded;
   final OnHide? onHide;
@@ -52,6 +69,7 @@ class PubstarVideoAdView extends StatelessWidget {
       adId: adId,
       viewId: viewId,
       media: media,
+      type: type,
       listener: LoadAndShowListener(
         onError: onError,
         onHide: onHide,

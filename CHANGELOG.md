@@ -1,4 +1,14 @@
 
+### [1.6.1] - 2026-06-09
+
+- Fixed iOS initialization ignoring the app's `io.pubstar.key` from `Info.plist`. The iOS bridge forced `setIsDebug(true)`, which made the native SDK initialize with the built-in debug App ID instead of the publisher's real App ID, so the init config never matched the app's ad unit IDs.
+
+### [1.6.0] - 2026-06-18
+
+- **Custom Native** — render native ads with your own layout via `PubstarNativeCustomConfig` (`nativeCustomConfig` on `PubstarAdView`).
+- **Video (IMA)** — `PubstarVideoAdView` with required `type` (`PubStarVideoAdType.inStream` / `outStream`).
+- Updated README with full Usage guide (Init / Load / Show / LoadAndShow, Banner & Native, Custom Native, Video IMA) aligned with the Android and iOS SDKs.
+
 ### [1.5.1-1] - 2026-04-10
 
 - Updated Android release version to `1.5.1-1` for pub.dev publishing.
