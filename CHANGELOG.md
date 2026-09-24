@@ -1,4 +1,9 @@
 
+### [1.6.2] - 2026-09-23
+
+- Bumped the native SDKs to `1.6.2` (iOS `Pubstar ~> 1.6.2`, Android `io.pubstar.mobile:ads:1.6.2`), which brings the reporting work from that release: `app_crash` / `app_session` on their own endpoint, a `screen` dimension on every metric, the `load_time` metric, `display_time` measuring time-to-show for full-screen formats, and one `impression` per `sdk_request` per placement.
+- **iOS behaviour change:** a missing `io.pubstar.key` in `Info.plist` now fails at initialization instead of silently falling back to the built-in debug App ID. An app that was misconfigured this way used to keep running while every report it sent landed on the debug app; it will now stop at init. This matches what Android has always done.
+
 ### [1.6.1] - 2026-06-09
 
 - Fixed iOS initialization ignoring the app's `io.pubstar.key` from `Info.plist`. The iOS bridge forced `setIsDebug(true)`, which made the native SDK initialize with the built-in debug App ID instead of the publisher's real App ID, so the init config never matched the app's ad unit IDs.
