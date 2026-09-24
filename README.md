@@ -10,7 +10,7 @@ PubStar Mobile Ads SDK is a comprehensive monetization solution that enables dev
 
 The SDK provides a unified and flexible API for loading, displaying, and managing ads while ensuring a non-intrusive and optimized user experience.
 
-> **Current version:** `1.6.1`
+> **Current version:** `1.6.2`
 
 ### Supported Ad Formats
 
@@ -38,7 +38,7 @@ Add the dependency in your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  pubstar_io: ^1.6.1
+  pubstar_io: ^1.6.2
 ```
 
 Then run:
@@ -64,7 +64,9 @@ Add your PubStar App ID:
 <string>pub-app-id-XXXX</string>
 ```
 
-> Replace `pub-app-id-XXXX` with your real App ID (for example `pub-app-id-1233`). Do not ship production builds with a placeholder value.
+> Replace `pub-app-id-XXXX` with the App ID shown for your app in the PubStar dashboard. Do not ship production builds with a placeholder value.
+>
+> **The key is required on both platforms.** If it is missing or empty, initialization stops: Android throws `IllegalStateException`, and from **1.6.2** iOS does the same (`fatalError` after `onError(INIT_ERROR)`). Earlier iOS versions silently fell back to a built-in debug App ID, so a misconfigured app kept running while every report it sent — sessions and crashes included — went to the wrong app.
 
 ## Usage
 
